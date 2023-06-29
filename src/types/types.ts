@@ -9,7 +9,7 @@ export interface ProfileType {
 export interface GoalType {
   name: string
   description: string
-  finished: boolean
+  completed: boolean
 }
 
 export interface PlanType {
