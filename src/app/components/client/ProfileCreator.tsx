@@ -30,11 +30,11 @@ export default function ProfileCreator () {
 
   const profile = cookies[TEST_COOKIE_NAME] as ProfileType
 
-  var dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+  // var dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
   
   const d2 = new Date(profile?.lastLogin)
   console.log(d2, typeof(d2), d2.toLocaleDateString("en-US"))
-  const formattedDate = d2.toLocaleDateString("en-US", dateOptions)
+  const formattedDate = d2.toLocaleDateString("en-US")
 
 
   const unfinishedPlans = profile?.unfinishedPlans.map((plan: PlanType, i: number) => {
