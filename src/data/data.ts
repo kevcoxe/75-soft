@@ -4,27 +4,27 @@ export const DEFAULT_GOALS = [
   {
     name: "diet",
     description: "Eat better, do not eat any extra sweets, no treats, no extra drinks. Once a weekend I can have a treat.",
-    finished: false
+    completed: false
   } as GoalType,
   {
     name: "water",
     description: "Drink 96oz of water.",
-    finished: false
+    completed: false
   } as GoalType,
   {
     name: "exercise",
     description: "Do 45 mins of exercise a day.",
-    finished: false
+    completed: false
   } as GoalType,
   {
     name: "reading",
     description: "Read 10 pages of a book.",
-    finished: false
+    completed: false
   } as GoalType,
   {
     name: "picture",
     description: "Take a progress picture.",
-    finished: false
+    completed: false
   } as GoalType
 ]
 
