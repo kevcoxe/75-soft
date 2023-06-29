@@ -3,32 +3,10 @@
 import { cookies } from 'next/headers'
 import { GoalType } from "@/types/types"
 import { IncrementStreak } from "@/app/actions/streakActions"
+import { DEFAULT_GOALS } from "@/data/data"
 
 
 const GOAL_COOKIE_NAME = "goals-"
-
-const DEFAULT_GOALS = [
-  {
-    name: "diet",
-    description: "Don't eat sweets",
-    completed: false
-  } as GoalType,
-  {
-    name: "water",
-    description: "Drink 96oz",
-    completed: false
-  } as GoalType,
-  {
-    name: "reading",
-    description: "Read 10 pages",
-    completed: false
-  } as GoalType,
-  {
-    name: "workout",
-    description: "45 min workout",
-    completed: false
-  } as GoalType,
-]
 
 
 export const LoadGoals = async (sessionId: string) => {
