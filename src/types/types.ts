@@ -27,9 +27,8 @@ export interface NewSessionType {
 }
 
 export interface SessionType {
-  name: string
+  sessionId: string
+  username: string
   failedCount: number
   successStreak: number
-  goals: GoalType[]
-  planLength: number
 }

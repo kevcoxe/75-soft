@@ -1,5 +1,3 @@
-"use server"
-
 import { cookies } from 'next/headers'
 import { GoalType } from "@/types/types"
 import { IncrementStreak } from "@/app/actions/streakActions"

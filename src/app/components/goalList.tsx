@@ -1,6 +1,6 @@
 
 import { CompleteAllGoals, LoadGoals, CompleteGoalWithIndex } from "@/app/actions/goalActions"
-import { LoadStreak, IncrementStreak, ResetStreak } from "@/app/actions/streakActions"
+import { LoadStreak, ResetStreak } from "@/app/actions/streakActions"
 import { GoalType } from "@/types/types"
 
 interface GoalListParams {

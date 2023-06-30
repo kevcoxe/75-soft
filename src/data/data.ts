@@ -17,6 +17,11 @@ export const DEFAULT_GOALS = [
     completed: false
   } as GoalType,
   {
+    name: "walk",
+    description: "Walk 1 mile to total 75 miles in 75 days.",
+    completed: false
+  } as GoalType,
+  {
     name: "reading",
     description: "Read 10 pages of a book.",
     completed: false
