@@ -12,7 +12,7 @@ export default function Client({ children }: { children: ReactNode}) {
     <main>
       {user ? (
         <div className='flex flex-col gap-2'>
-          <div className="grid p-4items-cente justify-items-end">
+          <div className="grid items-center p-4 justify-items-end">
             <div className="flex">
               <Image
                 className='rounded-full'
@@ -24,7 +24,7 @@ export default function Client({ children }: { children: ReactNode}) {
               />
               <div className="px-4 my-auto">
                 <Link
-                  className='px-4 py-2 font-extrabold transition rounded-md hover:bg-white hover:text-black'
+                  className='px-4 py-2 font-extrabold transition rounded-md hover:ring-2 ring-white ring-offset-1'
                   href="/api/auth/logout"
                 >Logout</Link>
               </div>
