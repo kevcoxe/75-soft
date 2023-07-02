@@ -1,16 +1,28 @@
 import { revalidatePath } from 'next/cache'
 
-import { GetUserSession, LoginUser, LogoutUser, SignupUser } from '@/app/actions/supabase'
+import { createServerActionClient } from '@supabase/auth-helpers-nextjs'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 
 export default async function Login() {
-  const session = await GetUserSession()
+  const supabase = createServerComponentClient<Database>({ cookies })
+  const {
+    data: { session }
+  } = await supabase.auth.getSession()
 
   const handleSignUp = async (formData: FormData) => {
     'use server'
     const email = String(formData.get('email'))
     const password = String(formData.get('password'))
 
-    await SignupUser({ email, password })
+    const supabase = createServerActionClient<Database>({ cookies })
+    await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: 'http://localhost:3000/auth/callback',
+      },
+    })
     revalidatePath('/')
   }
 
@@ -19,13 +31,19 @@ export default async function Login() {
     const email = String(formData.get('email'))
     const password = String(formData.get('password'))
 
-    await LoginUser({ email, password})
+    const supabase = createServerActionClient<Database>({ cookies })
+    await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
     revalidatePath('/')
   }
 
   const handleSignOut = async () => {
     'use server'
-    await LogoutUser()
+    const supabase = createServerActionClient<Database>({ cookies })
+    await supabase.auth.signOut()
+    console.log("goodbye")
     revalidatePath('/')
   }
 
@@ -46,8 +64,10 @@ export default async function Login() {
           <label htmlFor="password">Password:</label>
           <input type="password" name="password" />
 
-          {/* <button formAction={handleSignUp}>Sign up</button> */}
-          <button type="submit">Sign in</button>
+          <div className="grid grid-cols-2">
+            <button className='px-4 py-2 mx-6 my-2 text-black bg-white' formAction={handleSignUp}>Sign up</button>
+            <button className='px-4 py-2 mx-6 my-2 text-black bg-white' type="submit">Sign in</button>
+          </div>
         </div>
       )}
     </form>

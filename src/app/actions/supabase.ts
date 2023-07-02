@@ -3,6 +3,7 @@ import { PostgrestError } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
 
 export const GetSupabaseClient = async () => {
+  "use server"
   const supabase = createServerComponentClient<Database>({ cookies })
   return supabase
 }
@@ -10,12 +11,14 @@ export const GetSupabaseClient = async () => {
 
 // todo
 export const GetTodoList = async () => {
+  "use server"
   const supabase = await GetSupabaseClient()
   const { data: todos } = await supabase.from('todos').select()
   return todos
 }
 
 export const CreateTodo = async ({ name, description }: { name: string, description: string}) => {
+  "use server"
   const supabase = await GetSupabaseClient()
   const session = await GetUserSession()
 
@@ -28,6 +31,7 @@ interface ToggleReturn {
   error: PostgrestError | null
 }
 export const ToggleTodoComplete = async ({ isComplete, taskId }: { isComplete: boolean, taskId: string }): Promise<ToggleReturn> => {
+  "use server"
   const supabase = await GetSupabaseClient()
   const session = await GetUserSession()
 
@@ -48,17 +52,19 @@ export const ToggleTodoComplete = async ({ isComplete, taskId }: { isComplete: b
 
 // session
 export const SignupUser = async ({ email, password }: { email: string, password: string }) => {
+  "use server"
   const supabase = await GetSupabaseClient()
   await supabase.auth.signUp({
     email,
     password,
     options: {
-      emailRedirectTo: `${location.origin}/auth/callback`,
+      emailRedirectTo: `http://localhost:3000/auth/callback`,
     },
   })
 }
 
 export const LoginUser = async ({ email, password}: { email: string, password: string}) => {
+  "use server"
   const supabase = await GetSupabaseClient()
   await supabase.auth.signInWithPassword({
     email,
@@ -67,11 +73,13 @@ export const LoginUser = async ({ email, password}: { email: string, password: s
 }
 
 export const LogoutUser = async () => {
+  "use server"
   const supabase = await GetSupabaseClient()
   await supabase.auth.signOut()
 }
 
 export const GetUserSession = async () => {
+  "use server"
   const supabase = await GetSupabaseClient()
   const {
     data: { session }
