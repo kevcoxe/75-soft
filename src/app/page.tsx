@@ -1,4 +1,5 @@
 
+/*
 import { LoadSession, LoadAllSessions, CreateSession } from "@/app/actions/sessionActions"
 import Session from "@/app/components/session"
 import Client from "@/app/components/client"
@@ -45,5 +46,14 @@ export default async function Home() {
         </Client>
       </div>
     </main>
+  )
+}
+*/
+
+export default async function Home () {
+  return (
+    <div>
+      hello
+    </div>
   )
 }
