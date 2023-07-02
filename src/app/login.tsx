@@ -1,28 +1,16 @@
-import { createServerActionClient } from '@supabase/auth-helpers-nextjs'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { revalidatePath } from 'next/cache'
-import { cookies } from 'next/headers'
+
+import { GetUserSession, LoginUser, LogoutUser, SignupUser } from '@/app/actions/supabase'
 
 export default async function Login() {
-  const supabase = createServerComponentClient<Database>({ cookies })
-  const {
-    data: { session }
-  } = await supabase.auth.getSession()
+  const session = await GetUserSession()
 
   const handleSignUp = async (formData: FormData) => {
     'use server'
     const email = String(formData.get('email'))
     const password = String(formData.get('password'))
 
-    const supabase = createServerActionClient<Database>({ cookies })
-    await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: 'http://localhost:3000/auth/callback',
-      },
-    })
-
+    await SignupUser({ email, password })
     revalidatePath('/')
   }
 
@@ -31,19 +19,13 @@ export default async function Login() {
     const email = String(formData.get('email'))
     const password = String(formData.get('password'))
 
-    const supabase = createServerActionClient<Database>({ cookies })
-    await supabase.auth.signInWithPassword({
-      email,
-      password,
-    })
-
+    await LoginUser({ email, password})
     revalidatePath('/')
   }
 
   const handleSignOut = async () => {
     'use server'
-    const supabase = createServerActionClient<Database>({ cookies })
-    await supabase.auth.signOut()
+    await LogoutUser()
     revalidatePath('/')
   }
 
