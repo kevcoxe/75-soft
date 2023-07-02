@@ -20,24 +20,26 @@ export default async function Home() {
         <Client>
           <div className="grid w-full grid-cols-3 align-middle justify-items-center">
             { session && (
-              <div className="flex">
+              <div className="w-full col-span-3">
                 <Session sessionId={session} />
               </div>
             )}
 
             { !session && (
-              <div className="flex col-span-3">
+              <div className="w-full col-span-3">
                 <form action={createSession}>
                   <button type="submit">Start Session</button>
                 </form>
               </div>
             )}
 
-            <div className="flex flex-col col-span-3">
-              <h1>Sessions:</h1>
-              <span>
-                { JSON.stringify(sessions) }
-              </span>
+            <div className="w-full col-span-3">
+              <div className="flex flex-col">
+                <h1>Sessions:</h1>
+                <span>
+                  { JSON.stringify(sessions) }
+                </span>
+              </div>
             </div>
           </div>
         </Client>

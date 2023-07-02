@@ -14,10 +14,8 @@ export default function ProfileForm ({ sessionId }: ProfileFormParams) {
 
   return (
     <form action={createProfile} className="flex flex-col">
-      <div className="flex-row">
-        <label htmlFor="userName">UserName: </label>
-        <input className="text-black" type="text" name="userName"/>
-      </div>
+      <label htmlFor="userName">UserName: </label>
+      <input className="text-black" type="text" name="userName"/>
 
       <button type="submit">Create Profile</button>
     </form>
