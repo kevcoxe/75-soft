@@ -19,12 +19,13 @@ export default async function NewTodo() {
   }
 
   return (
-    <>
+    <div className='my-4'>
       <h1>Create Todo</h1>
-      <form action={addTodo}>
+      <form action={addTodo} className='flex flex-col'>
         <label htmlFor="task">Task name</label>
         <input name="task" />
+        <button type='submit'>Add Task</button>
       </form>
-    </>
+    </div>
   )
 }

@@ -51,7 +51,6 @@ export default async function Home() {
 */
 
 import Login from '@/app/login'
-import NewTodo from '@/app/new-post'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { revalidatePath } from 'next/cache'
 import { cookies } from 'next/headers'
@@ -105,7 +104,6 @@ export default async function ServerComponent() {
   return (
     <>
       <Login />
-      <NewTodo />
       { todos && (
         <div className='flex flex-col'>
           <h1>Todos: </h1>

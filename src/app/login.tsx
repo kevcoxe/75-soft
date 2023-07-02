@@ -50,13 +50,24 @@ export default async function Login() {
   return (
     <form action={handleSignUp}>
       { session && (
-        <h1>Hello { session.user.email }</h1>
+        <div className='flex gap-4 my-4'>
+          <h1>Hello { session.user.email }</h1>
+          <button formAction={handleSignOut}>Sign out</button>
+        </div>
       )}
-      <input name="email" />
-      <input type="password" name="password" />
-      <button>Sign up</button>
-      <button formAction={handleSignIn}>Sign in</button>
-      <button formAction={handleSignOut}>Sign out</button>
+
+      { !session && (
+        <div className='flex flex-col'>
+          <label htmlFor="email">Email:</label>
+          <input name="email" />
+
+          <label htmlFor="password">Password:</label>
+          <input type="password" name="password" />
+
+          <button>Sign up</button>
+          <button formAction={handleSignIn}>Sign in</button>
+        </div>
+      )}
     </form>
   )
 }
