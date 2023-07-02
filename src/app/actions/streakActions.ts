@@ -1,6 +1,6 @@
-"use server"
-
 import { cookies } from 'next/headers'
+import { kv } from '@vercel/kv';
+
 import { CreateGoals } from "@/app/actions/goalActions"
 
 
@@ -22,6 +22,14 @@ export const CreateStreak = async (sessionId: string) => {
 }
 
 export const SetStreak = async (sessionId: string, streak: number) => {
+  try {
+    await kv.hset(sessionId, {
+      successStreak: streak
+    });
+
+  } catch (error) {
+    console.log('failed to create session in kv', error)
+  }
   await cookies().set(STREAK_COOKIE_NAME + sessionId, JSON.stringify(streak))
 }
 
@@ -48,5 +56,14 @@ export const IncrementStreak = async (sessionId: string) => {
 }
 
 export const ResetStreak = async (sessionId: string) => {
+  try {
+    let failedCount = await kv.hget(sessionId, 'failedCount') as number
+    await kv.hset(sessionId, {
+      failedCount: failedCount + 1
+    });
+
+  } catch (error) {
+    console.log('failed to create session in kv', error)
+  }
   await SetStreak(sessionId, 0)
 }
