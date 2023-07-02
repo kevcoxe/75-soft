@@ -48,7 +48,7 @@ export default async function Login() {
   }
 
   return (
-    <form action={handleSignUp}>
+    <form action={handleSignIn}>
       { session && (
         <div className='flex gap-4 my-4'>
           <h1>Hello { session.user.email }</h1>
@@ -64,8 +64,8 @@ export default async function Login() {
           <label htmlFor="password">Password:</label>
           <input type="password" name="password" />
 
-          <button>Sign up</button>
-          <button formAction={handleSignIn}>Sign in</button>
+          {/* <button formAction={handleSignUp}>Sign up</button> */}
+          <button type="submit">Sign in</button>
         </div>
       )}
     </form>
