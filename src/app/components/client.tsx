@@ -1,6 +1,7 @@
 "use client"
 import { useUser } from '@auth0/nextjs-auth0/client';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ReactNode } from 'react';
 
 export default function Client({ children }: { children: ReactNode}) {
@@ -22,10 +23,10 @@ export default function Client({ children }: { children: ReactNode}) {
                 
               />
               <div className="px-4 my-auto">
-                <a
+                <Link
                   className='px-4 py-2 font-extrabold transition rounded-md hover:ring-2 ring-white ring-offset-1'
                   href="/api/auth/logout"
-                >Logout</a>
+                >Logout</Link>
               </div>
             </div>
           </div>
