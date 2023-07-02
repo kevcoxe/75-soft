@@ -37,7 +37,7 @@ export default function Client({ children }: { children: ReactNode}) {
 
         </div>
       ) : (
-        <a href="/api/auth/login">Login</a>
+        <Link href="/api/auth/login">Login</Link>
       )}
     </main>
   )
