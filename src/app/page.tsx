@@ -86,6 +86,9 @@ export default async function ServerComponent() {
 
   const supabase = createServerComponentClient<Database>({ cookies })
   const { data: todos } = await supabase.from('todos').select()
+  const {
+    data: { session }
+  } = await supabase.auth.getSession()
 
   const todoList = todos?.map(({ id, task, is_complete }, i) => {
     return (
@@ -102,14 +105,15 @@ export default async function ServerComponent() {
     })
 
   return (
-    <>
+    <div>
       <Login />
-      { todos && (
+
+      { session && todos && (
         <div className='flex flex-col'>
           <h1>Todos: </h1>
           { todoList }
         </div>
       )}
-    </>
+    </div>
   )
 }
