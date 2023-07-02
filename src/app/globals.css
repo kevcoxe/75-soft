@@ -25,3 +25,7 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+input {
+  @apply px-2 py-1 bg-gray-800 rounded-md
+}
