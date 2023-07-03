@@ -25,7 +25,7 @@ export default async function ServerComponent() {
     )
   })
 
-  const createProfile = async (formData: FormData) => {
+  const start75Soft = async (formData: FormData) => {
     "use server"
 
     await Promise.all([
@@ -57,10 +57,9 @@ export default async function ServerComponent() {
           )}
 
           { todos?.length === 0 && (
-            <div className='flex'>
-              <span>Lets create a profile</span>
-              <form action={createProfile}>
-                <button type='submit'>Create Profile</button>
+            <div className='flex flex-col'>
+              <form action={start75Soft}>
+                <button className='px-2 py-1 mx-4 my-2 text-black transition bg-white rounded-lg hover:ring hover:ring-offset-4 hover:ring-offset-white' type='submit'>Start 75 Soft</button>
               </form>
             </div>
           )}
