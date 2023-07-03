@@ -3,6 +3,7 @@ import { revalidatePath } from 'next/cache'
 import { createServerActionClient } from '@supabase/auth-helpers-nextjs'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
+import getURL from "@/utils/getURL";
 
 export default async function Login() {
   const supabase = createServerComponentClient<Database>({ cookies })
@@ -20,7 +21,7 @@ export default async function Login() {
       email,
       password,
       options: {
-        emailRedirectTo: `${location.origin}/auth/callback`,
+        emailRedirectTo: getURL('/auth/callback'),
       },
     })
     revalidatePath('/')
