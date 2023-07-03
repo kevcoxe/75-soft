@@ -16,11 +16,12 @@ export default async function ScoreBoard () {
     return 0
   })?.map((profile: Profile, i: number) => {
     return (
-      <div className={`text-xl flex flex-row gap-2 border-white ${placeColors[i]}`} key={i}>
-        <span className="">{ i + 1 }</span>
-        <h1 className="">{ profile.username }</h1>
-        <span>{ profile.score }</span>
-      </div>
+      <>
+        <span className="col-span-1">{ i + 1 }</span>
+        <h1 className="col-span-3">{ profile.username }</h1>
+        <span className="col-span-2">{ profile.score }</span>
+        <span className="col-span-2">{ profile.days_sucessful } days</span>
+      </>
     )
   })
 
@@ -29,7 +30,9 @@ export default async function ScoreBoard () {
       <div className="col-span-1">
         <span className="text-3xl">Score Board:</span>
       </div>
-      { scoreBoard }
+      <div className="grid grid-cols-8 gap-2 text-xl">
+        { scoreBoard }
+      </div>
     </div>
   )
 }
