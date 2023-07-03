@@ -2,7 +2,7 @@ import { GetProfiles } from "../actions/supabase"
 
 export default async function ScoreBoard () {
 
-  const allProfiles = await GetProfiles({ count: 3 })
+  const allProfiles = await GetProfiles({ count: 5 })
 
   const placeColors = [
     'text-green-700',
