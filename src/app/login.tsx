@@ -11,7 +11,7 @@ export default async function Login() {
   const {
     data: { session }
   } = await supabase.auth.getSession()
-  const profile = await GetProfile()
+  const profile = await GetProfile({ user_id: session?.user.id })
 
   const handleSignUp = async (formData: FormData) => {
     'use server'

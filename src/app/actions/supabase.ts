@@ -16,10 +16,11 @@ export const GetProfiles = async () => {
   return profiles
 }
 
-export const GetProfile = async () => {
+export const GetProfile = async ({ user_id }: { user_id?: string }) => {
   "use server"
+  if (!user_id) return
   const supabase = await GetSupabaseClient()
-  const { data: profile } = await supabase.from('profiles').select().single()
+  const { data: profile } = await supabase.from('profiles').select().match({ user_id }).single()
   return profile
 }
 
@@ -40,7 +41,7 @@ export const IncrementComplete = async ({ pointIncrement }: {
   const supabase = await GetSupabaseClient()
   const session = await GetUserSession()
 
-  const profile = await GetProfile()
+  const profile = await GetProfile({ user_id: session?.user.id })
 
   if (!profile) return { error: null }
 
