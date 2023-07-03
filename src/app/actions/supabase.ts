@@ -9,10 +9,25 @@ export const GetSupabaseClient = async () => {
 }
 
 // profiles
-export const GetProfiles = async () => {
+export const GetProfiles = async ({ count = 0 }: { count: number }) => {
   "use server"
   const supabase = await GetSupabaseClient()
-  const { data: profiles } = await supabase.from('profiles').select()
+  
+  let profiles = [] as any[] | null
+  if (count <= 0) {
+    const{ data } = await supabase
+      .from('profiles')
+      .select()
+      .order('score', { ascending: true })
+    profiles = data
+  } else {
+    const{ data } = await supabase
+      .from('profiles')
+      .select()
+      .order('score', { ascending: false })
+      .limit(count)
+    profiles = data
+  }
   return profiles
 }
 
