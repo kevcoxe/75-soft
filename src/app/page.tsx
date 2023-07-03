@@ -40,11 +40,19 @@ export default async function ServerComponent() {
   }
 
   return (
-    <div>
+    <div className='container mx-auto'>
       <Login />
 
       { session && todos && (
         <div className='flex flex-col'>
+          { todos?.length === 0 && (
+            <div className='flex flex-col'>
+              <form action={start75Soft}>
+                <button className='px-2 py-1 mx-4 my-2 text-black transition bg-white rounded-lg hover:ring hover:ring-offset-4 hover:ring-offset-white' type='submit'>Start 75 Soft</button>
+              </form>
+            </div>
+          )}
+
           { todoList?.length !== 0 && (
             <>
               <h1 className='font-extrabold underline'>Todos: </h1>
@@ -54,14 +62,6 @@ export default async function ServerComponent() {
 
           { todos?.length !== 0 && todoList?.length === 0 && (
             <h1>Congrats on finishing the day!</h1>
-          )}
-
-          { todos?.length === 0 && (
-            <div className='flex flex-col'>
-              <form action={start75Soft}>
-                <button className='px-2 py-1 mx-4 my-2 text-black transition bg-white rounded-lg hover:ring hover:ring-offset-4 hover:ring-offset-white' type='submit'>Start 75 Soft</button>
-              </form>
-            </div>
           )}
 
           { finishedTodoList?.length !== 0 && (
