@@ -17,8 +17,8 @@ export default async function Todo ({ todo: { id, is_complete, name, description
   }
 
   return (
-    <form className="" action={toggleTaskComplete}>
-      <button className='flex w-full m-4 border border-white rounded-lg' type='submit'>
+    <form className="grid grid-cols-5" action={toggleTaskComplete}>
+      <button className='col-span-5 m-4 border border-white rounded-lg' type='submit'>
         <input type="hidden" defaultValue={ id } name="taskId" />
         <input type="hidden" defaultValue={ JSON.stringify(is_complete) } name="isComplete" />
         <div className="flex">
