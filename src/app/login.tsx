@@ -51,14 +51,14 @@ export default async function Login() {
   return (
     <form action={handleSignIn}>
       { session && (
-        <div className='flex gap-4 my-4'>
+        <div className='flex gap-4 mx-4 my-4'>
           <h1>Hello { session.user.email }</h1>
           <button formAction={handleSignOut}>Sign out</button>
         </div>
       )}
 
       { !session && (
-        <div className='flex flex-col'>
+        <div className='flex flex-col mx-4'>
           <label htmlFor="email">Email:</label>
           <input name="email" />
 
