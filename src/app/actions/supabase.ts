@@ -33,6 +33,30 @@ export const CreateProfile = async ({ username }: { username: string }) => {
   await supabase.from('profiles').insert({ username, user_id: session?.user.id })
 }
 
+export const IncrementComplete = async ({ pointIncrement }: {
+  pointIncrement: number,
+}): Promise<{ error: PostgrestError | null }> => {
+  "use server"
+  const supabase = await GetSupabaseClient()
+  const session = await GetUserSession()
+
+  const profile = await GetProfile()
+
+  if (!profile) return { error: null }
+
+  if (!session) return { error: null }
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({
+      score: profile.score + pointIncrement,
+      user_id: session?.user.id
+    })
+    .eq('id', profile.id)
+
+  return { error }
+}
+
 
 // todo
 export const GetTodoList = async () => {

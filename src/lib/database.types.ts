@@ -15,7 +15,7 @@ export interface Database {
           days_sucessful: number | null
           id: number
           profile_pic: string | null
-          score: number | null
+          score: number
           user_id: string | null
           username: string | null
         }
@@ -24,7 +24,7 @@ export interface Database {
           days_sucessful?: number | null
           id?: number
           profile_pic?: string | null
-          score?: number | null
+          score?: number
           user_id?: string | null
           username?: string | null
         }
@@ -33,7 +33,7 @@ export interface Database {
           days_sucessful?: number | null
           id?: number
           profile_pic?: string | null
-          score?: number | null
+          score?: number
           user_id?: string | null
           username?: string | null
         }
