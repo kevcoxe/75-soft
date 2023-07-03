@@ -4,12 +4,14 @@ import { createServerActionClient } from '@supabase/auth-helpers-nextjs'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import getURL from "@/utils/getURL";
+import { GetProfile } from './actions/supabase';
 
 export default async function Login() {
   const supabase = createServerComponentClient<Database>({ cookies })
   const {
     data: { session }
   } = await supabase.auth.getSession()
+  const profile = await GetProfile()
 
   const handleSignUp = async (formData: FormData) => {
     'use server'
@@ -51,9 +53,15 @@ export default async function Login() {
   return (
     <form action={handleSignIn}>
       { session && (
-        <div className='flex gap-4 mx-4 my-4'>
-          <h1>Hello { session.user.email }</h1>
-          <button formAction={handleSignOut}>Sign out</button>
+        <div className='flex flex-col'>
+          <div className="flex gap-4 mx-4 my-2">
+            <h1>Hello { profile?.username }</h1>
+            <button formAction={handleSignOut}>Sign out</button>
+          </div>
+          <div className="flex gap-2 mx-4 my-2">
+            <span>Score: { profile?.score}</span>
+            <span>Days Successful: { profile?.days_sucessful}</span>
+          </div>
         </div>
       )}
 

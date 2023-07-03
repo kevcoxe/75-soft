@@ -8,6 +8,31 @@ export const GetSupabaseClient = async () => {
   return supabase
 }
 
+// profiles
+export const GetProfiles = async () => {
+  "use server"
+  const supabase = await GetSupabaseClient()
+  const { data: profiles } = await supabase.from('profiles').select()
+  return profiles
+}
+
+export const GetProfile = async () => {
+  "use server"
+  const supabase = await GetSupabaseClient()
+  const { data: profile } = await supabase.from('profiles').select().single()
+  return profile
+}
+
+export const CreateProfile = async ({ username }: { username: string }) => {
+  "use server"
+  const supabase = await GetSupabaseClient()
+  const session = await GetUserSession()
+
+  if (!session) return
+
+  await supabase.from('profiles').insert({ username, user_id: session?.user.id })
+}
+
 
 // todo
 export const GetTodoList = async () => {

@@ -12,23 +12,39 @@ export interface Database {
       profiles: {
         Row: {
           created_at: string | null
+          days_sucessful: number | null
           id: number
           profile_pic: string | null
+          score: number | null
+          user_id: string | null
           username: string | null
         }
         Insert: {
           created_at?: string | null
+          days_sucessful?: number | null
           id?: number
           profile_pic?: string | null
+          score?: number | null
+          user_id?: string | null
           username?: string | null
         }
         Update: {
           created_at?: string | null
+          days_sucessful?: number | null
           id?: number
           profile_pic?: string | null
+          score?: number | null
+          user_id?: string | null
           username?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_user_id_fkey"
+            columns: ["user_id"]
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          }
+        ]
       }
       todos: {
         Row: {
