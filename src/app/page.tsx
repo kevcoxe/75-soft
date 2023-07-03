@@ -4,6 +4,7 @@ import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import Welcome from '@/app/welcome'
 import TodoLists from '@/app/components/TodoLists'
+import ScoreBoard from './components/ScoreBoard'
 
 export default async function ServerComponent() {
   const todos = await GetTodoList()
@@ -25,6 +26,8 @@ export default async function ServerComponent() {
           <TodoLists todos={todos} />
         </div>
       )}
+
+      <ScoreBoard />
     </div>
   )
 }
