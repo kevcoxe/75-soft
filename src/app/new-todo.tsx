@@ -1,5 +1,5 @@
 import { revalidatePath } from 'next/cache'
-import { CreateTodo } from './actions/supabase'
+import { CreateTodo } from '@/app/actions/supabase'
 
 export default async function NewTodo() {
   const addTodo = async (formData: FormData) => {

@@ -1,14 +1,8 @@
-import { GetProfiles } from "../actions/supabase"
+import { GetProfiles } from "@/app/actions/supabase"
 
 export default async function ScoreBoard () {
 
   const allProfiles = await GetProfiles({ count: 5 })
-
-  const placeColors = [
-    'text-green-700',
-    'text-blue-700',
-    'text-purple-700'
-  ]
 
   const scoreBoard = allProfiles?.sort((profileA: Profile, profileB: Profile) => {
     if (profileA.score < profileB.score) return 1

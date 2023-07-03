@@ -1,5 +1,5 @@
 import { revalidatePath } from "next/cache"
-import { CreateTodo, CreateProfile } from "./actions/supabase"
+import { CreateTodo, CreateProfile } from "@/app/actions/supabase"
 
 export default async function Welcome() {
 

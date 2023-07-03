@@ -2,6 +2,7 @@
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import getURL from '@/utils/getURL'
 
 export default function AuthForm() {
   const supabase = createClientComponentClient<Database>()
@@ -9,12 +10,11 @@ export default function AuthForm() {
   return (
     <Auth
       supabaseClient={supabase}
-      view="magic_link"
       appearance={{ theme: ThemeSupa }}
       theme="dark"
-      showLinks={false}
       providers={[]}
-      redirectTo="http://localhost:3000/auth/callback"
+      showLinks={false}
+      redirectTo={getURL('/auth/callback')}
     />
   )
 }

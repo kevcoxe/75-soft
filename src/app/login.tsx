@@ -4,7 +4,7 @@ import { createServerActionClient } from '@supabase/auth-helpers-nextjs'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import getURL from "@/utils/getURL";
-import { GetProfile } from './actions/supabase';
+import { GetProfile } from '@/app/actions/supabase';
 
 export default async function Login() {
   const supabase = createServerComponentClient<Database>({ cookies })
@@ -67,6 +67,7 @@ export default async function Login() {
 
       { !session && (
         <div className='flex flex-col mx-4'>
+
           <label htmlFor="email">Email:</label>
           <input name="email" />
 

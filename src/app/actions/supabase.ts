@@ -1,3 +1,4 @@
+import getURL from "@/utils/getURL";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
@@ -123,7 +124,7 @@ export const SignupUser = async ({ email, password }: { email: string, password:
     email,
     password,
     options: {
-      emailRedirectTo: `http://localhost:3000/auth/callback`,
+      emailRedirectTo: getURL('/auth/callback'),
     },
   })
 }
