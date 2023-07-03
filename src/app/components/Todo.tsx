@@ -18,12 +18,11 @@ export default async function Todo ({ todo: { id, is_complete, name, description
 
   return (
     <form className="grid grid-cols-5" action={toggleTaskComplete}>
-      <button className='col-span-5 m-4 border border-white rounded-lg' type='submit'>
+      <button className={`${ is_complete ? 'bg-green-800 border-green-800' : 'border-white' } col-span-5 my-4 border rounded-lg`} type='submit'>
         <input type="hidden" defaultValue={ id } name="taskId" />
         <input type="hidden" defaultValue={ JSON.stringify(is_complete) } name="isComplete" />
         <div className="flex">
-          <span className='mx-2'>{ is_complete ? '✅' : '' }</span>
-          <div className="flex flex-col items-start">
+          <div className="flex flex-col items-start mx-2">
             <span className='font-bold'>{ name }</span>
             <span className='font-light'>{ description }</span>
           </div>

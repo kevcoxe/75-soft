@@ -54,10 +54,10 @@ export default async function ServerComponent() {
           )}
 
           { todoList?.length !== 0 && (
-            <>
+            <div className='mx-4'>
               <h1 className='font-extrabold underline'>Todos: </h1>
               { todoList }
-            </>
+            </div>
           )}
 
           { todos?.length !== 0 && todoList?.length === 0 && (
@@ -65,10 +65,10 @@ export default async function ServerComponent() {
           )}
 
           { finishedTodoList?.length !== 0 && (
-            <>
+            <div className='mx-4'>
               <h1 className='font-extrabold underline'>Finished Todos: </h1>
               { finishedTodoList }
-            </>
+            </div>
           )}
         </div>
       )}
