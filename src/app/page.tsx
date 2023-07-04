@@ -1,33 +1,20 @@
-import Login from '@/app/login'
 import { GetTodoList } from '@/app/actions/supabase'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
-import Welcome from '@/app/welcome'
 import TodoLists from '@/app/components/TodoLists'
-import ScoreBoard from '@/app/components/ScoreBoard'
+import NavBar from '@/app/components/NavBar'
+import { redirect } from 'next/navigation'
 
-export default async function ServerComponent() {
-  const todos = await GetTodoList()
+export default async function Home() {
+  const todos = await GetTodoList() as Todo[]
   const supabase = createServerComponentClient<Database>({ cookies })
   const {
     data: { session }
   } = await supabase.auth.getSession()
 
-  return (
-    <div className='container mx-auto'>
-      <Login />
+  if (!session) redirect("/landing")
+  if (todos?.length === 0) redirect("/welcome")
 
-      { session && todos && (
-        <div className='flex flex-col'>
-          { todos?.length === 0 && (
-            <Welcome />
-          )}
+  redirect('/todoList')
 
-          <TodoLists todos={todos} />
-        </div>
-      )}
-
-      <ScoreBoard />
-    </div>
-  )
 }

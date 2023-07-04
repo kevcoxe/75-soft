@@ -1,5 +1,6 @@
 import { revalidatePath } from "next/cache"
 import { CreateTodo, CreateProfile } from "@/app/actions/supabase"
+import { redirect } from "next/navigation"
 
 export default async function Welcome() {
 
@@ -18,11 +19,11 @@ export default async function Welcome() {
       CreateTodo({ name: "Read a book", description: "Read at least 10 pages of a non fiction book." }),
     ])
 
-    revalidatePath('/')
+    redirect('/')
   }
 
   return (
-    <>
+    <div className='container h-screen mx-auto'>
       <form action={start75Soft}>
         <div className='flex flex-col gap-2 mx-4'>
 
@@ -34,6 +35,6 @@ export default async function Welcome() {
           <button className='px-2 py-1 text-black transition bg-white rounded-lg hover:ring hover:ring-offset-4 hover:ring-offset-white' type='submit'>Start 75 Soft</button>
         </div>
       </form>
-    </>
+    </div>
   )
 }

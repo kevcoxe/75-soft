@@ -1,56 +1,32 @@
-import { revalidatePath } from "next/cache"
-import Todo from "@/app/components/Todo"
-import { GetTodoList, IncrementDaySuccess, ResetTodoComplete } from "@/app/actions/supabase"
+import { GetProfile, GetTodoList } from '@/app/actions/supabase'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
+import TodoLists from '@/app/components/TodoLists'
+import NavBar from '@/app/components/NavBar'
+import { redirect } from 'next/navigation'
+import UserStats from '@/app/components/UserStats'
 
 export default async function Page() {
+  const todos = await GetTodoList() as Todo[]
+  const supabase = createServerComponentClient<Database>({ cookies })
+  const {
+    data: { session }
+  } = await supabase.auth.getSession()
 
-  const todos = await GetTodoList()
+  if (!session) redirect("/landing")
+  if (todos && todos?.length === 0) redirect("/welcome")
 
-  const finishedTodoList = todos?.filter(({ is_complete }) => is_complete).map((todo: Todo, i) => {
-    return (
-      <Todo key={i} todo={todo} />
-    )
-  })
-
-  const todoList = todos?.filter(({ is_complete }) => !is_complete).map((todo: Todo, i) => {
-    return (
-      <Todo key={i} todo={todo} />
-    )
-  })
-
-  const completeDay = async () => {
-    "use server"
-
-    await ResetTodoComplete()
-    await IncrementDaySuccess()
-
-    revalidatePath("/")
-  }
+  const profile = await GetProfile({ user_id: session.user.id }) as Profile
 
   return (
-    <>
-      { todoList?.length !== 0 && (
-        <div className='mx-4'>
-          <h1 className='font-extrabold underline'>Todos: </h1>
-          { todoList }
-        </div>
-      )}
+    <div className='container h-screen mx-auto'>
+      <div className='flex flex-col'>
+        <NavBar />
 
-      { todos?.length !== 0 && todoList?.length === 0 && (
-        <>
-          <h1>Congrats on finishing the day!</h1>
-          <form action={completeDay}>
-            <button type="submit">Complete Day</button>
-          </form>
-        </>
-      )}
+        <UserStats profile={profile} />
 
-      { finishedTodoList?.length !== 0 && (
-        <div className='mx-4'>
-          <h1 className='font-extrabold underline'>Finished Todos: </h1>
-          { finishedTodoList }
-        </div>
-      )}
-    </>
+        <TodoLists todos={todos} />
+      </div>
+    </div>
   )
 }
