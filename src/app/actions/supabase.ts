@@ -2,6 +2,7 @@ import getURL from "@/utils/getURL";
 import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
 import { cookies } from "next/headers";
+import { POINT_PER_DAY } from "@/app/consts"
 
 export const GetSupabaseClient = async () => {
   "use server"
@@ -192,4 +193,13 @@ export const GetUserSession = async () => {
   } = await supabase.auth.getSession()
 
   return session
+}
+
+
+// other
+export const CompleteDay = async () => {
+  "use server"
+  await ResetTodoComplete()
+  await IncrementDaySuccess()
+  await IncrementComplete({ pointIncrement: POINT_PER_DAY })
 }

@@ -1,6 +1,6 @@
 import { revalidatePath } from "next/cache"
 import Todo from "@/app/components/Todo"
-import { IncrementDaySuccess, ResetTodoComplete } from "@/app/actions/supabase"
+import { CompleteDay } from "@/app/actions/supabase"
 
 export default async function TodoLists({ todos }: { todos: Todo[]}) {
 
@@ -19,8 +19,7 @@ export default async function TodoLists({ todos }: { todos: Todo[]}) {
   const completeDay = async () => {
     "use server"
 
-    await ResetTodoComplete()
-    await IncrementDaySuccess()
+    await CompleteDay()
 
     revalidatePath("/")
   }

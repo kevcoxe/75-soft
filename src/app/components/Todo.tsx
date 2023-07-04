@@ -1,8 +1,7 @@
 import { revalidatePath } from "next/cache"
 import { IncrementComplete, ToggleTodoComplete } from "../actions/supabase"
+import { POINT_PER_TASK } from "@/app/consts"
 
-
-const POINT_PER_TASK = 50
 
 export default async function Todo ({ todo: { id, is_complete, name, description } }: { todo: Todo}) {
   const toggleTaskComplete = async (formData: FormData) => {
