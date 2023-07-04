@@ -36,7 +36,7 @@ export default async function Page() {
         <div className='flex flex-col gap-2 my-4 text-center'>
           <h1 className='text-2xl underline'>Welcome to 75 Soft</h1>
           <p>
-            75 soft is a fitness and mindset challenge. It is a "softer" version of 75 hard.
+            75 soft is a fitness and mindset challenge. It is a softer version of 75 hard.
           </p>
         </div>
 
