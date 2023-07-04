@@ -16,7 +16,6 @@ export default async function Welcome() {
       CreateTodo({ name: "Drink water", description: "Goal is to drink at least 96oz of water." }),
       CreateTodo({ name: "Workout", description: "Do a 45 minute workout, can be split up thought the day. Also try to walk 1 mile a day." }),
       CreateTodo({ name: "Read a book", description: "Read at least 10 pages of a non fiction book." }),
-      CreateTodo({ name: "Take progress picture", description: "Take a progress picture to keep track of your progress." }),
     ])
 
     revalidatePath('/')
