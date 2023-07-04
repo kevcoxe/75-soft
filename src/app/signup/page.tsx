@@ -40,11 +40,11 @@ export default async function Page() {
           </p>
         </div>
 
-        <label htmlFor="email">Email:</label>
-        <input name="email" />
+        <label htmlFor='email'>Email:</label>
+        <input name='email' />
 
-        <label htmlFor="password">Password:</label>
-        <input type="password" name="password" />
+        <label htmlFor='password'>Password:</label>
+        <input type='password' name='password' />
 
         <div className="grid grid-cols-2">
           <button className='col-span-2 px-4 py-2 mx-1 my-2 text-black bg-white rounded-md' type="submit">Sign up</button>
