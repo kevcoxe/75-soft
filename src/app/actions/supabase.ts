@@ -74,6 +74,25 @@ export const IncrementComplete = async ({ pointIncrement }: {
   return { error }
 }
 
+export const IncrementDaySuccess = async (): Promise<{ error: PostgrestError | null }> => {
+  "use server"
+  const supabase = await GetSupabaseClient()
+  const session = await GetUserSession()
+  const profile = await GetProfile({ user_id: session?.user.id })
+
+  if (!profile || !session) return { error: null }
+
+  const { error } = await supabase
+    .from('profiles')
+    .update({
+      days_sucessful: profile.days_sucessful + 1,
+      user_id: session?.user.id
+    })
+    .eq('id', profile.id)
+
+  return { error }
+}
+
 
 // todo
 export const GetTodoList = async () => {
@@ -114,6 +133,27 @@ export const ToggleTodoComplete = async ({ isComplete, taskId }: { isComplete: b
     .eq('id', taskId)
 
   return { error }
+}
+
+export const ResetTodoComplete = async () => {
+  "use server"
+  const supabase = await GetSupabaseClient()
+  const session = await GetUserSession()
+  const todos = await GetTodoList()
+
+  if (!todos || !session) return {
+    error: null
+  } as ToggleReturn
+
+  await Promise.all(todos.map(async (todo: Todo) => {
+    return supabase
+      .from('todos')
+      .update({ 
+        is_complete: false,
+        user_id: session?.user.id
+      })
+      .eq('id', todo.id)
+  }))
 }
 
 // session

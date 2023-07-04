@@ -12,7 +12,7 @@ export interface Database {
       profiles: {
         Row: {
           created_at: string | null
-          days_sucessful: number | null
+          days_sucessful: number
           id: number
           profile_pic: string | null
           score: number
@@ -21,7 +21,7 @@ export interface Database {
         }
         Insert: {
           created_at?: string | null
-          days_sucessful?: number | null
+          days_sucessful?: number
           id?: number
           profile_pic?: string | null
           score?: number
@@ -30,7 +30,7 @@ export interface Database {
         }
         Update: {
           created_at?: string | null
-          days_sucessful?: number | null
+          days_sucessful?: number
           id?: number
           profile_pic?: string | null
           score?: number

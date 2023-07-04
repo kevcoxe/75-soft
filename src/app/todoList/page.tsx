@@ -1,8 +1,10 @@
 import { revalidatePath } from "next/cache"
 import Todo from "@/app/components/Todo"
-import { IncrementDaySuccess, ResetTodoComplete } from "@/app/actions/supabase"
+import { GetTodoList, IncrementDaySuccess, ResetTodoComplete } from "@/app/actions/supabase"
 
-export default async function TodoLists({ todos }: { todos: Todo[]}) {
+export default async function Page() {
+
+  const todos = await GetTodoList()
 
   const finishedTodoList = todos?.filter(({ is_complete }) => is_complete).map((todo: Todo, i) => {
     return (
@@ -35,12 +37,12 @@ export default async function TodoLists({ todos }: { todos: Todo[]}) {
       )}
 
       { todos?.length !== 0 && todoList?.length === 0 && (
-        <div className="grid grid-cols-1 gap-2 mx-4 my-2">
-          <h1 className="text-2xl ">Congrats on finishing the day!</h1>
+        <>
+          <h1>Congrats on finishing the day!</h1>
           <form action={completeDay}>
-            <button className="w-full px-4 py-2 bg-blue-900 rounded-md" type="submit">Complete Day</button>
+            <button type="submit">Complete Day</button>
           </form>
-        </div>
+        </>
       )}
 
       { finishedTodoList?.length !== 0 && (
