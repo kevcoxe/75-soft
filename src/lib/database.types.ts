@@ -14,6 +14,7 @@ export interface Database {
           created_at: string | null
           days_sucessful: number
           id: number
+          miles_walked: number
           profile_pic: string | null
           score: number
           user_id: string | null
@@ -23,6 +24,7 @@ export interface Database {
           created_at?: string | null
           days_sucessful?: number
           id?: number
+          miles_walked?: number
           profile_pic?: string | null
           score?: number
           user_id?: string | null
@@ -32,6 +34,7 @@ export interface Database {
           created_at?: string | null
           days_sucessful?: number
           id?: number
+          miles_walked?: number
           profile_pic?: string | null
           score?: number
           user_id?: string | null
