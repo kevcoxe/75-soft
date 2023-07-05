@@ -13,9 +13,7 @@ export default function MileTracker () {
 
   // wait for user to stop clicking before submitting
   useEffect(() => {
-    console.log(`debouncedMiles: ${debouncedMiles}`)
     if (debouncedMiles !== undefined) {
-      console.log(debouncedMiles)
       const updateMiles = async (mileCount: number) => {
         const {
           data: { session }
@@ -61,7 +59,7 @@ export default function MileTracker () {
   }, [])
 
   const decrementMiles = async () => {
-    if (milesTracked !== undefined) setMiles(milesTracked - 1)
+    if (milesTracked !== undefined && milesTracked > 0) setMiles(milesTracked - 1)
   }
 
   const incrementMiles = async () => {
