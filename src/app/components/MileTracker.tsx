@@ -11,6 +11,19 @@ export default function MileTracker () {
   const [ milesTracked, setMiles ] = useState<number>()
   const debouncedMiles = useDebounce(milesTracked, 500)
 
+  const getData = async () => {
+    const {
+      data: { session }
+    } = await supabase.auth.getSession()
+    if (!session) return
+
+    const { data: profile } = await supabase.from('profiles').select().match({ user_id: session?.user.id }).single()
+    if (!profile) return
+
+    setMiles(profile?.miles_walked)
+  }
+
+
   // wait for user to stop clicking before submitting
   useEffect(() => {
     if (debouncedMiles !== undefined) {
@@ -43,18 +56,22 @@ export default function MileTracker () {
   }, [debouncedMiles])
 
   useEffect(() => {
-    const getData = async () => {
-      const {
-        data: { session }
-      } = await supabase.auth.getSession()
-      if (!session) return
+    const channel = supabase
+      .channel('profile changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'profiles'
+      }, () => {
+        getData()
+      }).subscribe()
 
-      const { data: profile } = await supabase.from('profiles').select().match({ user_id: session?.user.id }).single()
-      if (!profile) return
-
-      setMiles(profile?.miles_walked)
+    return () => {
+      supabase.removeChannel(channel)
     }
+  }, [supabase])
 
+  useEffect(() => {
     getData()
   }, [])
 
