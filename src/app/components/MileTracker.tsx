@@ -57,7 +57,7 @@ export default function MileTracker () {
 
   useEffect(() => {
     const channel = supabase
-      .channel('profile changes')
+      .channel('mile changes')
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
