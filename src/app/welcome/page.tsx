@@ -1,4 +1,3 @@
-import { revalidatePath } from "next/cache"
 import { CreateTodo, CreateProfile } from "@/app/actions/supabase"
 import { redirect } from "next/navigation"
 

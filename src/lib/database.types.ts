@@ -18,7 +18,7 @@ export interface Database {
           profile_pic: string | null
           score: number
           user_id: string | null
-          username: string | null
+          username: string
         }
         Insert: {
           created_at?: string | null
@@ -28,7 +28,7 @@ export interface Database {
           profile_pic?: string | null
           score?: number
           user_id?: string | null
-          username?: string | null
+          username: string
         }
         Update: {
           created_at?: string | null
@@ -38,7 +38,7 @@ export interface Database {
           profile_pic?: string | null
           score?: number
           user_id?: string | null
-          username?: string | null
+          username?: string
         }
         Relationships: [
           {
