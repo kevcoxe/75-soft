@@ -18,7 +18,7 @@ export default async function Welcome() {
       CreateTodo({ name: "Read a book", description: "Read at least 10 pages of a non fiction book." }),
     ])
 
-    redirect('/')
+    redirect('/todoList')
   }
 
   return (
