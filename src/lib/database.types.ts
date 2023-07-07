@@ -17,7 +17,7 @@ export interface Database {
           miles_walked: number
           profile_pic: string | null
           score: number
-          user_id: string | null
+          user_id: string
           username: string
         }
         Insert: {
@@ -27,7 +27,7 @@ export interface Database {
           miles_walked?: number
           profile_pic?: string | null
           score?: number
-          user_id?: string | null
+          user_id: string
           username: string
         }
         Update: {
@@ -37,7 +37,7 @@ export interface Database {
           miles_walked?: number
           profile_pic?: string | null
           score?: number
-          user_id?: string | null
+          user_id?: string
           username?: string
         }
         Relationships: [
@@ -88,7 +88,28 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      incrementDay: {
+        Args: {
+          userid: string
+          score_increment: number
+        }
+        Returns: undefined
+      }
+      incrementMiles: {
+        Args: {
+          userid: string
+          score_increment: number
+          mile_increment: number
+        }
+        Returns: undefined
+      }
+      incrementScore: {
+        Args: {
+          userid: string
+          score_increment: number
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

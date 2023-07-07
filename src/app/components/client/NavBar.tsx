@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import Logout from "@/app/components/Logout"
+import Logout from "@/app/components/client/Logout"
 
 export default function NavBar() {
   return (
