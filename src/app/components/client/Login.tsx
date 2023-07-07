@@ -15,7 +15,8 @@ export default function Login () {
 
   const [ email, setEmail ] = useState<string>("")
   const [ password, setPassword ] = useState<string>("")
-  const [ formError, setFormError ] = useState<string>("")
+  const [ emailError, setEmailError ] = useState<string>("")
+  const [ passwordError, setPasswordError ] = useState<string>("")
 
   useEffect(() => {
     if (!supabaseContext) {
@@ -30,16 +31,17 @@ export default function Login () {
 
   const login = async () => {
     if (supabaseContext) {
-      if (email === undefined) {
-        setFormError("email cannot be empty")
-        return
+      if (email === "") {
+        setEmailError("email cannot be empty")
       }
-      if (password === undefined) {
-        setFormError("password cannot be empty")
-        return
+      if (password === "") {
+        setPasswordError("password cannot be empty")
       }
 
-      setFormError("")
+      if (email === "" || password === "") return
+
+      setEmailError("")
+      setPasswordError("")
 
       await supabaseContext.auth.signInWithPassword({
         email,
@@ -61,12 +63,18 @@ export default function Login () {
         <h1 className="mb-16 text-center text-7xl">
           75 Soft
         </h1>
-        { formError && (
-          <span className="text-red-900">{ formError }</span>
-        )}
         <div className="flex flex-col gap-1 mb-4">
-          <input name="email" id="email" autoComplete="email" disabled={isLoading} placeholder="email" onChange={(e) => setEmail(e.target.value)} value={email}></input>
-          <input name="password" id="password" autoComplete="password" disabled={isLoading} placeholder="password" type="password" onChange={(e) => setPassword(e.target.value)} value={password}></input>
+          <label htmlFor="email">Email</label>
+          <input className={`${emailError ? "border-2 border-rose-500" : ""}`} name="email" id="email" autoComplete="email" disabled={isLoading} placeholder="email" onChange={(e) => setEmail(e.target.value)} value={email}></input>
+          { emailError && (
+            <span className="text-red-900">{ emailError }</span>
+          )}
+
+          <label htmlFor="email">Password</label>
+          <input className={`${passwordError ? "border-2 border-rose-500" : ""}`} name="password" id="password" autoComplete="password" disabled={isLoading} placeholder="password" type="password" onChange={(e) => setPassword(e.target.value)} value={password}></input>
+          { passwordError && (
+            <span className="text-red-900">{ passwordError }</span>
+          )}
         </div>
         <button type="submit" disabled={isLoading} className="py-2 border border-white rounded-md animate-pulse">Login</button>
       </div>
