@@ -1,5 +1,5 @@
 import ScoreBoard from "@/app/components/ScoreBoard";
-import NavBar from "@/app/components/NavBar";
+import NavBar from "@/app/components/client/NavBar";
 
 export default async function Page() {
   return (

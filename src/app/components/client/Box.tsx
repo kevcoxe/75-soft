@@ -1,0 +1,119 @@
+"use client"
+
+import { useState, useEffect, useCallback } from "react"
+import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
+import { UseAuthSessionContext } from "@/app/contexts/AuthSessionContext"
+import { User } from "@supabase/supabase-js"
+import Login from "@/app/components/client/Login"
+import Logout from "@/app/components/client/Logout"
+import Skeleton from "@/app/components/client/Skeleton"
+import Stats from "@/app/components/client/Stats"
+import Miles from "@/app/components/client/Miles"
+import TodoList from "@/app/components/client/TodoList"
+
+
+export default function Box({
+  children
+}: {
+  children: React.ReactNode 
+}) {
+  const supabaseContext = UseSupabaseContext()
+  const userSessionContext = UseAuthSessionContext()
+
+  const [ profile, setProfile ] = useState<Profile>()
+  const [ user, setUser ] = useState<User>()
+  const [ isLoading, setLoading ] = useState(true)
+
+  const getData = async () => {
+    if (!supabaseContext || !userSessionContext) {
+      setLoading(false)
+      return
+    }
+
+    if (!userSessionContext.user) {
+      return 
+    }
+
+    setUser(userSessionContext.user)
+
+    try {
+      const { data } = await supabaseContext
+        .from('profiles')
+        .select()
+        .match({
+          user_id: userSessionContext.user.id 
+        })
+        .single()
+
+      if (!data) {
+        setLoading(false)
+        return
+      }
+
+      setProfile(data)
+      setLoading(false)
+    } catch (error) {
+      console.log("error:", error)
+    }
+  }
+
+
+  useEffect(() => {
+    setLoading(true)
+    getData()
+  }, [userSessionContext.user])
+
+
+  useEffect(() => {
+    if (!supabaseContext) return
+    const channel = supabaseContext
+      .channel('profile changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'profiles'
+      }, () => {
+        getData()
+      }).subscribe()
+
+    return () => {
+      supabaseContext.removeChannel(channel)
+    }
+  }, [supabaseContext])
+
+
+  return (
+    <div className="container mx-auto">
+      { isLoading && (
+        <Skeleton />
+      )}
+
+      { !isLoading && !user && (
+        <>
+          <div className="px-1 py-2 mx-2 rounded">
+            <Login />
+          </div>
+        </>
+      )}
+
+      { !isLoading && user && profile && (
+        <div className="flex flex-col items-center">
+          <div className="grid w-full grid-cols-5 content-stretch">
+            <span className="w-full col-span-5">
+              <Stats
+                profile={profile}
+                logoutChild={
+                  <Logout redirectPath="/" className="mx-2 border border-white rounded-md"/>
+                }/>
+              <Miles profile={profile}/>
+              <TodoList user={user} />
+            </span>
+          </div>
+          <div className="container mx-auto ">
+            { children }
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
