@@ -10,6 +10,7 @@ import Skeleton from "@/app/components/client/Skeleton"
 import Stats from "@/app/components/client/Stats"
 import Miles from "@/app/components/client/Miles"
 import TodoList from "@/app/components/client/TodoList"
+import ScoreBoard from "@/app/components/client/ScoreBoard"
 
 
 export default function Box({
@@ -103,10 +104,11 @@ export default function Box({
               <Stats
                 profile={profile}
                 logoutChild={
-                  <Logout redirectPath="/" className="mx-2 border border-white rounded-md"/>
+                  <Logout redirectPath="/" className="py-2 mt-2 border border-white rounded-md"/>
                 }/>
               <Miles profile={profile}/>
               <TodoList user={user} />
+              <ScoreBoard />
             </span>
           </div>
           <div className="container mx-auto ">
