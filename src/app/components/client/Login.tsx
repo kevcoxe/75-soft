@@ -65,8 +65,8 @@ export default function Login () {
           <span className="text-red-900">{ formError }</span>
         )}
         <div className="flex flex-col gap-1 mb-4">
-          <input disabled={isLoading} placeholder="email" onChange={(e) => setEmail(e.target.value)} value={email}></input>
-          <input disabled={isLoading} placeholder="password" type="password" onChange={(e) => setPassword(e.target.value)} value={password}></input>
+          <input name="email" id="email" autoComplete="email" disabled={isLoading} placeholder="email" onChange={(e) => setEmail(e.target.value)} value={email}></input>
+          <input name="password" id="password" autoComplete="password" disabled={isLoading} placeholder="password" type="password" onChange={(e) => setPassword(e.target.value)} value={password}></input>
         </div>
         <button type="submit" disabled={isLoading} className="border border-white rounded-md">Login</button>
       </div>
