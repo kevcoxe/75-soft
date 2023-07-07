@@ -1,7 +1,7 @@
-import TestPage from "@/app/clientPages/TestPage"
+import MainPage from "@/app/clientPages/MainPage"
 
 export default async function Page () {
   return (
-    <TestPage />
+    <MainPage />
   )
 }

@@ -1,13 +1,13 @@
 "use client"
 
 import SupabaseProviderWrapper from "@/app/components/client/SupabaseProviderWrapper"
-import Box from "@/app/components/client/Box"
+import App from "@/app/components/client/App"
 
-export default function TestPage () {
+export default function MainPage () {
   return (
     <SupabaseProviderWrapper>
-      <Box>
-      </Box>
+      <App>
+      </App>
     </SupabaseProviderWrapper>
   )
 }

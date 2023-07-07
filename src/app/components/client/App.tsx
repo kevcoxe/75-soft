@@ -13,7 +13,7 @@ import TodoList from "@/app/components/client/TodoList"
 import ScoreBoard from "@/app/components/client/ScoreBoard"
 
 
-export default function Box({
+export default function App({
   children
 }: {
   children: React.ReactNode 
