@@ -68,7 +68,7 @@ export default function Login () {
           <input name="email" id="email" autoComplete="email" disabled={isLoading} placeholder="email" onChange={(e) => setEmail(e.target.value)} value={email}></input>
           <input name="password" id="password" autoComplete="password" disabled={isLoading} placeholder="password" type="password" onChange={(e) => setPassword(e.target.value)} value={password}></input>
         </div>
-        <button type="submit" disabled={isLoading} className="border border-white rounded-md">Login</button>
+        <button type="submit" disabled={isLoading} className="py-2 border border-white rounded-md animate-pulse">Login</button>
       </div>
     </form>
   )
