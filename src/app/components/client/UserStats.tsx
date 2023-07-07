@@ -4,7 +4,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
 import { useState, useEffect } from "react"
 
 export default function UserStats () {
-  const supabase = createClientComponentClient<Database>()
+  const supabaseContext = createClientComponentClient<Database>()
   const [ username, setUsername ] = useState<string>()
   const [ score, setScore ] = useState<number>()
   const [ daysSuccessful, setDays ] = useState<number>()
@@ -12,10 +12,10 @@ export default function UserStats () {
   const getData = async () => {
     const {
       data: { session }
-    } = await supabase.auth.getSession()
+    } = await supabaseContext.auth.getSession()
     if (!session) return
 
-    const { data: profile } = await supabase.from('profiles').select().match({ user_id: session?.user.id }).single()
+    const { data: profile } = await supabaseContext.from('profiles').select().match({ user_id: session?.user.id }).single()
     if (!profile) return
 
     setUsername(profile.username)
@@ -24,7 +24,7 @@ export default function UserStats () {
   }
 
   useEffect(() => {
-    const channel = supabase
+    const channel = supabaseContext
       .channel('profile changes')
       .on('postgres_changes', {
         event: '*',
@@ -35,9 +35,9 @@ export default function UserStats () {
       }).subscribe()
 
     return () => {
-      supabase.removeChannel(channel)
+      supabaseContext.removeChannel(channel)
     }
-  }, [supabase])
+  }, [supabaseContext])
 
   useEffect(() => {
     getData()
