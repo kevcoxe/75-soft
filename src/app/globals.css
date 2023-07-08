@@ -2,30 +2,22 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+html {
+  /* @apply bg-gradient-to-tl from-teal-100 via-cyan-400 to-sky-600;
+  @apply w-screen h-screen; */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.colored-text {
+  /* @apply bg-gradient-to-br from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%; */
+  @apply bg-white;
+  @apply text-transparent bg-clip-text;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
-
-input {
-  @apply px-2 py-1 bg-gray-800 rounded-md
+.glass-container {
+  @apply text-black rounded-md;
+  @apply shadow-xl;
+  @apply bg-white/70;
+  @apply backdrop-blur;
+  @apply text-black;
+  @apply p-4 m-4;
 }

@@ -4,13 +4,13 @@ import { useState, useEffect } from "react"
 import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
 import { UseAuthSessionContext } from "@/app/contexts/AuthSessionContext"
 import { User } from "@supabase/supabase-js"
-import Login from "@/app/components/client/Login"
+import Login from "@/app/components/new/Login"
 import Logout from "@/app/components/client/Logout"
-import Skeleton from "@/app/components/client/Skeleton"
-import Stats from "@/app/components/client/Stats"
-import Miles from "@/app/components/client/Miles"
-import TodoList from "@/app/components/client/TodoList"
-import ScoreBoard from "@/app/components/client/ScoreBoard"
+import Skeleton from "@/app/components/new/Skeleton"
+import Stats from "@/app/components/new/Stats"
+import Miles from "@/app/components/new/Miles"
+import TodoList from "@/app/components/new/TodoList"
+import ScoreBoard from "@/app/components/new/ScoreBoard"
 
 
 export default function App({
@@ -84,7 +84,7 @@ export default function App({
 
 
   return (
-    <div className="container mx-auto">
+    <div className="container max-w-xl mx-auto">
       { isLoading && (
         <Skeleton />
       )}
@@ -104,7 +104,7 @@ export default function App({
               <Stats
                 profile={profile}
                 logoutChild={
-                  <Logout redirectPath="/" className="py-2 mt-2 border border-white rounded-md"/>
+                  <Logout redirectPath="/" className="py-2 mt-2 text-xl font-bold border border-white rounded-md"/>
                 }/>
               <Miles profile={profile}/>
               <TodoList user={user} />
