@@ -11,6 +11,7 @@ import Stats from "@/app/components/new/Stats"
 import Miles from "@/app/components/new/Miles"
 import TodoList from "@/app/components/new/TodoList"
 import ScoreBoard from "@/app/components/new/ScoreBoard"
+import Welcome from "./Welcome"
 
 
 export default function App({
@@ -94,6 +95,12 @@ export default function App({
           <div className="px-1 py-2 mx-2 rounded">
             <Login />
           </div>
+        </>
+      )}
+
+      { !isLoading && user && !profile && (
+        <>
+          <Welcome />
         </>
       )}
 
