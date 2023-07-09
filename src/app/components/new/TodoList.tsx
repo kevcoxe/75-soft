@@ -96,7 +96,7 @@ export default function TodoList({
         <div className={`grid items-center grid-cols-6 ${isLoading ? "animate-pulse" : ""}`}>
           { todosComplete && (
             <div className="flex flex-col col-span-6 my-4 animate-pulse">
-              <button className="col-span-6 text-3xl border border-white rounded-lg" onClick={handleCompleteDay}>
+              <button className="col-span-6 text-3xl border border-black rounded-lg" onClick={handleCompleteDay}>
                 Complete Day
               </button>
             </div>

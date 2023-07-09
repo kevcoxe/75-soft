@@ -1,0 +1,91 @@
+"use client"
+
+import { UseAuthSessionContext } from "@/app/contexts/AuthSessionContext"
+import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
+import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
+
+export default function Welcome() {
+  const supabaseContext = UseSupabaseContext()
+  const userSessionContext = UseAuthSessionContext()
+
+  const [ username, setUsername ] = useState<string>("")
+  const [ usernameError, setUsernameError ] = useState<string>("")
+  const [ isLoading, setIsLoading ] = useState(false)
+
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!supabaseContext) {
+      setIsLoading(true)
+    }
+  }, [supabaseContext])
+
+  const clearForm = () => {
+    setUsername("")
+    setUsernameError("")
+    setIsLoading(false)
+  }
+
+  const start75Soft = async () => {
+    if (!supabaseContext) return
+    if (!userSessionContext.user) return
+    if (!username) {
+      setUsernameError("Username cannot be empty")
+      return
+    }
+
+    await Promise.all([
+      supabaseContext.from('profiles').insert({
+        username,
+        user_id: userSessionContext.user.id
+      }),
+      supabaseContext.from('todos').insert({
+        name: "Read a book",
+        description: "Read at least 10 pages of a non fiction book.",
+        user_id: userSessionContext.user.id
+      }),
+      supabaseContext.from('todos').insert({
+        name: "Workout",
+        description: "Do a 45 minute workout, can be split up thought the day. Also try to walk 1 mile a day.",
+        user_id: userSessionContext.user.id
+      }),
+      supabaseContext.from('todos').insert({
+        name: "Drink water",
+        description: "Goal is to drink at least 96oz of water.",
+        user_id: userSessionContext.user.id
+      }),
+      supabaseContext.from('todos').insert({
+        name: "Follow Diet",
+        description: "Pick a diet plan and follow it.",
+        user_id: userSessionContext.user.id
+      }),
+    ])
+
+    setIsLoading(true)
+    userSessionContext.reloadFunc()
+    clearForm()
+    router.refresh()
+    setIsLoading(false)
+  }
+
+  return (
+    <div className="grid content-around h-screen grid-cols-1 ">
+      <div className={`content-around flex flex-col gap-1 ${isLoading ? "animate-pulse" : ""}`}>
+        <h1 className="mb-16 text-center text-7xl">
+          75 Soft
+        </h1>
+        <form className="flex flex-col gap-1" action={start75Soft}>
+          <label htmlFor="username">Username</label>
+          <input className={`${usernameError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="username" id="username" autoComplete="username" disabled={isLoading} placeholder="username" onChange={(e) => setUsername(e.target.value)} value={username}></input>
+          { usernameError && (
+            <span className="text-red-900">{ usernameError }</span>
+          )}
+
+          <button type="submit" disabled={isLoading} className={`py-2 mt-4 border border-black bg-black text-white rounded-md`}>Start 75 Soft</button>
+        </form>
+
+      </div>
+    </div>
+  )
+}
