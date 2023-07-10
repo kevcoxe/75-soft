@@ -12,6 +12,8 @@ import Miles from "@/app/components/new/Miles"
 import TodoList from "@/app/components/new/TodoList"
 import ScoreBoard from "@/app/components/new/ScoreBoard"
 import Welcome from "./Welcome"
+import Admin from "./Admin"
+import ProgressTracker from "./ProgressTracker"
 
 
 export default function App({
@@ -116,6 +118,9 @@ export default function App({
               <Miles profile={profile}/>
               <TodoList user={user} />
               <ScoreBoard />
+              { profile.is_admin && (
+                <Admin />
+              )}
             </span>
           </div>
           <div className="container mx-auto ">

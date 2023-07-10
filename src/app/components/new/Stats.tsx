@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { BiShow, BiHide } from "react-icons/bi"
+import ProgressTracker from "./ProgressTracker"
 
 export default function Stats({
   profile,
@@ -30,6 +31,7 @@ export default function Stats({
               <button className="col-span-1 mx-auto text-4xl" onClick={handleCollapse}>{ collapse ? <BiShow /> : <BiHide /> }</button>
             </div>
             <div className={`${collapse ? "hidden" : ""}`}>
+              <ProgressTracker profile={profile} />
               <div className="px-2 py-4 my-2 text-2xl font-bold rounded-xl">Score: { profile.score }</div>
               <div className="px-2 py-4 my-2 text-2xl font-bold rounded-xl">Days Completed: { profile.days_sucessful }</div>
               <div className="px-2 py-4 my-2 text-2xl font-bold rounded-xl">Miles walked: { profile.miles_walked }</div>

@@ -14,6 +14,7 @@ export interface Database {
           created_at: string | null
           days_sucessful: number
           id: number
+          is_admin: boolean
           miles_walked: number
           profile_pic: string | null
           score: number
@@ -24,6 +25,7 @@ export interface Database {
           created_at?: string | null
           days_sucessful?: number
           id?: number
+          is_admin?: boolean
           miles_walked?: number
           profile_pic?: string | null
           score?: number
@@ -34,6 +36,7 @@ export interface Database {
           created_at?: string | null
           days_sucessful?: number
           id?: number
+          is_admin?: boolean
           miles_walked?: number
           profile_pic?: string | null
           score?: number
