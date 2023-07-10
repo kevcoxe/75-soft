@@ -46,7 +46,7 @@ export default function ProgressTracker({
           </div>
 
           <div className="flex flex-col items-center content-center col-span-4">
-            <span className="text-lg font-bold">Current Date</span>
+            <span className="text-lg font-bold">Today</span>
             <span>{ currentDate }</span>
           </div>
 
