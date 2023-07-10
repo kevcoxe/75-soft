@@ -22,16 +22,12 @@ export default function ProgressTracker({
     const current = new Date()
     const start = new Date(profile.created_at)
     const end = new Date(start.getTime() + (75 * oneDay))
-    // const end = start + (75 * oneDay)
 
 
     const diffDays = Math.round(Math.abs((current.getTime() - start.getTime()) / oneDay));
     setDaysComplete(diffDays)
     setProgress(Math.round((diffDays / 75) * 100))
     setCurrentProgress(Math.round((profile.days_sucessful / 75) * 100))
-
-    console.log(`diffDays: ${ diffDays }`)
-    console.log(`days_sucessful: ${ profile.days_sucessful }`)
 
     setCurrentDate(current.toLocaleDateString('en-us', { year:"numeric", month:"numeric", day:"numeric"}))
     setStartDate(start.toLocaleDateString('en-us', { year:"numeric", month:"numeric", day:"numeric"}))
@@ -42,11 +38,16 @@ export default function ProgressTracker({
 
   return (
     <>
-      <div className="col-span-6 px-1 py-4 my-2 rounded-xl">
-        <div className="grid items-center content-center grid-cols-8">
+      <div className="col-span-6 px-1 py-2 my-2 rounded-xl">
+        <div className="grid items-center content-center grid-cols-12">
           <div className="flex flex-col items-center justify-center col-span-4">
             <span className="text-lg font-bold">Start Date</span>
             <span>{ startDate }</span>
+          </div>
+
+          <div className="flex flex-col items-center content-center col-span-4">
+            <span className="text-lg font-bold">Current Date</span>
+            <span>{ currentDate }</span>
           </div>
 
           <div className="flex flex-col items-center content-center col-span-4">
@@ -54,7 +55,7 @@ export default function ProgressTracker({
             <span>{ endDate }</span>
           </div>
 
-          <div className="flex flex-col items-center justify-center col-span-8">
+          <div className="flex flex-col items-center justify-center col-span-12 mt-4">
             <span className="text-lg font-bold">Progress</span>
             <div className="flex flex-col w-full h-12 overflow-hidden bg-gray-200 rounded-xl dark:bg-gray-700">
               <div className="flex flex-col justify-center h-full overflow-hidden leading-none text-center text-blue-100 bg-blue-700" role="progressbar" style={{ width: `${ progress }%` }}>{ progress }%</div>
