@@ -112,11 +112,13 @@ export default function Login () {
             <span className="text-red-900">{ passwordError }</span>
           )}
 
-          <button type="submit" disabled={isLoading} className={`py-2 mt-4 border ${showSignUp ? "bg-black text-white" : " border-black"} rounded-md`}>{ showSignUp ? "Sign Up" : "Login" }</button>
+          <button type="submit" disabled={isLoading} className="py-2 mt-4 text-white bg-black rounded-md">{ showSignUp ? "Sign Up" : "Login" }</button>
         </form>
 
         <form action={toggleSignup}>
-          <button type="submit" disabled={isLoading} className="w-full py-2 mt-4 underline">{ showSignUp ? "Go to login" : "Go to sign up" }</button>
+          <div className="flex justify-center w-full">
+            <button type="submit" disabled={isLoading} className="py-2 mt-4 underline">{ showSignUp ? "Go to login" : "Go to sign up" }</button>
+          </div>
         </form>
       </div>
     </div>
