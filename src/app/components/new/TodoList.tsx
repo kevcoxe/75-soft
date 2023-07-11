@@ -53,6 +53,7 @@ export default function TodoList({
         .match({
           user_id: user.id
         })
+        .order('is_complete', { ascending: true })
 
       if (!data) {
         setLoading(false)
@@ -120,7 +121,7 @@ export default function TodoList({
             </div>
           )}
 
-          { daysDiff > 1 && (
+          { !todosComplete && daysDiff > 1 && (
             <div className="flex flex-col col-span-6 my-4 text-center">
               <h1 className="text-2xl">🤨 Are you behind in your tasks 🤨</h1>
               <span className="text-start indent-4">
