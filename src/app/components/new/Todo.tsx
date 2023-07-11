@@ -2,17 +2,24 @@
 
 import { POINT_PER_TASK } from "@/app/consts"
 import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { BsSquare, BsCheckSquare } from "react-icons/bs"
 
 export default function Todo ({
-  todo
+  todo,
+  disabled = false,
 }: {
-  todo: Todo
+  todo: Todo,
+  disabled: boolean
 }) {
   const supabaseContext = UseSupabaseContext()
   const [ collapse, setCollapse ] = useState(false)
   const [ isLoading, setIsLoading ] = useState(false)
+  const [ isDisabled, setIsDisabled ] = useState(disabled)
+
+  useEffect(() => {
+    setIsDisabled(disabled)
+  }, [disabled])
 
   const handleTodo = async () => {
     if (!supabaseContext) return
@@ -38,8 +45,8 @@ export default function Todo ({
   }
 
   return (
-    <div className="grid items-center w-full grid-cols-5">
-      <button onClick={handleTodo} className={`col-span-1 border-spacing-2 px-2 py-4 border-slate-800 rounded-xl mx-2 text-5xl`}>
+    <div className={`my-2 mx-1 grid items-center w-full grid-cols-5 ${isDisabled ? "text-black/50" : ""}`}>
+      <button disabled={isDisabled} onClick={isDisabled ? ()=>{} : handleTodo} className={`col-span-1 border-spacing-2 px-2 py-4 border-slate-800 rounded-xl mx-2 text-5xl`}>
         { isLoading && (
           <svg className="mr-3 -ml-1 text-black animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>

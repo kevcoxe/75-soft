@@ -6,11 +6,14 @@ import { useEffect, useState } from "react"
 import Todo from "@/app/components/new/Todo"
 import { BiShow, BiHide } from "react-icons/bi"
 import { POINT_PER_DAY } from "@/app/consts"
+import { onCurrentDay } from "@/utils/dateUtils"
 
 export default function TodoList({
-  user
+  user,
+  profile,
 }: {
-  user: User
+  user: User,
+  profile: Profile
 }) {
   const supabaseContext = UseSupabaseContext()
 
@@ -18,6 +21,7 @@ export default function TodoList({
   const [ todosComplete, setTodosComplete ] = useState(false)
   const [ isLoading, setLoading ] = useState(true)
   const [ collapse, setCollapse ] = useState(false)
+  const [ isOnCurrentDay, setIsOnCurrentDay ] = useState(false)
 
   const handleCollapse = () => {
     setCollapse(!collapse)
@@ -90,17 +94,29 @@ export default function TodoList({
   }, [supabaseContext])
 
 
+  useEffect(() => {
+    setIsOnCurrentDay(onCurrentDay(profile))
+  }, [profile])
+
   return (
     <>
       <div className="flex flex-col p-4 m-2 border rounded-lg border-slate-800">
         <div className={`grid items-center grid-cols-6 ${isLoading ? "animate-pulse" : ""}`}>
-          { todosComplete && (
+          { todosComplete && isOnCurrentDay && (
             <div className="flex flex-col col-span-6 my-4 animate-pulse">
               <button className="col-span-6 py-4 text-3xl text-white bg-black rounded-lg" onClick={handleCompleteDay}>
                 🎉 Complete Day 🎉
               </button>
             </div>
           )}
+
+          { !isOnCurrentDay && (
+            <div className="flex flex-col col-span-6 my-4 text-center">
+              <h1 className="text-2xl">🎉 Congrats on finishing the day 🎉</h1>
+              <span>Come back tomorrow to complete your tasks.</span>
+            </div>
+          )}
+
           <div className="flex flex-col col-span-6">
             <div className="grid grid-cols-6">
               <button className="grid items-center grid-cols-6 col-span-6 text-3xl" onClick={handleCollapse}>
@@ -113,7 +129,7 @@ export default function TodoList({
                 <>
                   { todos.map((todo: Todo, i: number) => {
                     return (
-                      <Todo key={i} todo={todo} />
+                      <Todo key={i} todo={todo} disabled={!isOnCurrentDay}/>
                     )
                   })}
                 </>

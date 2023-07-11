@@ -116,7 +116,7 @@ export default function App({
                   <Logout redirectPath="/" className="py-2 mt-2 text-xl font-bold border border-white rounded-md"/>
                 }/>
               <Miles profile={profile}/>
-              <TodoList user={user} />
+              <TodoList user={user} profile={profile}/>
               <ScoreBoard />
               { profile.is_admin && (
                 <Admin />
