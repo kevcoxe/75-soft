@@ -22,6 +22,7 @@ export default function TodoList({
   const [ isLoading, setLoading ] = useState(true)
   const [ collapse, setCollapse ] = useState(false)
   const [ isOnCurrentDay, setIsOnCurrentDay ] = useState(false)
+  const [ daysDiff, setDaysDiff ] = useState(0)
 
   const handleCollapse = () => {
     setCollapse(!collapse)
@@ -95,7 +96,9 @@ export default function TodoList({
 
 
   useEffect(() => {
-    setIsOnCurrentDay(onCurrentDay(profile))
+    const { compare, dayDiff } = onCurrentDay(profile)
+    setIsOnCurrentDay(compare)
+    setDaysDiff(dayDiff)
   }, [profile])
 
   return (
@@ -114,6 +117,19 @@ export default function TodoList({
             <div className="flex flex-col col-span-6 my-4 text-center">
               <h1 className="text-2xl">🎉 Congrats on finishing the day 🎉</h1>
               <span>Come back tomorrow to complete your tasks.</span>
+            </div>
+          )}
+
+          { daysDiff > 1 && (
+            <div className="flex flex-col col-span-6 my-4 text-center">
+              <h1 className="text-2xl">🤨 Are you behind in your tasks 🤨</h1>
+              <span className="text-start indent-4">
+                You have completed { profile.days_sucessful } days and are { daysDiff } days behind schedule.
+                If you have just not checked off your tasks, go ahead and catch up you are doing great!
+                {/* If you have failed, go ahead and reset your 75 days. Keep it up you can do it next time!
+                <button className="inline-flex ml-4 text-red-700">Reset your 75 days?</button> */}
+              </span>
+
             </div>
           )}
 
