@@ -115,7 +115,7 @@ export default function TodoList({
 
           { !isOnCurrentDay && (
             <div className="flex flex-col col-span-6 my-4 text-center">
-              <h1 className="text-2xl">🎉 Congrats on finishing the day 🎉</h1>
+              <h1 className="text-xl">🎉 Congrats on finishing the day 🎉</h1>
               <span>Come back tomorrow to complete your tasks.</span>
             </div>
           )}
