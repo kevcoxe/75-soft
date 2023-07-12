@@ -40,8 +40,14 @@ export default function PasswordReset () {
     }
 
     setIsLoading(true)
-    const { data, error } = await supabaseContext.auth.updateUser({password: newPassword})
-    console.log(data, error)
+    const { error } = await supabaseContext.auth.updateUser({password: newPassword})
+
+    if (error) {
+      console.log(error)
+      setIsLoading(false)
+      return
+    }
+
     userSessionContext.reloadFunc()
     clearForm()
     router.refresh()
