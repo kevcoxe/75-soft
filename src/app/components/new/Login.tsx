@@ -5,6 +5,7 @@ import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
 import { UseAuthSessionContext } from "@/app/contexts/AuthSessionContext"
 import { useRouter } from "next/navigation"
 import getURL from "@/utils/getURL"
+import { ImSpinner8 } from "react-icons/im"
 
 
 export default function Login () {
@@ -20,6 +21,7 @@ export default function Login () {
   const [ password, setPassword ] = useState<string>("")
   const [ emailError, setEmailError ] = useState<string>("")
   const [ passwordError, setPasswordError ] = useState<string>("")
+  const [ message, setMessage ] = useState("")
 
   useEffect(() => {
     if (!supabaseContext) {
@@ -30,6 +32,14 @@ export default function Login () {
   const clearForm = () => {
     setEmail("")
     setPassword("")
+  }
+
+  const afterSignUp = () => {
+    clearForm()
+    setIsLoading(false)
+    setShowForgotPassword(false)
+    setShowSignUp(false)
+    setMessage("Please check your email for account confirmation.")
   }
 
 
@@ -45,9 +55,7 @@ export default function Login () {
 
       setIsLoading(true)
       userSessionContext.reloadFunc()
-      clearForm()
-      router.refresh()
-      setIsLoading(false)
+      afterSignUp()
     }
   }
 
@@ -130,10 +138,17 @@ export default function Login () {
 
   return (
     <div className="grid content-around h-screen grid-cols-1 ">
-      <div className={`content-around flex flex-col gap-1 ${isLoading ? "animate-pulse" : ""}`}>
+      <div className={`content-around flex flex-col gap-1`}>
         <h1 className="mb-16 text-center text-7xl">
           75 Soft
         </h1>
+
+        { message && (
+          <div className="mb-4 text-2xl text-center underline">
+            { message }
+          </div>
+        )}
+
         <form className="flex flex-col gap-1" action={loginAction}>
           <label htmlFor="email" >Email</label>
           <input className={`${emailError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="email" id="email" autoComplete="email" disabled={isLoading} placeholder="email" onChange={handleEmailChange} value={email}></input>
@@ -149,12 +164,32 @@ export default function Login () {
                 <span className="text-red-900">{ passwordError }</span>
               )}
 
-              <button type="submit" disabled={isLoading} className="py-2 mt-4 text-white bg-black rounded-md">{ showSignUp ? "Sign Up" : "Login" }</button>
+              <button type="submit" disabled={isLoading} className="py-2 mt-4 text-center text-white bg-black rounded-md">
+                { isLoading && (
+                  <ImSpinner8 className="mx-auto animate-spin" />
+                )}
+
+                { !isLoading && (
+                  <>
+                    { showSignUp ? "Sign Up" : "Login" }
+                  </>
+                )}
+              </button>
             </>
           )}
 
           { showForgotPassword && (
-            <button type="submit" disabled={isLoading} className="py-2 mt-4 text-white bg-black rounded-md">Reset Password</button>
+            <button type="submit" disabled={isLoading} className="py-2 mt-4 text-white bg-black rounded-md">
+              { isLoading && (
+                <ImSpinner8 className="mx-auto animate-spin" />
+              )}
+
+              { !isLoading && (
+                <>
+                  Reset Password
+                </>
+              )}
+            </button>
           )}
         </form>
 
