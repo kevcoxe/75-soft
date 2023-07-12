@@ -14,6 +14,7 @@ import ScoreBoard from "@/app/components/new/ScoreBoard"
 import Welcome from "./Welcome"
 import Admin from "./Admin"
 import ProgressTracker from "./ProgressTracker"
+import PasswordReset from "./PasswordReset"
 
 
 export default function App({
@@ -113,7 +114,10 @@ export default function App({
               <Stats
                 profile={profile}
                 logoutChild={
-                  <Logout redirectPath="/" className="py-2 mt-2 text-xl font-bold border border-white rounded-md"/>
+                  <>
+                    <Logout redirectPath="/" className="py-2 mt-2 text-xl font-bold border border-white rounded-md"/>
+                    <PasswordReset />
+                  </>
                 }/>
               <Miles profile={profile}/>
               <TodoList user={user} profile={profile}/>
