@@ -14,6 +14,7 @@ export default function Login () {
   const router = useRouter()
   const [ isLoading, setIsLoading ] = useState(false)
   const [ showSignUp, setShowSignUp ] = useState(false)
+  const [ showForgotPassword, setShowForgotPassword ] = useState(false)
 
   const [ email, setEmail ] = useState<string>("")
   const [ password, setPassword ] = useState<string>("")
@@ -77,19 +78,53 @@ export default function Login () {
     }
   }
 
+  const forgotPassword = async () => {
+    if (supabaseContext) {
+      if (email === "") {
+        setEmailError("email cannot be empty")
+        return
+      }
+
+      await supabaseContext.auth.resetPasswordForEmail(
+        email, {
+        redirectTo: getURL('/account/update-password'),
+      })
+    }
+  }
+
   const loginAction = async () => {
     if (supabaseContext) {
+      if (showForgotPassword) {
+        await forgotPassword()
+        return
+      }
+
       if (showSignUp) {
         await signUp()
         return
-      } else {
-        await login()
       }
+
+      await login()
+      return
     }
   }
 
   const toggleSignup = () => {
     setShowSignUp(!showSignUp)
+  }
+
+  const toggleForgotPassword = () => {
+    setShowForgotPassword(!showForgotPassword)
+  }
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value)
+    setEmailError("")
+  }
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value)
+    setPasswordError("")
   }
 
 
@@ -100,26 +135,43 @@ export default function Login () {
           75 Soft
         </h1>
         <form className="flex flex-col gap-1" action={loginAction}>
-          <label htmlFor="email">Email</label>
-          <input className={`${emailError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="email" id="email" autoComplete="email" disabled={isLoading} placeholder="email" onChange={(e) => setEmail(e.target.value)} value={email}></input>
+          <label htmlFor="email" >Email</label>
+          <input className={`${emailError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="email" id="email" autoComplete="email" disabled={isLoading} placeholder="email" onChange={handleEmailChange} value={email}></input>
           { emailError && (
             <span className="text-red-900">{ emailError }</span>
           )}
 
-          <label htmlFor="email">Password</label>
-          <input className={`${passwordError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="password" id="password" autoComplete="password" disabled={isLoading} placeholder="password" type="password" onChange={(e) => setPassword(e.target.value)} value={password}></input>
-          { passwordError && (
-            <span className="text-red-900">{ passwordError }</span>
+          { !showForgotPassword && (
+            <>
+              <label htmlFor="email">Password</label>
+              <input className={`${passwordError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="password" id="password" autoComplete="password" disabled={isLoading} placeholder="password" type="password" onChange={handlePasswordChange} value={password}></input>
+              { passwordError && (
+                <span className="text-red-900">{ passwordError }</span>
+              )}
+
+              <button type="submit" disabled={isLoading} className="py-2 mt-4 text-white bg-black rounded-md">{ showSignUp ? "Sign Up" : "Login" }</button>
+            </>
           )}
 
-          <button type="submit" disabled={isLoading} className="py-2 mt-4 text-white bg-black rounded-md">{ showSignUp ? "Sign Up" : "Login" }</button>
+          { showForgotPassword && (
+            <button type="submit" disabled={isLoading} className="py-2 mt-4 text-white bg-black rounded-md">Reset Password</button>
+          )}
         </form>
 
-        <form action={toggleSignup}>
-          <div className="flex justify-center w-full">
-            <button type="submit" disabled={isLoading} className="py-2 mt-4 underline">{ showSignUp ? "Go to login" : "Go to sign up" }</button>
-          </div>
-        </form>
+        { !showForgotPassword && (
+          <form action={toggleSignup}>
+            <div className="flex justify-center w-full">
+              <button type="submit" disabled={isLoading} className="py-2 mt-4 underline">{ showSignUp ? "Go to login" : "Go to sign up" }</button>
+            </div>
+          </form>
+        )}
+        { !showSignUp && (
+          <form action={() => toggleForgotPassword()}>
+            <div className="flex justify-center w-full">
+              <button type="submit" disabled={isLoading} className="py-2 underline">{ showForgotPassword ? "Back to login" : "Forgot Password" }</button>
+            </div>
+          </form>
+        )}
       </div>
     </div>
   )
