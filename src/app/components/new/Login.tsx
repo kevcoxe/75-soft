@@ -87,7 +87,7 @@ export default function Login () {
 
       await supabaseContext.auth.resetPasswordForEmail(
         email, {
-        redirectTo: getURL('/account/update-password'),
+        redirectTo: getURL('/auth/callback'),
       })
     }
   }
