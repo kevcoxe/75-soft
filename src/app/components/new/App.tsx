@@ -72,12 +72,6 @@ export default function App({
   useEffect(() => {
     if (!supabaseContext) return
 
-    supabaseContext.auth.onAuthStateChange((event, session) => {
-      if (event == 'PASSWORD_RECOVERY') {
-        console.log('PASSWORD_RECOVERY', session)
-      }
-    })
-
     const channel = supabaseContext
       .channel('profile changes')
       .on('postgres_changes', {
