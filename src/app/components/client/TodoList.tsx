@@ -7,6 +7,7 @@ import Todo from "@/app/components/client/Todo"
 import { BiShow, BiHide } from "react-icons/bi"
 import { POINT_PER_DAY } from "@/app/consts"
 import { onCurrentDay } from "@/utils/dateUtils"
+import WindowFocusHandler from "@/app/components/client/WindowFocusHandler"
 
 export default function TodoList({
   user,
@@ -47,6 +48,7 @@ export default function TodoList({
     }
 
     try {
+      setLoading(true)
       const { data } = await supabaseContext
         .from('todos')
         .select()
@@ -73,7 +75,6 @@ export default function TodoList({
 
 
   useEffect(() => {
-    setLoading(true)
     getData()
   }, [user])
 
@@ -104,6 +105,7 @@ export default function TodoList({
 
   return (
     <>
+      <WindowFocusHandler onFocus={getData} />
       <div className="flex flex-col p-4 m-2 border rounded-lg border-slate-800">
         <div className={`grid items-center grid-cols-6 ${isLoading ? "animate-pulse" : ""}`}>
           { todosComplete && isOnCurrentDay && (
