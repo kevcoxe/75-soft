@@ -53,11 +53,11 @@ export default function Miles({
   return (
     <>
       <div className="flex flex-col p-4 m-2 border rounded-lg border-slate-800">
-        <h1 className="mb-2 text-xl">Miles Walked: { milesTracked !== undefined ? milesTracked : "loading..." }</h1>
+        <h1 className="mb-2 text-2xl font-bold">Miles Walked: { milesTracked !== undefined ? milesTracked : "loading..." }</h1>
 
         <div className="grid grid-cols-2">
-          <button onClick={decrementMiles} className="col-span-1 py-1 text-center bg-red-600 rounded-l-lg">-</button>
-          <button onClick={incrementMiles} className="col-span-1 py-1 text-center bg-green-600 rounded-r-lg ">+</button>
+          <button onClick={decrementMiles} className="col-span-1 py-1 text-2xl font-bold text-center bg-red-600 rounded-l-lg">-</button>
+          <button onClick={incrementMiles} className="col-span-1 py-1 text-2xl font-bold text-center bg-green-600 rounded-r-lg ">+</button>
         </div>
       </div>
     </>
