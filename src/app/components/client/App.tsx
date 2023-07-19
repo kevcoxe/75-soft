@@ -13,8 +13,8 @@ import TodoList from "@/app/components/client/TodoList"
 import ScoreBoard from "@/app/components/client/ScoreBoard"
 import Welcome from "./Welcome"
 import Admin from "./Admin"
-import ProgressTracker from "./ProgressTracker"
 import PasswordReset from "./PasswordReset"
+import WindowFocusHandler from "@/app/components/client/WindowFocusHandler"
 
 
 export default function App({
@@ -29,7 +29,7 @@ export default function App({
   const [ user, setUser ] = useState<User>()
   const [ isLoading, setLoading ] = useState(true)
 
-  const getData = async () => {
+  const getProfileData = async () => {
     if (!supabaseContext || !userSessionContext) {
       setLoading(false)
       return
@@ -38,8 +38,6 @@ export default function App({
     if (!userSessionContext.user) {
       return 
     }
-
-    setUser(userSessionContext.user)
 
     try {
       const { data } = await supabaseContext
@@ -60,6 +58,21 @@ export default function App({
     } catch (error) {
       console.log("error:", error)
     }
+  }
+
+  const getData = async () => {
+    if (!supabaseContext || !userSessionContext) {
+      setLoading(false)
+      return
+    }
+
+    if (!userSessionContext.user) {
+      return 
+    }
+
+    setUser(userSessionContext.user)
+
+    await getProfileData()
   }
 
 
@@ -90,6 +103,7 @@ export default function App({
 
   return (
     <div className="container max-w-xl mx-auto">
+      <WindowFocusHandler onFocus={getProfileData} />
       { isLoading && (
         <Skeleton />
       )}
