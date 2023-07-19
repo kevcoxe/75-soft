@@ -40,6 +40,7 @@ export default function Stats({
               <div className="px-2 py-4 my-2 text-2xl font-bold rounded-xl">Score: { userProfile.score }</div>
               <div className="px-2 py-4 my-2 text-2xl font-bold rounded-xl">Days Completed: { userProfile.days_sucessful }</div>
               <div className="px-2 py-4 my-2 text-2xl font-bold rounded-xl">Miles walked: { userProfile.miles_walked }</div>
+              <div className="px-2 py-4 my-2 text-2xl font-bold rounded-xl">Daily Miles walked: { userProfile.daily_miles }</div>
               { logoutChild }
             </div>
           </div>

@@ -12,6 +12,7 @@ export interface Database {
       profiles: {
         Row: {
           created_at: string | null
+          daily_miles: number
           days_sucessful: number
           id: number
           is_admin: boolean
@@ -23,6 +24,7 @@ export interface Database {
         }
         Insert: {
           created_at?: string | null
+          daily_miles?: number
           days_sucessful?: number
           id?: number
           is_admin?: boolean
@@ -34,6 +36,7 @@ export interface Database {
         }
         Update: {
           created_at?: string | null
+          daily_miles?: number
           days_sucessful?: number
           id?: number
           is_admin?: boolean
@@ -91,6 +94,14 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      incrementDailyMiles: {
+        Args: {
+          userid: string
+          score_increment: number
+          mile_count: number
+        }
+        Returns: undefined
+      }
       incrementDay: {
         Args: {
           userid: string
