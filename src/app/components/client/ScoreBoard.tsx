@@ -4,6 +4,19 @@ import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
 import { useEffect, useState } from "react"
 import { BiShow, BiHide } from "react-icons/bi"
 
+
+const ScoreTitle = () => {
+  return (
+    <div className="grid grid-cols-10 px-2 py-4 my-2 text-lg font-bold">
+      <span className="col-span-1">#</span>
+      <h1 className="col-span-3">Username</h1>
+      <span className="col-span-2">Score</span>
+      <span className="col-span-2">Days</span>
+      <span className="col-span-2">Miles</span>
+    </div>
+  )
+}
+
 const ScoreRow = ({
   place,
   profile
@@ -12,12 +25,12 @@ const ScoreRow = ({
   profile: Profile
 }) => {
   return (
-    <div className="grid grid-cols-10 px-2 py-4 my-2">
+    <div className="grid grid-cols-10 px-2 py-4 my-2 text-lg font-bold">
       <span className="col-span-1">{ place }</span>
       <h1 className="col-span-3">{ profile.username }</h1>
       <span className="col-span-2">{ profile.score }</span>
-      <span className="col-span-2">{ profile.days_sucessful } days</span>
-      <span className="col-span-2">{ profile.miles_walked } miles</span>
+      <span className="col-span-2">{ profile.days_sucessful }</span>
+      <span className="col-span-2">{ profile.miles_walked }</span>
     </div>
   )
 }
@@ -88,10 +101,11 @@ export default function ScoreBoard() {
         <div className="grid items-center grid-cols-6">
           <div className="flex flex-col col-span-6">
             <div className="grid grid-cols-6">
-              <div className="col-span-5 px-2 py-4 my-2 text-xl text-center">Score Board</div>
+              <div className="col-span-5 px-2 py-4 my-2 text-4xl font-bold text-center">Score Board</div>
               <button className="col-span-1 mx-auto text-4xl" onClick={handleCollapse}>{ collapse ? <BiShow /> : <BiHide /> }</button>
             </div>
             <div className={`${collapse ? "hidden" : ""}`}>
+              <ScoreTitle />
               { profiles && (
                 <>
                 { profiles.map((profile: Profile, i: number) => {

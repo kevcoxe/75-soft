@@ -11,6 +11,10 @@ import Stats from "@/app/components/client/Stats"
 import Miles from "@/app/components/client/Miles"
 import TodoList from "@/app/components/client/TodoList"
 import ScoreBoard from "@/app/components/client/ScoreBoard"
+import Welcome from "./Welcome"
+import Admin from "./Admin"
+import ProgressTracker from "./ProgressTracker"
+import PasswordReset from "./PasswordReset"
 
 
 export default function App({
@@ -67,6 +71,7 @@ export default function App({
 
   useEffect(() => {
     if (!supabaseContext) return
+
     const channel = supabaseContext
       .channel('profile changes')
       .on('postgres_changes', {
@@ -84,7 +89,7 @@ export default function App({
 
 
   return (
-    <div className="container mx-auto">
+    <div className="container max-w-xl mx-auto">
       { isLoading && (
         <Skeleton />
       )}
@@ -97,6 +102,12 @@ export default function App({
         </>
       )}
 
+      { !isLoading && user && !profile && (
+        <>
+          <Welcome />
+        </>
+      )}
+
       { !isLoading && user && profile && (
         <div className="flex flex-col items-center">
           <div className="grid w-full grid-cols-5 content-stretch">
@@ -104,11 +115,17 @@ export default function App({
               <Stats
                 profile={profile}
                 logoutChild={
-                  <Logout redirectPath="/" className="py-2 mt-2 border border-white rounded-md"/>
+                  <>
+                    <Logout redirectPath="/" className="py-2 mt-2 text-xl font-bold border border-white rounded-md"/>
+                    <PasswordReset />
+                  </>
                 }/>
               <Miles profile={profile}/>
-              <TodoList user={user} />
+              <TodoList user={user} profile={profile}/>
               <ScoreBoard />
+              { profile.is_admin && (
+                <Admin />
+              )}
             </span>
           </div>
           <div className="container mx-auto ">

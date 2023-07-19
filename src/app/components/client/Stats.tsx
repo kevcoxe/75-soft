@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { BiShow, BiHide } from "react-icons/bi"
+import ProgressTracker from "@/app/components/client/ProgressTracker"
 
 export default function Stats({
   profile,
@@ -11,7 +12,12 @@ export default function Stats({
   logoutChild?: React.ReactNode
 }) {
 
+  const [ userProfile, setUserProfile ] = useState(profile)
   const [ collapse, setCollapse ] = useState(true)
+
+  useEffect(() => {
+    setUserProfile(profile)
+  }, [profile])
 
   const handleCollapse = () => {
     setCollapse(!collapse)
@@ -26,13 +32,14 @@ export default function Stats({
           </div> */}
           <div className="flex flex-col col-span-6">
             <div className="grid grid-cols-6">
-              <div className="col-span-5 px-2 py-4 my-2 rounded-xl bg-slate-800">Username: { profile.username }</div>
+              <div className="col-span-5 px-2 py-4 my-2 text-2xl font-bold rounded-xl">Username: { userProfile.username }</div>
               <button className="col-span-1 mx-auto text-4xl" onClick={handleCollapse}>{ collapse ? <BiShow /> : <BiHide /> }</button>
             </div>
             <div className={`${collapse ? "hidden" : ""}`}>
-              <div className="px-2 py-4 my-2 rounded-xl bg-slate-800">Score: { profile.score }</div>
-              <div className="px-2 py-4 my-2 rounded-xl bg-slate-800">Days Completed: { profile.days_sucessful }</div>
-              <div className="px-2 py-4 my-2 rounded-xl bg-slate-800">Miles walked: { profile.miles_walked }</div>
+              <ProgressTracker profile={userProfile} />
+              <div className="px-2 py-4 my-2 text-2xl font-bold rounded-xl">Score: { userProfile.score }</div>
+              <div className="px-2 py-4 my-2 text-2xl font-bold rounded-xl">Days Completed: { userProfile.days_sucessful }</div>
+              <div className="px-2 py-4 my-2 text-2xl font-bold rounded-xl">Miles walked: { userProfile.miles_walked }</div>
               { logoutChild }
             </div>
           </div>
