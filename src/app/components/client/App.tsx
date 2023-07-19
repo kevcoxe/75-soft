@@ -8,7 +8,7 @@ import Login from "@/app/components/client/Login"
 import Logout from "@/app/components/client/Logout"
 import Skeleton from "@/app/components/client/Skeleton"
 import Stats from "@/app/components/client/Stats"
-import Miles from "@/app/components/client/Miles"
+import DailyMiles from "@/app/components/client/DailyMiles"
 import TodoList from "@/app/components/client/TodoList"
 import ScoreBoard from "@/app/components/client/ScoreBoard"
 import Welcome from "./Welcome"
@@ -134,7 +134,7 @@ export default function App({
                     <PasswordReset />
                   </>
                 }/>
-              <Miles profile={profile}/>
+              <DailyMiles profile={profile}/>
               <TodoList user={user} profile={profile}/>
               <ScoreBoard />
               { profile.is_admin && (

@@ -5,7 +5,7 @@ import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
 import useDebounce from "@/utils/debounce"
 import { useEffect, useState } from "react"
 
-export default function Miles({
+export default function DailyMiles({
   profile
 }: {
   profile: Profile
@@ -13,30 +13,35 @@ export default function Miles({
 
   const supabaseContext = UseSupabaseContext()
 
-  const [ milesTracked, setMiles ] = useState<number>()
+  const [ isLoading, setIsLoading ] = useState(true)
+  const [ milesTracked, setMiles ] = useState<number>(profile.daily_miles)
   const debouncedMiles = useDebounce(milesTracked, 500)
 
   useEffect(() => {
-    setMiles(profile.miles_walked)
-  }, [profile.miles_walked])
+    setIsLoading(true)
+    setMiles(profile.daily_miles)
+    setIsLoading(false)
+  }, [profile.daily_miles])
 
   // wait for user to stop clicking before submitting
   useEffect(() => {
     if (!supabaseContext) return
     if (debouncedMiles !== undefined) {
       const updateMiles = async () => {
-        const score_increment = (debouncedMiles - profile.miles_walked) * POINT_PER_MILE
-        const mile_increment = debouncedMiles - profile.miles_walked
+        setIsLoading(true)
+        const score_increment = (debouncedMiles - profile.daily_miles) * POINT_PER_MILE
+        const mile_increment = debouncedMiles - profile.daily_miles
         const { error } = await supabaseContext
-          .rpc('incrementMiles', {
+          .rpc('incrementDailyMiles', {
             userid: profile.user_id,
             score_increment,
-            mile_increment
+            mile_count: debouncedMiles
           })
 
         if (error) {
           console.log(error)
         }
+        setIsLoading(false)
       }
       updateMiles()
     }
@@ -53,11 +58,11 @@ export default function Miles({
   return (
     <>
       <div className="flex flex-col p-4 m-2 border rounded-lg border-slate-800">
-        <h1 className="mb-2 text-2xl font-bold">Miles Walked: { milesTracked !== undefined ? milesTracked : "loading..." }</h1>
+        <h1 className="mb-2 text-2xl font-bold">Miles Walked Today: { milesTracked !== undefined ? milesTracked : "loading..." }</h1>
 
         <div className="grid grid-cols-2">
-          <button onClick={decrementMiles} className="col-span-1 py-1 text-2xl font-bold text-center bg-red-600 rounded-l-lg">-</button>
-          <button onClick={incrementMiles} className="col-span-1 py-1 text-2xl font-bold text-center bg-green-600 rounded-r-lg ">+</button>
+          <button disabled={isLoading} onClick={decrementMiles} className="col-span-1 py-1 text-2xl font-bold text-center bg-red-600 rounded-l-lg">-</button>
+          <button disabled={isLoading} onClick={incrementMiles} className="col-span-1 py-1 text-2xl font-bold text-center bg-green-600 rounded-r-lg">+</button>
         </div>
       </div>
     </>
