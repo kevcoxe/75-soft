@@ -33,7 +33,9 @@ export default function TabView ({
   }
 
   useEffect(() => {
-    setTabControlClass(`grid gap-1 px-1 h-16 ${ getGridCol(items.length) }`)
+    let gCol = getGridCol(items.length)
+    console.log(gCol)
+    setTabControlClass(`grid gap-1 px-1 h-16 ${ gCol }`)
   }, [items])
 
 
