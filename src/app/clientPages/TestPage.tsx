@@ -8,7 +8,7 @@ export default function TestPage () {
 
   return (
     <SupabaseProviderWrapper>
-      <div className="container h-screen mx-auto max-w-xlg">
+      <div className="container h-[calc(100dvh)] mx-auto max-w-xlg">
         <TabApp>
         </TabApp>
       </div>
