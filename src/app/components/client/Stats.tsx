@@ -6,14 +6,16 @@ import ProgressTracker from "@/app/components/client/ProgressTracker"
 
 export default function Stats({
   profile,
-  logoutChild = <></>
+  logoutChild = <></>,
+  startCollapsed = true
 }: {
   profile: Profile,
-  logoutChild?: React.ReactNode
+  logoutChild?: React.ReactNode,
+  startCollapsed?: boolean
 }) {
 
   const [ userProfile, setUserProfile ] = useState(profile)
-  const [ collapse, setCollapse ] = useState(true)
+  const [ collapse, setCollapse ] = useState(startCollapsed)
 
   useEffect(() => {
     setUserProfile(profile)
