@@ -27,15 +27,11 @@ export default function TabView ({
 
   const [ currentTab, setCurrentTab ] = useState(0)
 
-  const getGridCol = (items: {
-    node: React.ReactNode
-    name?: string
-    icon?: React.ReactNode
-  }[]) => {
+  const getGridCol = () => {
     return `grid-cols-${ items.length }`
   }
 
-  const tabControlClass = `grid gap-1 px-1 h-16 ${ getGridCol(items) }`
+  const tabControlClass = `grid gap-1 px-1 h-16 ${ getGridCol() }`
 
 
   const tabControls = items.map((item, i) => {
