@@ -26,12 +26,15 @@ export default function TabView ({
 }: TabViewInterface) {
 
   const [ currentTab, setCurrentTab ] = useState(0)
+  const [ tabControlClass, setTabControlClass ] = useState<string>()
 
-  const getGridCol = () => {
-    return `grid-cols-${ items.length }`
+  const getGridCol = (i: number) => {
+    return `grid-cols-${ i }`
   }
 
-  const tabControlClass = `grid gap-1 px-1 h-16 ${ getGridCol() }`
+  useEffect(() => {
+    setTabControlClass(`grid gap-1 px-1 h-16 ${ getGridCol(items.length) }`)
+  }, [items])
 
 
   const tabControls = items.map((item, i) => {
