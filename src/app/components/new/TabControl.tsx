@@ -16,7 +16,7 @@ export default function TabControl ({
 
 
   return (
-    <button onClick={() => handleOnClick(index)} className={`flex content-center justify-items-center justify-center flex-col col-span-1 rounded-lg mx-1 text-lg font-extrabold border border-black shadow-lg ${isCurrent ? "ring-4 ring-offset-1 ring-cyan-400" : ""}`}>
+    <button onClick={() => handleOnClick(index)} className={`flex content-center justify-items-center justify-center flex-col col-span-1 rounded-lg font-bold border border-black shadow-lg ${isCurrent ? "ring-2 ring-cyan-400" : ""}`}>
       <span>{ name }</span>
     </button>
   )

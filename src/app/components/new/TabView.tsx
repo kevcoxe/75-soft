@@ -28,7 +28,7 @@ export default function TabView ({
   const [ tabControlClass, setNumTabs ] = useState<string>()
 
   useEffect(() => {
-    setNumTabs(`grid h-16 grid-cols-${ items.length }`)
+    setNumTabs(`grid gap-1 px-1 h-16 grid-cols-${ items.length }`)
   }, [items])
 
 
