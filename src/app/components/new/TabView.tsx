@@ -26,17 +26,6 @@ export default function TabView ({
 }: TabViewInterface) {
 
   const [ currentTab, setCurrentTab ] = useState(0)
-  const [ tabControlClass, setTabControlClass ] = useState<string>()
-
-  const getGridCol = (i: number) => {
-    return `grid-cols-${ i }`
-  }
-
-  useEffect(() => {
-    let gCol = getGridCol(items.length)
-    console.log(gCol)
-    setTabControlClass(`grid gap-1 px-1 h-16 ${ gCol }`)
-  }, [items])
 
 
   const tabControls = items.map((item, i) => {
@@ -58,7 +47,7 @@ export default function TabView ({
     <div className="relative h-full">
       <div className={`flex ${top ? "flex-col" : "flex-col-reverse"} h-full `}>
         <div className={`items-center content-center w-full h-16 pb-4 ${ top ? "mb-5 mt-2" : "mt-5 mb-2" }`}>
-          <div className={tabControlClass}>
+          <div className={`grid gap-1 px-1 h-16 ${items.length === 5 ? "grid-cols-5" : "grid-cols-4" }`}>
             { tabControls }
           </div>
         </div>
