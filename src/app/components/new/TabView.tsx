@@ -26,11 +26,13 @@ export default function TabView ({
 }: TabViewInterface) {
 
   const [ currentTab, setCurrentTab ] = useState(0)
-  const [ tabControlClass, setNumTabs ] = useState<string>()
+  // const [ tabControlClass, setNumTabs ] = useState<string>()
 
-  useEffect(() => {
-    setNumTabs(`grid gap-1 px-1 h-16 grid-cols-${ items.length }`)
-  }, [items])
+  // useEffect(() => {
+  //   setNumTabs(`grid gap-1 px-1 h-16 grid-cols-${ items.length }`)
+  // }, [items])
+
+  const tabControlClass = `grid gap-1 px-1 h-16 grid-cols-${ items.length }`
 
 
   const tabControls = items.map((item, i) => {
@@ -46,7 +48,6 @@ export default function TabView ({
       />
     )
   })
-
 
 
   return (
