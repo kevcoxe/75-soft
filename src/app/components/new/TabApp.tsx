@@ -16,6 +16,9 @@ import Admin from "@/app/components/client/Admin"
 import PasswordReset from "@/app/components/client/PasswordReset"
 import WindowFocusHandler from "@/app/components/client/WindowFocusHandler"
 import TabView from "./TabView"
+import { GrTask, GrUserAdmin } from "react-icons/gr"
+import { TbDeviceWatchStats } from "react-icons/tb"
+import { BsTrophy, BsGear } from "react-icons/bs"
 
 
 export default function TabApp({
@@ -110,15 +113,15 @@ export default function TabApp({
           <DailyMiles profile={profile}/>
           <TodoList key={"todo list"} user={user} profile={profile}/>
         </>
-      )), name: "Tasks" },
+      )), icon: <GrTask /> },
       { node: (!isLoading && user && profile &&
         <Stats
           key={"stats"}
           profile={profile}
           startCollapsed={false}
         />
-        ), name: "Stats" },
-      { node: <ScoreBoard key={"scoreboard"}/>, name: "Score" },
+        ), icon: <TbDeviceWatchStats /> },
+      { node: <ScoreBoard key={"scoreboard"}/>, icon: <BsTrophy /> },
       { 
         node: (!isLoading && user && profile && (
           <div className="px-1">
@@ -126,13 +129,13 @@ export default function TabApp({
             <PasswordReset />
           </div>
         )),
-        name: "Settings"
+        icon: <BsGear />
       }
     ]
   }
 
   if (profile && profile.is_admin) {
-    settings.items.push({ node: <Admin key={"admin"} />, name: "Admin" })
+    settings.items.push({ node: <Admin key={"admin"} />, icon: <GrUserAdmin /> })
   }
 
 

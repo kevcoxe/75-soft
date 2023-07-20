@@ -10,7 +10,8 @@ interface TabViewInterface {
     childrenOnTop?: boolean,
     items: {
       node: React.ReactNode
-      name: string
+      name?: string
+      icon?: React.ReactNode
     }[]
   }
 }
@@ -38,7 +39,8 @@ export default function TabView ({
       <TabControl
         key={i}
         index={i}
-        name={item.name}
+        name={item?.name}
+        icon={item?.icon}
         isCurrent={isCurrent}
         handleOnClick={setCurrentTab}
       />
