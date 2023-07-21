@@ -57,9 +57,9 @@ export default function DailyMiles({
   }
 
   return (
-    <div className="w-full px-4 card ">
+    <div className="w-full card">
       <div className="card-body">
-        <h2 className="card-title">Miles Walked Today: { milesTracked !== undefined ? milesTracked : "loading..." }</h2>
+        <h2 className="text-lg card-title">Miles Walked Today: { milesTracked !== undefined ? milesTracked : "loading..." }</h2>
         <div className="justify-end card-actions">
           <div className="flex flex-grow join">
             <button disabled={isLoading} onClick={decrementMiles} className="flex-grow text-4xl btn join-item btn-error">
