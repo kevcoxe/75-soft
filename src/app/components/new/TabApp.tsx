@@ -187,8 +187,9 @@ export default function TabApp({
         <TabView settings={settings}>
           { profile && (
             <div className="navbar bg-base-100">
-              <div className="flex-1">
+              <div className="items-center flex-1">
                 <a className="text-xl normal-case btn btn-ghost">{ profile.username }</a>
+                <div className="badge badge-lg badge-primary">{ profile.score }p</div>
               </div>
               <div className="flex-none gap-5 pr-4">
                 <div className="indicator">
