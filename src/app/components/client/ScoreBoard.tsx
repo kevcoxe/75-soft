@@ -102,25 +102,36 @@ export default function ScoreBoard() {
       animate={{ opacity: 1 }}
       transition={{ delay: .3 }}
     >
-      <div className="flex flex-col p-4 m-2 border rounded-lg border-slate-800">
-        <div className="grid items-center grid-cols-6">
-          <div className="flex flex-col col-span-6">
-            <div className="grid grid-cols-6">
-              <div className="col-span-5 px-2 py-4 my-2 text-4xl font-bold text-center">Score Board</div>
-              <button className="col-span-1 mx-auto text-4xl" onClick={handleCollapse}>{ collapse ? <BiShow /> : <BiHide /> }</button>
-            </div>
-            <div className={`${collapse ? "hidden" : ""}`}>
-              <ScoreTitle />
-              { profiles && (
-                <>
+      <div className="overflow-x-auto">
+        <table className="table table-zebra">
+          {/* head */}
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>username</th>
+              <th>Score</th>
+              <th>Days</th>
+              <th>Miles Walked</th>
+            </tr>
+          </thead>
+          <tbody>
+            { profiles && (
+              <>
                 { profiles.map((profile: Profile, i: number) => {
-                  return <ScoreRow key={i} place={i + 1} profile={profile}/>
+                  return (
+                    <tr key={i}>
+                      <th>{ i + 1 }</th>
+                      <td>{ profile.username }</td>
+                      <td>{ profile.score }</td>
+                      <td>{ profile.days_sucessful }</td>
+                      <td>{ profile.miles_walked }</td>
+                    </tr>
+                  )
                 })}
-                </>
-              )}
-            </div>
-          </div>
-        </div>
+              </>
+            )}
+          </tbody>
+        </table>
       </div>
     </motion.div>
   )
