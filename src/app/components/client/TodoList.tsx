@@ -8,6 +8,7 @@ import { BiShow, BiHide } from "react-icons/bi"
 import { POINT_PER_DAY } from "@/app/consts"
 import { onCurrentDay } from "@/utils/dateUtils"
 import WindowFocusHandler from "@/app/components/client/WindowFocusHandler"
+import { motion } from "framer-motion"
 
 export default function TodoList({
   user,
@@ -102,61 +103,136 @@ export default function TodoList({
     setIsOnCurrentDay(compare)
     setDaysDiff(dayDiff)
   }, [profile])
-
   return (
     <>
-      <WindowFocusHandler onFocus={getData} />
-      <div className="flex flex-col p-4 m-2 border rounded-lg border-slate-800">
-        <div className={`grid items-center grid-cols-6 ${isLoading ? "animate-pulse" : ""}`}>
-          { todosComplete && isOnCurrentDay && (
-            <div className="flex flex-col col-span-6 my-4 animate-pulse">
-              <button className="col-span-6 py-4 text-3xl text-white bg-black rounded-lg" onClick={handleCompleteDay}>
-                🎉 Complete Day 🎉
-              </button>
-            </div>
-          )}
-
-          { !isOnCurrentDay && (
-            <div className="flex flex-col col-span-6 my-4 text-center">
-              <h1 className="text-xl">🎉 Congrats on finishing the day 🎉</h1>
-              <span>Come back tomorrow to complete your tasks.</span>
-            </div>
-          )}
-
-          { !todosComplete && daysDiff > 1 && (
-            <div className="flex flex-col col-span-6 my-4 text-center">
-              <h1 className="text-2xl">🤨 Are you behind in your tasks 🤨</h1>
-              <span className="text-start indent-4">
-                You have completed { profile.days_sucessful } days and are { daysDiff } days behind schedule.
-                If you have just not checked off your tasks, go ahead and catch up you are doing great!
-                {/* If you have failed, go ahead and reset your 75 days. Keep it up you can do it next time!
-                <button className="inline-flex ml-4 text-red-700">Reset your 75 days?</button> */}
-              </span>
-
-            </div>
-          )}
-
-          <div className="flex flex-col col-span-6">
-            <div className="grid grid-cols-6">
-              <button className="grid items-center grid-cols-6 col-span-6 text-3xl" onClick={handleCollapse}>
-                <span className="col-span-5 text-2xl font-bold">Daily Todos</span>
-                <span className="col-span-1">{ collapse ? <BiShow /> : <BiHide /> }</span>
-              </button>
-            </div>
-            <div className={`${collapse ? "hidden" : ""}`}>
-              { todos && (
-                <>
-                  { todos.map((todo: Todo, i: number) => {
-                    return (
-                      <Todo key={i} todo={todo} disabled={!isOnCurrentDay}/>
-                    )
-                  })}
-                </>
-              )}
-            </div>
-          </div>
-        </div>
+      {/* <WindowFocusHandler onFocus={getData} /> */}
+      <div className="flex flex-col">
+        { todos && (
+          <>
+            { todos.map((todo: Todo, i: number) => {
+              return (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: "-100%" }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: .2 + (.1 * i) }}
+                >
+                  <Todo key={i} todo={todo} disabled={!isOnCurrentDay}/>
+                </motion.div>
+              )
+            })}
+          </>
+        )}
       </div>
     </>
+    //   <WindowFocusHandler onFocus={getData} />
+    //   <div className="flex flex-col p-4 m-2 border rounded-lg border-slate-800">
+    //     <div className={`grid items-center grid-cols-6 ${isLoading ? "animate-pulse" : ""}`}>
+    //       { todosComplete && isOnCurrentDay && (
+    //         <div className="flex flex-col col-span-6 my-4 animate-pulse">
+    //           <button className="col-span-6 py-4 text-3xl text-white bg-black rounded-lg" onClick={handleCompleteDay}>
+    //             🎉 Complete Day 🎉
+    //           </button>
+    //         </div>
+    //       )}
+
+    //       { !isOnCurrentDay && (
+    //         <div className="flex flex-col col-span-6 my-4 text-center">
+    //           <h1 className="text-xl">🎉 Congrats on finishing the day 🎉</h1>
+    //           <span>Come back tomorrow to complete your tasks.</span>
+    //         </div>
+    //       )}
+
+    //       { !todosComplete && daysDiff > 1 && (
+    //         <div className="flex flex-col col-span-6 my-4 text-center">
+    //           <h1 className="text-2xl">🤨 Are you behind in your tasks 🤨</h1>
+    //           <span className="text-start indent-4">
+    //             You have completed { profile.days_sucessful } days and are { daysDiff } days behind schedule.
+    //             If you have just not checked off your tasks, go ahead and catch up you are doing great!
+    //             {/* If you have failed, go ahead and reset your 75 days. Keep it up you can do it next time!
+    //             <button className="inline-flex ml-4 text-red-700">Reset your 75 days?</button> */}
+    //           </span>
+
+    //         </div>
+    //       )}
+
+    //       <div className="flex flex-col col-span-6">
+    //         <div className="grid grid-cols-6">
+    //           <button className="grid items-center grid-cols-6 col-span-6 text-3xl" onClick={handleCollapse}>
+    //             <span className="col-span-5 text-2xl font-bold">Daily Todos</span>
+    //             <span className="col-span-1">{ collapse ? <BiShow /> : <BiHide /> }</span>
+    //           </button>
+    //         </div>
+    //         <div className={`${collapse ? "hidden" : ""}`}>
+    //           { todos && (
+    //             <>
+    //               { todos.map((todo: Todo, i: number) => {
+    //                 return (
+    //                   <Todo key={i} todo={todo} disabled={!isOnCurrentDay}/>
+    //                 )
+    //               })}
+    //             </>
+    //           )}
+    //         </div>
+    //       </div>
+    //     </div>
+    //   </div>
+    // </>
   )
+  // return (
+  //   <>
+  //     <WindowFocusHandler onFocus={getData} />
+  //     <div className="flex flex-col p-4 m-2 border rounded-lg border-slate-800">
+  //       <div className={`grid items-center grid-cols-6 ${isLoading ? "animate-pulse" : ""}`}>
+  //         { todosComplete && isOnCurrentDay && (
+  //           <div className="flex flex-col col-span-6 my-4 animate-pulse">
+  //             <button className="col-span-6 py-4 text-3xl text-white bg-black rounded-lg" onClick={handleCompleteDay}>
+  //               🎉 Complete Day 🎉
+  //             </button>
+  //           </div>
+  //         )}
+
+  //         { !isOnCurrentDay && (
+  //           <div className="flex flex-col col-span-6 my-4 text-center">
+  //             <h1 className="text-xl">🎉 Congrats on finishing the day 🎉</h1>
+  //             <span>Come back tomorrow to complete your tasks.</span>
+  //           </div>
+  //         )}
+
+  //         { !todosComplete && daysDiff > 1 && (
+  //           <div className="flex flex-col col-span-6 my-4 text-center">
+  //             <h1 className="text-2xl">🤨 Are you behind in your tasks 🤨</h1>
+  //             <span className="text-start indent-4">
+  //               You have completed { profile.days_sucessful } days and are { daysDiff } days behind schedule.
+  //               If you have just not checked off your tasks, go ahead and catch up you are doing great!
+  //               {/* If you have failed, go ahead and reset your 75 days. Keep it up you can do it next time!
+  //               <button className="inline-flex ml-4 text-red-700">Reset your 75 days?</button> */}
+  //             </span>
+
+  //           </div>
+  //         )}
+
+  //         <div className="flex flex-col col-span-6">
+  //           <div className="grid grid-cols-6">
+  //             <button className="grid items-center grid-cols-6 col-span-6 text-3xl" onClick={handleCollapse}>
+  //               <span className="col-span-5 text-2xl font-bold">Daily Todos</span>
+  //               <span className="col-span-1">{ collapse ? <BiShow /> : <BiHide /> }</span>
+  //             </button>
+  //           </div>
+  //           <div className={`${collapse ? "hidden" : ""}`}>
+  //             { todos && (
+  //               <>
+  //                 { todos.map((todo: Todo, i: number) => {
+  //                   return (
+  //                     <Todo key={i} todo={todo} disabled={!isOnCurrentDay}/>
+  //                   )
+  //                 })}
+  //               </>
+  //             )}
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   </>
+  // )
 }
