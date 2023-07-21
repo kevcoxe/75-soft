@@ -2,7 +2,6 @@
 
 import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
 import { useEffect, useState } from "react"
-import { BiShow, BiHide } from "react-icons/bi"
 import { motion } from "framer-motion"
 
 
