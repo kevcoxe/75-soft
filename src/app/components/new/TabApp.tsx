@@ -189,19 +189,14 @@ export default function TabApp({
               <div className="flex-none gap-5 pr-4">
                 <div className="indicator">
                   <BiWalk className="text-4xl" />
-                  <span className="badge badge-sm indicator-item badge-info">{ profile.miles_walked }</span>
+                  <span className="badge badge-sm indicator-item badge-primary">{ profile.miles_walked }</span>
                 </div>
                 <div className="indicator">
                   <BsCalendarCheck className="text-4xl" />
-                  <span className="badge badge-sm indicator-item badge-info">{ profile.days_sucessful }</span>
+                  <span className="badge badge-sm indicator-item badge-primary">{ profile.days_sucessful }</span>
                 </div>
               </div>
             </div>
-            // <div className="w-full py-2 mb-1 text-center">
-            //   <span className="text-3xl">
-            //     Welcome: <span className="font-extrabold underline">{ profile.username }</span>
-            //   </span>
-            // </div>
           )}
         </TabView>
       )}
