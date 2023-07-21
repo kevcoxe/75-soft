@@ -34,6 +34,7 @@ export default function TabApp({
   const [ profile, setProfile ] = useState<Profile>()
   const [ user, setUser ] = useState<User>()
   const [ isLoading, setLoading ] = useState(true)
+  const [ modalOpen, setModelOpen ] = useState(false)
 
   const getProfileData = async () => {
     if (!supabaseContext || !userSessionContext) {
@@ -113,7 +114,6 @@ export default function TabApp({
       { 
         node: (!isLoading && user && profile && (
           <>
-            <DailyMiles profile={profile}/>
             <TodoList key={"todo list"} user={user} profile={profile}/>
           </>
         )),
@@ -188,22 +188,32 @@ export default function TabApp({
       { !isLoading && user && profile && (
         <TabView settings={settings}>
           { profile && (
-            <div className="navbar bg-base-100">
-              <div className="items-center flex-1">
-                <a className="text-xl normal-case btn btn-ghost">{ profile.username }</a>
-                <div className="badge badge-lg badge-primary">{ profile.score }p</div>
-              </div>
-              <div className="flex-none gap-5 pr-4">
-                <div className="indicator">
-                  <BiWalk className="text-4xl" />
-                  <span className="badge badge-sm indicator-item badge-info">{ profile.miles_walked }</span>
+            <>
+              <div className="navbar bg-base-100">
+                <div className="items-center flex-1">
+                  <a className="text-xl normal-case btn btn-ghost">{ profile.username }</a>
+                  <div className="badge badge-lg badge-primary">{ profile.score }p</div>
                 </div>
-                <div className="indicator">
-                  <BsCalendarCheck className="text-4xl" />
-                  <span className="badge badge-sm indicator-item badge-info">{ profile.days_sucessful }</span>
+                <div className="flex-none gap-5 pr-4">
+                  <button onClick={()=>setModelOpen(!modalOpen)}>
+                    <div className="indicator">
+                      <BiWalk className="text-4xl" />
+                      <span className="badge badge-sm indicator-item badge-info">{ profile.miles_walked }</span>
+                    </div>
+                  </button>
+                  <div className="indicator">
+                    <BsCalendarCheck className="text-4xl" />
+                    <span className="badge badge-sm indicator-item badge-info">{ profile.days_sucessful }</span>
+                  </div>
                 </div>
               </div>
-            </div>
+              <dialog id="my_modal_1" className={`modal ${modalOpen ? "modal-open" : ""}`}>
+                <form method="dialog" className="modal-box">
+                  <button onClick={()=>setModelOpen(!modalOpen)} className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
+                  <DailyMiles profile={profile}/>
+                </form>
+              </dialog>
+            </>
           )}
         </TabView>
       )}
