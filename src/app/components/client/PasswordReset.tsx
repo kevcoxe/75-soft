@@ -3,6 +3,7 @@ import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { ImSpinner8 } from "react-icons/im"
+import { motion } from "framer-motion"
 
 export default function PasswordReset () {
   const supabaseContext = UseSupabaseContext()
@@ -56,34 +57,40 @@ export default function PasswordReset () {
   }
 
   return (
-    <div className="flex flex-col w-full mt-4">
-      <span className="text-2xl text-center">Password Reset</span>
-      <form className="flex flex-col gap-1" action={handleResetPassword}>
-        <label htmlFor="newPassword" >New Password</label>
-        <input className={`${passwordError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="newPassword" id="newPassword" autoComplete="New Password" disabled={isLoading} type="password" placeholder="newPassword" onChange={handlePasswordChange} value={newPassword}></input>
-        { passwordError && (
-          <span className="text-red-900">{ passwordError }</span>
-        )}
-
-        <label htmlFor="passwordConfirm">New Password Confirmation</label>
-        <input className={`${passwordError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="newPasswordConfirm" id="newPasswordConfirm" autoComplete="New Password Confirmation" disabled={isLoading} placeholder="newPasswordConfirm" type="password" onChange={handlePasswordConfirmChange} value={passwordConfirm}></input>
-        { passwordError && (
-          <span className="text-red-900">{ passwordError }</span>
-        )}
-
-        <button type="submit" disabled={isLoading} className="py-2 mt-4 text-white bg-black rounded-md">
-          { isLoading && (
-            <ImSpinner8 className="mx-auto animate-spin" />
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: .4 }}
+    >
+      <div className="flex flex-col w-full mt-4">
+        <span className="text-2xl text-center">Password Reset</span>
+        <form className="flex flex-col gap-1" action={handleResetPassword}>
+          <label htmlFor="newPassword" >New Password</label>
+          <input className={`${passwordError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="newPassword" id="newPassword" autoComplete="New Password" disabled={isLoading} type="password" placeholder="newPassword" onChange={handlePasswordChange} value={newPassword}></input>
+          { passwordError && (
+            <span className="text-red-900">{ passwordError }</span>
           )}
 
-          { !isLoading && (
-            <>
-              Reset Password
-            </>
+          <label htmlFor="passwordConfirm">New Password Confirmation</label>
+          <input className={`${passwordError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="newPasswordConfirm" id="newPasswordConfirm" autoComplete="New Password Confirmation" disabled={isLoading} placeholder="newPasswordConfirm" type="password" onChange={handlePasswordConfirmChange} value={passwordConfirm}></input>
+          { passwordError && (
+            <span className="text-red-900">{ passwordError }</span>
           )}
-        </button>
 
-      </form>
-    </div>
+          <button type="submit" disabled={isLoading} className="py-2 mt-4 text-white bg-black rounded-md">
+            { isLoading && (
+              <ImSpinner8 className="mx-auto animate-spin" />
+            )}
+
+            { !isLoading && (
+              <>
+                Reset Password
+              </>
+            )}
+          </button>
+
+        </form>
+      </div>
+    </motion.div>
   )
 }

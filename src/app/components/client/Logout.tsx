@@ -1,6 +1,7 @@
 "use client"
 
 import { redirect } from 'next/navigation'
+import { motion } from "framer-motion"
 
 export default function Logout({
   className = "",
@@ -22,8 +23,14 @@ export default function Logout({
   }
 
   return (
-    <form className="flex w-full" action={handleSignOut}>
-      <button type="submit" className={`w-full ${textColor} ${className}`}>Sign out</button>
-    </form>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: .3 }}
+    >
+      <form className="flex w-full" action={handleSignOut}>
+        <button type="submit" className={`w-full ${textColor} ${className}`}>Sign out</button>
+      </form>
+    </motion.div>
   )
 }

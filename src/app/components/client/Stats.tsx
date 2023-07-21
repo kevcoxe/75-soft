@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react"
 import { BiShow, BiHide } from "react-icons/bi"
 import ProgressTracker from "@/app/components/client/ProgressTracker"
+import { motion } from "framer-motion"
 
 export default function Stats({
   profile,
@@ -26,7 +27,11 @@ export default function Stats({
   }
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: .3 }}
+    >
       <div className="flex flex-col p-4 m-2 border rounded-lg border-slate-800">
         <div className="grid items-center grid-cols-6">
           {/* <div className="flex col-span-6">
@@ -47,6 +52,6 @@ export default function Stats({
           </div>
         </div>
       </div>
-    </>
+    </motion.div>
   )
 }

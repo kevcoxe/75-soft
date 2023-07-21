@@ -127,12 +127,14 @@ export default function TabApp({
             profile={profile}
             startCollapsed={false}
           />
-          ),
-          icon: <TbDeviceWatchStats />,
-          name: "Stats"
+        ),
+        icon: <TbDeviceWatchStats />,
+        name: "Stats"
       },
       {
-        node: <ScoreBoard key={"scoreboard"}/>,
+        node: (
+          <ScoreBoard key={"scoreboard"}/>
+        ),
         icon: <BsTrophy />,
         name: "Rank"
       },
@@ -151,7 +153,9 @@ export default function TabApp({
 
   if (profile && profile.is_admin) {
     settings.items.push({
-      node: <Admin key={"admin"} />,
+      node: (
+        <Admin key={"admin"} />
+      ),
       icon: <GrUserAdmin />,
       name: "Admin"
     })

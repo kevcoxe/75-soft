@@ -47,7 +47,6 @@ export default function TabView ({
     <div className="h-full">
       <div className={`flex ${top ? "flex-col" : "flex-col-reverse"} h-full `}>
         <div className={`items-center content-center w-full pb-4 ${ top ? "mb-5 mt-2" : "mt-5 mb-2" }`}>
-          {/* <div className={`grid gap-1 px-1 h-16 ${items.length === 5 ? "grid-cols-5" : "grid-cols-4" }`}> */}
           <div className="z-50 btm-nav btm-nav-lg">
             { tabControls }
           </div>

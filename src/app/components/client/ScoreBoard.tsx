@@ -3,6 +3,7 @@
 import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
 import { useEffect, useState } from "react"
 import { BiShow, BiHide } from "react-icons/bi"
+import { motion } from "framer-motion"
 
 
 const ScoreTitle = () => {
@@ -96,7 +97,11 @@ export default function ScoreBoard() {
   }, [supabaseContext])
 
   return (
-    <>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: .3 }}
+    >
       <div className="flex flex-col p-4 m-2 border rounded-lg border-slate-800">
         <div className="grid items-center grid-cols-6">
           <div className="flex flex-col col-span-6">
@@ -117,6 +122,6 @@ export default function ScoreBoard() {
           </div>
         </div>
       </div>
-    </>
+    </motion.div>
   )
 }
