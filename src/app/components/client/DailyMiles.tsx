@@ -59,7 +59,10 @@ export default function DailyMiles({
   return (
     <div className="w-full card">
       <div className="card-body">
-        <h2 className="text-lg card-title">Miles Walked Today: { milesTracked !== undefined ? milesTracked : "loading..." }</h2>
+        <div className="flex items-center gap-2">
+          <h2 className="text-lg card-title">Miles Walked Today</h2>
+          <span className="badge badge-lg indicator-item badge-info">{ milesTracked && milesTracked }</span>
+        </div>
         <div className="justify-end card-actions">
           <div className="flex flex-grow join">
             <button disabled={isLoading} onClick={decrementMiles} className="flex-grow text-4xl btn join-item btn-error">
