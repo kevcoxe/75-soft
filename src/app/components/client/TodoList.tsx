@@ -107,6 +107,33 @@ export default function TodoList({
     <>
       {/* <WindowFocusHandler onFocus={getData} /> */}
       <div className="flex flex-col">
+        { (todosComplete && isOnCurrentDay) && (
+          <div className="flex flex-col col-span-6 px-2 mx-2 my-4 animate-pulse">
+            <button className="col-span-6 py-4 text-3xl text-white bg-black rounded-lg" onClick={handleCompleteDay}>
+              🎉 Complete Day 🎉
+            </button>
+          </div>
+        )}
+
+        { !isOnCurrentDay && (
+          <div className="mx-2 my-2 card bg-base-100">
+            <div className="card-body">
+              <h2 className="card-title">🎉 Congrats on finishing the day 🎉</h2>
+              <p>Come back tomorrow to complete your tasks.</p>
+            </div>
+          </div>
+        )}
+
+        { (!todosComplete && daysDiff > 1) && (
+          <div className="mx-2 my-2 card bg-warning text-warning-content">
+            <div className="card-body">
+              <h2 className="card-title">🤨 Are you behind in your tasks 🤨</h2>
+              <p>You have completed { profile.days_sucessful } days and are { daysDiff } days behind schedule.
+              If you have just not checked off your tasks, go ahead and catch up you are doing great!</p>
+            </div>
+          </div>
+        )}
+
         { todos && (
           <>
             { todos.map((todo: Todo, i: number) => {
