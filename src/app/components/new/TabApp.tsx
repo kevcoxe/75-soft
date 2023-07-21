@@ -18,7 +18,9 @@ import WindowFocusHandler from "@/app/components/client/WindowFocusHandler"
 import TabView from "./TabView"
 import { GrTask, GrUserAdmin } from "react-icons/gr"
 import { TbDeviceWatchStats } from "react-icons/tb"
-import { BsTrophy, BsGear } from "react-icons/bs"
+import { BsTrophy, BsGear, BsCalendarCheck } from "react-icons/bs"
+import { AnimatePresence } from 'framer-motion'
+import { BiWalk } from "react-icons/bi"
 
 
 export default function TabApp({
@@ -108,39 +110,56 @@ export default function TabApp({
 
   let settings = {
     items: [
-      { node: (!isLoading && user && profile && (
-        <>
-          <DailyMiles profile={profile}/>
-          <TodoList key={"todo list"} user={user} profile={profile}/>
-        </>
-      )), icon: <GrTask /> },
-      { node: (!isLoading && user && profile &&
-        <Stats
-          key={"stats"}
-          profile={profile}
-          startCollapsed={false}
-        />
-        ), icon: <TbDeviceWatchStats /> },
-      { node: <ScoreBoard key={"scoreboard"}/>, icon: <BsTrophy /> },
       { 
+        node: (!isLoading && user && profile && (
+          <>
+            <DailyMiles profile={profile}/>
+            <TodoList key={"todo list"} user={user} profile={profile}/>
+          </>
+        )),
+        icon: <GrTask />,
+        name: "Tasks"
+      },
+      {
+        node: (!isLoading && user && profile &&
+          <Stats
+            key={"stats"}
+            profile={profile}
+            startCollapsed={false}
+          />
+          ),
+          icon: <TbDeviceWatchStats />,
+          name: "Stats"
+      },
+      {
+        node: <ScoreBoard key={"scoreboard"}/>,
+        icon: <BsTrophy />,
+        name: "Rank"
+      },
+      {
         node: (!isLoading && user && profile && (
           <div className="px-1">
             <Logout redirectPath="/" className="py-2 mt-2 text-xl font-bold border-4 border-red-500 rounded-md"/>
             <PasswordReset />
           </div>
         )),
-        icon: <BsGear />
+        icon: <BsGear />,
+        name: "Settings"
       }
     ]
   }
 
   if (profile && profile.is_admin) {
-    settings.items.push({ node: <Admin key={"admin"} />, icon: <GrUserAdmin /> })
+    settings.items.push({
+      node: <Admin key={"admin"} />,
+      icon: <GrUserAdmin />,
+      name: "Admin"
+    })
   }
 
 
   return (
-    <>
+    <AnimatePresence>
       <WindowFocusHandler onFocus={getProfileData} />
       { isLoading && (
         <Skeleton />
@@ -163,14 +182,29 @@ export default function TabApp({
       { !isLoading && user && profile && (
         <TabView settings={settings}>
           { profile && (
-            <div className="w-full py-2 mb-1 text-center">
-              <span className="text-3xl">
-                Welcome: <span className="font-extrabold underline">{ profile.username }</span>
-              </span>
+            <div className="navbar bg-base-100">
+              <div className="flex-1">
+                <a className="text-xl normal-case btn btn-ghost">{ profile.username }</a>
+              </div>
+              <div className="flex-none gap-5 pr-4">
+                <div className="indicator">
+                  <BiWalk className="text-4xl" />
+                  <span className="badge badge-sm indicator-item badge-info">{ profile.miles_walked }</span>
+                </div>
+                <div className="indicator">
+                  <BsCalendarCheck className="text-4xl" />
+                  <span className="badge badge-sm indicator-item badge-info">{ profile.days_sucessful }</span>
+                </div>
+              </div>
             </div>
+            // <div className="w-full py-2 mb-1 text-center">
+            //   <span className="text-3xl">
+            //     Welcome: <span className="font-extrabold underline">{ profile.username }</span>
+            //   </span>
+            // </div>
           )}
         </TabView>
       )}
-    </>
+    </AnimatePresence>
   )
 }
