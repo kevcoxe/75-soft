@@ -60,7 +60,7 @@ export default function Todo ({
                 <span className="loading text-primary loading-ring loading-lg"></span>
               )}
               { !isLoading && (
-                <input type="checkbox" disabled={isDisabled} defaultChecked={todo.is_complete === true ? true : false} className="col-span-1 px-2 checkbox checkbox-info checkbox-lg" />
+                <input type="checkbox" disabled={isDisabled} checked={todo.is_complete === true ? true : false} className="col-span-1 px-2 checkbox checkbox-info checkbox-lg" />
               )}
 
               <div className="flex flex-col">
