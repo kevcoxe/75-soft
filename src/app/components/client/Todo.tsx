@@ -52,7 +52,7 @@ export default function Todo ({
         loading: { opacity: 0, x: "100%" },
       }}
     >
-      <button className="w-full text-start" onClick={isDisabled ? ()=>{} : handleTodo}>
+      <button className="w-full overflow-x-hidden text-start" onClick={isDisabled ? ()=>{} : handleTodo}>
         <div className="mx-2 my-2 shadow-xl card bg-base-100">
           <div className="card-body">
             <div className="flex items-center gap-4">

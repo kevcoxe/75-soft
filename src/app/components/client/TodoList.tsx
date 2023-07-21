@@ -106,7 +106,7 @@ export default function TodoList({
   return (
     <>
       {/* <WindowFocusHandler onFocus={getData} /> */}
-      <div className="flex flex-col">
+      <div className="flex flex-col overflow-x-hidden">
         { (todosComplete && isOnCurrentDay) && (
           <div className="flex flex-col col-span-6 px-2 mx-2 my-4 animate-pulse">
             <button className="col-span-6 py-4 text-3xl text-white bg-black rounded-lg" onClick={handleCompleteDay}>
