@@ -1,6 +1,5 @@
 import { UseAuthSessionContext } from "@/app/contexts/AuthSessionContext"
 import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
-import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { ImSpinner8 } from "react-icons/im"
 import { motion } from "framer-motion"
@@ -14,7 +13,6 @@ export default function PasswordReset () {
   const [ passwordError, setPasswordError ] = useState("")
   const [ isLoading, setIsLoading ] = useState(false)
 
-  const router = useRouter()
 
   const clearForm = () => {
     setNewPassword("")
@@ -50,10 +48,8 @@ export default function PasswordReset () {
       return
     }
 
-    userSessionContext.reloadFunc()
     clearForm()
-    router.refresh()
-    setIsLoading(false)
+    window.location.reload()
   }
 
   return (
@@ -64,7 +60,7 @@ export default function PasswordReset () {
     >
       <div className="flex flex-col w-full mt-4">
         <span className="text-2xl text-center">Password Reset</span>
-        <form className="flex flex-col gap-1" action={handleResetPassword}>
+        <div className="flex flex-col gap-1">
           <label htmlFor="newPassword" >New Password</label>
           <input className={`${passwordError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="newPassword" id="newPassword" autoComplete="New Password" disabled={isLoading} type="password" placeholder="newPassword" onChange={handlePasswordChange} value={newPassword}></input>
           { passwordError && (
@@ -77,7 +73,7 @@ export default function PasswordReset () {
             <span className="text-red-900">{ passwordError }</span>
           )}
 
-          <button type="submit" disabled={isLoading} className="py-2 mt-4 text-white bg-black rounded-md">
+          <button onClick={()=>handleResetPassword()} disabled={isLoading} className="py-2 mt-4 text-white bg-black rounded-md">
             { isLoading && (
               <ImSpinner8 className="mx-auto animate-spin" />
             )}
@@ -89,7 +85,7 @@ export default function PasswordReset () {
             )}
           </button>
 
-        </form>
+        </div>
       </div>
     </motion.div>
   )

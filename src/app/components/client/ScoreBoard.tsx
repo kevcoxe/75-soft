@@ -118,7 +118,7 @@ export default function ScoreBoard() {
               <>
                 { profiles.map((profile: Profile, i: number) => {
                   return (
-                    <tr key={i}>
+                    <tr key={"profile" + i}>
                       <th>{ i + 1 }</th>
                       <td>{ profile.username }</td>
                       <td>{ profile.score }</td>

@@ -1,25 +1,25 @@
 "use client"
 
-import { redirect } from 'next/navigation'
 import { motion } from "framer-motion"
+import { useState } from 'react'
 
 export default function Logout({
-  className = "",
-  textColor = "text-red-500",
   logoutPath = "/api/logout",
   logoutMethod = "DELETE",
   redirectPath = "/",
+  logoutFunc
 }: {
-  className?: string,
-  textColor?: string,
   logoutPath?: string,
   logoutMethod?: string,
   redirectPath?: string,
+  logoutFunc: ()=>void,
 }) {
 
-  const handleSignOut = async () => {
-    await fetch(logoutPath, { method: logoutMethod })
-    redirect(redirectPath)
+  const [ isLoading, setIsloading ] = useState(false)
+
+  const handleLogout = async () => {
+    setIsloading(true)
+    await logoutFunc()
   }
 
   return (
@@ -28,9 +28,15 @@ export default function Logout({
       animate={{ opacity: 1 }}
       transition={{ delay: .3 }}
     >
-      <form className="flex w-full" action={handleSignOut}>
-        <button type="submit" className={`w-full ${textColor} ${className}`}>Sign out</button>
-      </form>
+      <div className="flex w-full">
+        <button onClick={handleLogout} type="submit" className="w-full border-4 btn btn-outline btn-lg btn-error">
+          { isLoading && (
+            <span className="loading loading-spinner"></span>
+          )}
+          Sign out
+        </button>
+        {/* <button type="submit" className={`w-full ${textColor} ${className}`}>Sign out</button> */}
+      </div>
     </motion.div>
   )
 }

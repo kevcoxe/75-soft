@@ -34,7 +34,8 @@ export default function TabApp({
   const [ profile, setProfile ] = useState<Profile>()
   const [ user, setUser ] = useState<User>()
   const [ isLoading, setLoading ] = useState(true)
-  const [ modalOpen, setModelOpen ] = useState(false)
+  const [ settingModalOpen, setSettingModalOpen ] = useState(false)
+  const [ adminModalOpen, setAdminModalOpen ] = useState(false)
 
   const getProfileData = async () => {
     if (!supabaseContext || !userSessionContext) {
@@ -114,11 +115,20 @@ export default function TabApp({
       { 
         node: (!isLoading && user && profile && (
           <>
-            <TodoList key={"todo list"} user={user} profile={profile}/>
+            <TodoList key={"todolist"} user={user} profile={profile}/>
           </>
         )),
         icon: <GrTask />,
         name: "Tasks"
+      },
+      {
+        node: <>
+          { profile && (
+            <DailyMiles key={"dailymiles"} profile={profile}/>
+          )}
+        </>,
+        icon: <BiWalk />,
+        name: "Miles"
       },
       {
         node: (!isLoading && user && profile &&
@@ -130,7 +140,7 @@ export default function TabApp({
             />
           </>
         ),
-        icon: <TbDeviceWatchStats />,
+        icon: <TbDeviceWatchStats/>,
         name: "Stats"
       },
       {
@@ -139,28 +149,21 @@ export default function TabApp({
         ),
         icon: <BsTrophy />,
         name: "Rank"
-      },
-      {
-        node: (!isLoading && user && profile && (
-          <div className="px-1">
-            <Logout redirectPath="/" className="py-2 mt-2 text-xl font-bold border-4 border-red-500 rounded-md"/>
-            <PasswordReset />
-          </div>
-        )),
-        icon: <BsGear />,
-        name: "Settings"
       }
     ]
   }
 
-  if (profile && profile.is_admin) {
-    settings.items.push({
-      node: (
-        <Admin key={"admin"} />
-      ),
-      icon: <GrUserAdmin />,
-      name: "Admin"
-    })
+
+  const logoutFunc = async () => {
+    if (!supabaseContext || !userSessionContext) return
+
+    const { error } = await supabaseContext.auth.signOut()
+    if (error) {
+      console.log("failed to logout:", error)
+      return
+    }
+
+    window.location.reload()
   }
 
 
@@ -191,28 +194,51 @@ export default function TabApp({
             <>
               <div className="navbar bg-base-100">
                 <div className="items-center flex-1">
-                  <a className="text-xl normal-case btn btn-ghost">{ profile.username }</a>
+                  <a className="text-xl normal-case btn btn-ghost">
+                    { profile.username }
+                  </a>
                   <div className="badge badge-lg badge-primary">{ profile.score }p</div>
                 </div>
                 <div className="flex-none gap-5 pr-4">
-                  <button onClick={()=>setModelOpen(!modalOpen)}>
+                  {/* <button onClick={()=>setModelOpen(!modalOpen)}>
                     <div className="indicator">
                       <BiWalk className="text-4xl" />
                       <span className="badge badge-sm indicator-item badge-info">{ profile.miles_walked }</span>
                     </div>
+                  </button> */}
+                  <button onClick={()=>setSettingModalOpen(true)} className="text-xl btn btn-square btn-ghost">
+                    <BsGear />
                   </button>
-                  <div className="indicator">
-                    <BsCalendarCheck className="text-4xl" />
-                    <span className="badge badge-sm indicator-item badge-info">{ profile.days_sucessful }</span>
-                  </div>
+
+                  { profile && profile.is_admin && (
+                    <button onClick={()=>setAdminModalOpen(true)} className="text-xl btn btn-square btn-ghost">
+                      <GrUserAdmin />
+                    </button>
+                  )}
                 </div>
               </div>
-              <dialog id="my_modal_1" className={`modal ${modalOpen ? "modal-open" : ""}`}>
+
+              <dialog id="setting_modal" className={`modal ${settingModalOpen ? "modal-open" : ""}`}>
                 <form method="dialog" className="modal-box">
-                  <button onClick={()=>setModelOpen(!modalOpen)} className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
-                  <DailyMiles profile={profile}/>
+                  <button onClick={()=>setSettingModalOpen(false)} className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
+                  <div className="px-1 pt-4">
+                    <PasswordReset />
+                    <div className="divider"></div>
+                    <Logout redirectPath="/" logoutFunc={logoutFunc} />
+                  </div>
                 </form>
               </dialog>
+
+              { profile && profile.is_admin && (
+                <dialog id="admin_modal" className={`modal ${adminModalOpen ? "modal-open" : ""}`}>
+                  <form method="dialog" className="modal-box">
+                    <button onClick={()=>setAdminModalOpen(false)} className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
+                    <div className="px-1 pt-4">
+                      <Admin />
+                    </div>
+                  </form>
+                </dialog>
+              )}
             </>
           )}
         </TabView>

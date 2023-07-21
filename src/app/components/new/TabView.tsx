@@ -54,7 +54,7 @@ export default function TabView ({
 
         <div className={`flex ${childrenOnTop ? "flex-col" : "flex-col-reverse"} flex-grow overflow-hidden mb-10`}>
           { children }
-          <div className="overflow-y-auto">
+          <div className="my-auto overflow-y-auto">
             { items[currentTab].node }
           </div>
         </div>

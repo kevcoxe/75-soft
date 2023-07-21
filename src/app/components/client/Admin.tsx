@@ -114,41 +114,40 @@ export default function Admin() {
       animate={{ opacity: 1 }}
       transition={{ delay: .3 }}
     >
-      <div className="flex flex-col p-4 m-2 border rounded-lg border-slate-800">
-        <div className={`grid items-center grid-cols-6 ${isLoading ? "animate-pulse" : ""}`}>
-          <div className="flex flex-col col-span-6">
-            <div className="grid grid-cols-6">
-              <button className="grid items-center grid-cols-6 col-span-6 text-3xl" onClick={handleCollapse}>
-                <span className="col-span-5 text-2xl font-bold">Admin page</span>
-                <span className="col-span-1">{ collapse ? <BiShow /> : <BiHide /> }</span>
-              </button>
-            </div>
-            <div className={`${collapse ? "hidden" : ""}`}>
-              { profiles?.map((profile: Profile, i: number) => {
+      <table className="table table-zebra">
+        {/* head */}
+        <thead>
+          <tr>
+            <th>username</th>
+            <th>Tasks</th>
+          </tr>
+        </thead>
+        <tbody>
+          { profiles && (
+            <>
+              { profiles.map((profile: Profile, i: number) => {
                 const userTodos = todos?.filter((todo: Todo) => todo.user_id === profile.user_id)
                 return (
-                  <div className="flex flex-col" key={i}>
-                    <div className="flex justify-between">
-                      <span>{ profile.username }</span>
-                      <span>{ profile.score }</span>
-                      <span>{ profile.days_sucessful }</span>
-                      <span>{ profile.miles_walked }</span>
-                    </div>
-                    { userTodos?.map((todo: Todo, j: number) => {
-                      return (
-                        <div className="flex flex-col ml-4" key={j}>
-                          {/* <span className={`${todo.is_complete ? "text-green-700" : "text-red-700"}`}>{ todo.name }</span> */}
-                          <span>{ todo.is_complete ? "✅" : "❌" } { todo.name }</span>
-                        </div>
-                      )
-                    })}
-                  </div>
+                  <>
+                    <tr key={"profile" + i}>
+                      <td>{ profile.username }</td>
+                      <td>
+                        <ul>
+                          { userTodos?.map((todo: Todo, j: number) => {
+                            return (
+                              <li key={"todo" + i + j}>{ todo.is_complete ? "✅" : "❌" } { todo.name }</li>
+                            )
+                          })}
+                        </ul>
+                      </td>
+                    </tr>
+                  </>
                 )
               })}
-            </div>
-          </div>
-        </div>
-      </div>
+            </>
+          )}
+        </tbody>
+      </table>
     </motion.div>
   )
 }

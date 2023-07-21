@@ -127,7 +127,7 @@ export default function TodoList({
         { (!todosComplete && daysDiff > 1) && (
           <div className="mx-2 my-2 card bg-warning text-warning-content">
             <div className="card-body">
-              <h2 className="card-title">🤨 Are you behind in your tasks 🤨</h2>
+              <h2 className="text-lg card-title">🤨 Are you behind in your tasks 🤨</h2>
               <p>You have completed { profile.days_sucessful } days and are { daysDiff } days behind schedule.
               If you have just not checked off your tasks, go ahead and catch up you are doing great!</p>
             </div>
@@ -139,12 +139,12 @@ export default function TodoList({
             { todos.map((todo: Todo, i: number) => {
               return (
                 <motion.div
-                  key={i}
+                  key={"todo" + i}
                   initial={{ opacity: 0, x: "-100%" }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: .2 + (.1 * i) }}
                 >
-                  <Todo key={i} todo={todo} disabled={!isOnCurrentDay}/>
+                  <Todo todo={todo} disabled={!isOnCurrentDay}/>
                 </motion.div>
               )
             })}
