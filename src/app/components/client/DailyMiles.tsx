@@ -4,6 +4,7 @@ import { POINT_PER_MILE } from "@/app/consts"
 import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
 import useDebounce from "@/utils/debounce"
 import { useEffect, useState } from "react"
+import { BiWalk } from "react-icons/bi"
 
 export default function DailyMiles({
   profile
@@ -54,6 +55,34 @@ export default function DailyMiles({
   const incrementMiles = async () => {
     if (milesTracked !== undefined) setMiles(milesTracked + 1)
   }
+
+  return (
+    <div className="w-full px-4 shadow-xl card bg-base-100">
+      <div className="card-body">
+        <h2 className="card-title">Miles Walked Today: { milesTracked !== undefined ? milesTracked : "loading..." }</h2>
+        <div className="justify-end card-actions">
+          <div className="flex flex-grow join">
+            <button onClick={decrementMiles} className="flex-grow text-4xl btn join-item btn-error">
+              { isLoading && (
+                <span className="loading loading-ring"></span>
+              )}
+              { !isLoading && (
+                <BiWalk className="text-4xl -rotate-180 -scale-y-100" />
+              )}
+            </button>
+            <button onClick={incrementMiles} className="flex-grow text-4xl btn join-item btn-success">
+              { isLoading && (
+                <span className="loading loading-ring"></span>
+              )}
+              { !isLoading && (
+                <BiWalk className="text-4xl" />
+              )}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 
   return (
     <>

@@ -113,6 +113,7 @@ export default function TabApp({
       { 
         node: (!isLoading && user && profile && (
           <>
+            <DailyMiles profile={profile}/>
             <TodoList key={"todo list"} user={user} profile={profile}/>
           </>
         )),
@@ -127,7 +128,6 @@ export default function TabApp({
               profile={profile}
               startCollapsed={false}
             />
-            <DailyMiles profile={profile}/>
           </>
         ),
         icon: <TbDeviceWatchStats />,
