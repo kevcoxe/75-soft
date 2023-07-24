@@ -151,7 +151,7 @@ export default function Login () {
 
         <form className="flex flex-col gap-1" action={loginAction}>
           <label htmlFor="email" >Email</label>
-          <input className={`${emailError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="email" id="email" autoComplete="email" disabled={isLoading} placeholder="email" onChange={handleEmailChange} value={email}></input>
+          <input className={`${emailError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="email" id="email" autoComplete="email" type="email" disabled={isLoading} placeholder="email" onChange={handleEmailChange} value={email}></input>
           { emailError && (
             <span className="text-red-900">{ emailError }</span>
           )}
