@@ -14,7 +14,7 @@ export default function DailyMiles({
 }) {
 
 
-  const [ isLoading, setLoading ] = useState(true)
+  const [ isLoading, setLoading ] = useState(false)
   const [ profile, setProfile ] = useState<Profile>()
   const [ milesTracked, setMiles ] = useState<number>()
   const debouncedMiles = useDebounce(milesTracked, 500)
@@ -71,25 +71,27 @@ export default function DailyMiles({
   // wait for user to stop clicking before submitting
   useEffect(() => {
     if (!session || !profile) return
-    if (debouncedMiles !== undefined) {
-      const updateMiles = async () => {
-        setLoading(true)
-        const score_increment = (debouncedMiles - profile.daily_miles) * POINT_PER_MILE
-        const mile_increment = debouncedMiles - profile.daily_miles
-        const { error } = await supabase
-          .rpc('incrementDailyMiles', {
-            userid: profile.user_id,
-            score_increment,
-            mile_count: debouncedMiles
-          })
+    if (debouncedMiles === undefined) return
 
-        if (error) {
-          console.log(error)
-        }
-        setLoading(false)
+    // do this to avoid a strange loading on first load
+    const score_increment = (debouncedMiles - profile.daily_miles) * POINT_PER_MILE
+    if (score_increment === 0) return
+
+    const updateMiles = async () => {
+      setLoading(true)
+      const { error } = await supabase
+        .rpc('incrementDailyMiles', {
+          userid: profile.user_id,
+          score_increment,
+          mile_count: debouncedMiles
+        })
+
+      if (error) {
+        console.log(error)
       }
-      updateMiles()
+      setLoading(false)
     }
+    updateMiles()
   }, [debouncedMiles])
 
   const decrementMiles = async () => {
