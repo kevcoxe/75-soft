@@ -159,7 +159,7 @@ export default function TodoList({
         { (profile && !todosComplete && daysDiff > 1) && (
           <div className="mx-2 my-2 card bg-warning text-warning-content">
             <div className="text-center card-body">
-              <h2 className="mx-auto text-lg card-title">🤨 Are you behind in your tasks 🤨</h2>
+              <h2 className="mx-auto text-lg card-title">🤨 Behind on tasks? 🤨</h2>
               <p>You have completed { profile.days_sucessful } days and are { daysDiff } days behind schedule.
               If you have just not checked off your tasks, go ahead and catch up you are doing great!</p>
             </div>
