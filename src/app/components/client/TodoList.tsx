@@ -149,17 +149,17 @@ export default function TodoList({
 
         { !isLoading && !isOnCurrentDay && (
           <div className="mx-2 my-2 card bg-base-100">
-            <div className="card-body">
-              <h2 className="card-title">🎉 Congrats on finishing the day 🎉</h2>
-              <p>Come back tomorrow to complete your tasks.</p>
+            <div className="text-center card-body">
+              <h2 className="mx-auto card-title">🎉 Congrats 🎉</h2>
+              <p>You finished the day! Come back tomorrow to complete your tasks.</p>
             </div>
           </div>
         )}
 
         { (profile && !todosComplete && daysDiff > 1) && (
           <div className="mx-2 my-2 card bg-warning text-warning-content">
-            <div className="card-body">
-              <h2 className="text-lg card-title">🤨 Are you behind in your tasks 🤨</h2>
+            <div className="text-center card-body">
+              <h2 className="mx-auto text-lg card-title">🤨 Are you behind in your tasks 🤨</h2>
               <p>You have completed { profile.days_sucessful } days and are { daysDiff } days behind schedule.
               If you have just not checked off your tasks, go ahead and catch up you are doing great!</p>
             </div>
