@@ -35,6 +35,8 @@ export default function Login () {
 
 
   const signUp = async () => {
+    setIsLoading(true)
+
     await supabase.auth.signUp({
       email,
       password,
@@ -43,7 +45,6 @@ export default function Login () {
       },
     })
 
-    setIsLoading(true)
     afterSignUp()
   }
 
@@ -57,6 +58,8 @@ export default function Login () {
 
     if (email === "" || password === "") return
 
+    setIsLoading(true)
+
     setEmailError("")
     setPasswordError("")
 
@@ -65,7 +68,6 @@ export default function Login () {
       password,
     })
 
-    setIsLoading(true)
     clearForm()
     router.refresh()
     setIsLoading(false)
@@ -144,9 +146,9 @@ export default function Login () {
                 <span className="text-red-900">{ passwordError }</span>
               )}
 
-              <button type="submit" disabled={isLoading} className="py-2 mt-4 text-center text-white bg-black rounded-md">
+              <button type="submit" disabled={isLoading} className="py-2 mt-4 text-center text-white bg-black rounded-md btn">
                 { isLoading && (
-                  <ImSpinner8 className="mx-auto animate-spin" />
+                  <span className="loading loading-spinner"></span>
                 )}
 
                 { !isLoading && (
@@ -159,9 +161,9 @@ export default function Login () {
           )}
 
           { showForgotPassword && (
-            <button type="submit" disabled={isLoading} className="py-2 mt-4 text-white bg-black rounded-md">
+            <button type="submit" disabled={isLoading} className="py-2 mt-4 text-white bg-black rounded-md btn">
               { isLoading && (
-                <ImSpinner8 className="mx-auto animate-spin" />
+                <span className="loading loading-spinner"></span>
               )}
 
               { !isLoading && (
