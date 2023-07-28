@@ -1,38 +1,82 @@
 "use client"
 
 import { POINT_PER_MILE } from "@/app/consts"
-import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
 import useDebounce from "@/utils/debounce"
+import { Session } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
 import { BiWalk } from "react-icons/bi"
+import { supabase } from "@/utils/supabase"
 
 export default function DailyMiles({
-  profile
+  session
 }: {
-  profile: Profile
+  session: Session
 }) {
 
-  const supabaseContext = UseSupabaseContext()
 
-  const [ isLoading, setIsLoading ] = useState(true)
-  const [ milesTracked, setMiles ] = useState<number>(profile.daily_miles)
+  const [ isLoading, setLoading ] = useState(true)
+  const [ profile, setProfile ] = useState<Profile>()
+  const [ milesTracked, setMiles ] = useState<number>()
   const debouncedMiles = useDebounce(milesTracked, 500)
 
+
+  const getProfile = async () => {
+    try {
+      if (!session?.user) throw new Error("No user on the session!")
+
+      let { data, error, status } = await supabase
+        .from('profiles')
+        .select()
+        .match({
+          user_id: session.user.id
+        })
+        .single()
+
+      if (error && status !== 406) {
+        throw error
+      }
+
+      if (data) {
+        setProfile(data)
+        setMiles(data.daily_miles)
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message)
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
   useEffect(() => {
-    setIsLoading(true)
-    setMiles(profile.daily_miles)
-    setIsLoading(false)
-  }, [profile.daily_miles])
+    setLoading(true)
+    getProfile()
+
+    const profileChannel = supabase
+      .channel('daily miles profile changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'profiles'
+      }, () => {
+        getProfile()
+      }).subscribe()
+
+    return () => {
+      supabase.removeChannel(profileChannel)
+    }
+  }, [session])
 
   // wait for user to stop clicking before submitting
   useEffect(() => {
-    if (!supabaseContext) return
+    if (!session || !profile) return
     if (debouncedMiles !== undefined) {
       const updateMiles = async () => {
-        setIsLoading(true)
+        setLoading(true)
         const score_increment = (debouncedMiles - profile.daily_miles) * POINT_PER_MILE
         const mile_increment = debouncedMiles - profile.daily_miles
-        const { error } = await supabaseContext
+        const { error } = await supabase
           .rpc('incrementDailyMiles', {
             userid: profile.user_id,
             score_increment,
@@ -42,7 +86,7 @@ export default function DailyMiles({
         if (error) {
           console.log(error)
         }
-        setIsLoading(false)
+        setLoading(false)
       }
       updateMiles()
     }

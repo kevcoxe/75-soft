@@ -1,12 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
-import { UseAuthSessionContext } from "@/app/contexts/AuthSessionContext"
-import { User } from "@supabase/supabase-js"
-import Login from "@/app/components/client/Login"
+import { Session, User } from "@supabase/supabase-js"
 import Logout from "@/app/components/client/Logout"
-import Skeleton from "@/app/components/client/Skeleton"
 import Stats from "@/app/components/client/Stats"
 import DailyMiles from "@/app/components/client/DailyMiles"
 import TodoList from "@/app/components/client/TodoList"
@@ -14,86 +10,72 @@ import ScoreBoard from "@/app/components/client/ScoreBoard"
 import Welcome from "@/app/components/client/Welcome"
 import Admin from "@/app/components/client/Admin"
 import PasswordReset from "@/app/components/client/PasswordReset"
-import WindowFocusHandler from "@/app/components/client/WindowFocusHandler"
 import TabView from "./TabView"
 import { GrTask, GrUserAdmin } from "react-icons/gr"
 import { TbDeviceWatchStats } from "react-icons/tb"
-import { BsTrophy, BsGear, BsCalendarCheck } from "react-icons/bs"
+import { BsTrophy, BsGear } from "react-icons/bs"
 import { AnimatePresence } from 'framer-motion'
 import { BiWalk } from "react-icons/bi"
+import { supabase } from "@/utils/supabase"
 
 
 export default function TabApp({
-  children
+  children,
+  session,
 }: {
-  children: React.ReactNode 
+  children: React.ReactNode,
+  session: Session,
 }) {
-  const supabaseContext = UseSupabaseContext()
-  const userSessionContext = UseAuthSessionContext()
 
   const [ profile, setProfile ] = useState<Profile>()
-  const [ user, setUser ] = useState<User>()
   const [ isLoading, setLoading ] = useState(true)
   const [ settingModalOpen, setSettingModalOpen ] = useState(false)
   const [ adminModalOpen, setAdminModalOpen ] = useState(false)
 
-  const getProfileData = async () => {
-    if (!supabaseContext || !userSessionContext) {
-      setLoading(false)
-      return
-    }
-
-    if (!userSessionContext.user) {
-      return 
-    }
-
+  const getProfile = async () => {
     try {
-      const { data } = await supabaseContext
+      if (!session?.user) throw new Error("No user on the session!")
+
+      let { data, error, status } = await supabase
         .from('profiles')
         .select()
         .match({
-          user_id: userSessionContext.user.id 
+          user_id: session.user.id
         })
         .single()
 
-      if (!data) {
-        setLoading(false)
-        return
+      if (error && status !== 406) {
+        throw error
       }
 
-      setProfile(data)
-      setLoading(false)
+      if (data) {
+        setProfile(data)
+      }
     } catch (error) {
-      console.log("error:", error)
+      if (error instanceof Error) {
+        console.error(error.message)
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
   const getData = async () => {
-    if (!supabaseContext || !userSessionContext) {
-      setLoading(false)
-      return
-    }
-
-    if (!userSessionContext.user) {
-      return 
-    }
-
-    setUser(userSessionContext.user)
-
-    await getProfileData()
+    if (!session) return
+    await getProfile()
   }
 
 
   useEffect(() => {
     setLoading(true)
     getData()
-  }, [userSessionContext.user])
+  }, [session])
 
 
   useEffect(() => {
-    if (!supabaseContext) return
+    if (!session) return
 
-    const channel = supabaseContext
+    const channel = supabase
       .channel('profile changes')
       .on('postgres_changes', {
         event: '*',
@@ -104,18 +86,18 @@ export default function TabApp({
       }).subscribe()
 
     return () => {
-      supabaseContext.removeChannel(channel)
+      supabase.removeChannel(channel)
     }
-  }, [supabaseContext])
+  }, [supabase])
 
 
 
   let settings = {
     items: [
       { 
-        node: (!isLoading && user && profile && (
+        node: (!isLoading && session && profile && (
           <>
-            <TodoList key={"todolist"} user={user} profile={profile}/>
+            <TodoList key={"todolist"} session={session} />
           </>
         )),
         icon: <GrTask />,
@@ -124,28 +106,27 @@ export default function TabApp({
       {
         node: <>
           { profile && (
-            <DailyMiles key={"dailymiles"} profile={profile}/>
+            <DailyMiles key={"dailymiles"} session={session} />
           )}
         </>,
         icon: <BiWalk />,
         name: "Miles"
       },
       {
-        node: (!isLoading && user && profile &&
+        node: (!isLoading && session && profile &&
           <>
             <Stats
               key={"stats"}
-              profile={profile}
-              startCollapsed={false}
+              session={session}
             />
           </>
         ),
-        icon: <TbDeviceWatchStats/>,
+        icon: <TbDeviceWatchStats />,
         name: "Stats"
       },
       {
         node: (
-          <ScoreBoard key={"scoreboard"}/>
+          <ScoreBoard key={"scoreboard"} session={session} />
         ),
         icon: <BsTrophy />,
         name: "Rank"
@@ -155,9 +136,9 @@ export default function TabApp({
 
 
   const logoutFunc = async () => {
-    if (!supabaseContext || !userSessionContext) return
+    if (!session) return
 
-    const { error } = await supabaseContext.auth.signOut()
+    const { error } = await supabase.auth.signOut()
     if (error) {
       console.log("failed to logout:", error)
       return
@@ -169,26 +150,13 @@ export default function TabApp({
 
   return (
     <AnimatePresence>
-      <WindowFocusHandler onFocus={getProfileData} />
-      { isLoading && (
-        <Skeleton />
-      )}
-
-      { !isLoading && !user && (
+      { !isLoading && session && !profile && (
         <>
-          <div className="px-1 py-2 mx-2 rounded">
-            <Login />
-          </div>
+          <Welcome session={session}/>
         </>
       )}
 
-      { !isLoading && user && !profile && (
-        <>
-          <Welcome />
-        </>
-      )}
-
-      { !isLoading && user && profile && (
+      { !isLoading && session && profile && (
         <TabView settings={settings}>
           { profile && (
             <>
@@ -200,12 +168,6 @@ export default function TabApp({
                   <div className="badge badge-lg badge-primary">{ profile.score }p</div>
                 </div>
                 <div className="flex-none gap-5 pr-4">
-                  {/* <button onClick={()=>setModelOpen(!modalOpen)}>
-                    <div className="indicator">
-                      <BiWalk className="text-4xl" />
-                      <span className="badge badge-sm indicator-item badge-info">{ profile.miles_walked }</span>
-                    </div>
-                  </button> */}
                   <button onClick={()=>setSettingModalOpen(true)} className="text-xl btn btn-square btn-ghost">
                     <BsGear />
                   </button>
@@ -222,7 +184,7 @@ export default function TabApp({
                 <form method="dialog" className="modal-box">
                   <button onClick={()=>setSettingModalOpen(false)} className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
                   <div className="px-1 pt-4">
-                    <PasswordReset />
+                    <PasswordReset session={session}/>
                     <div className="divider"></div>
                     <Logout redirectPath="/" logoutFunc={logoutFunc} />
                   </div>
@@ -234,7 +196,7 @@ export default function TabApp({
                   <form method="dialog" className="modal-box">
                     <button onClick={()=>setAdminModalOpen(false)} className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
                     <div className="px-1 pt-4">
-                      <Admin />
+                      <Admin session={session} />
                     </div>
                   </form>
                 </dialog>

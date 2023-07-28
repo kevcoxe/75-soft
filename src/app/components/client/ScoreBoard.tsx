@@ -1,8 +1,9 @@
 "use client"
 
-import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
+import { supabase } from "@/utils/supabase"
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
+import { Session } from "@supabase/supabase-js"
 
 
 const ScoreTitle = () => {
@@ -35,65 +36,61 @@ const ScoreRow = ({
   )
 }
 
-export default function ScoreBoard() {
-  const supabaseContext = UseSupabaseContext()
+export default function ScoreBoard({
+  session,
+} : {
+  session: Session
+}) {
   const [ collapse, setCollapse ] = useState(false)
   const [ isLoading, setLoading ] = useState(true)
   const [ profiles, setProfiles ] = useState<Profile[]>()
 
-  const handleCollapse = () => {
-    setCollapse(!collapse)
-  }
 
-
-  const getData = async () => {
-    if (!supabaseContext) {
-      setLoading(false)
-      return
-    }
-
+  const getProfiles = async () => {
     try {
-      const { data } = await supabaseContext
+      let { data, error, status } = await supabase
         .from('profiles')
         .select()
         .order('score', { ascending: false })
 
-      if (!data) {
-        setLoading(false)
-        return
+      if (error && status !== 406) {
+        throw error
       }
 
-      setProfiles(data)
-
-      setLoading(false)
+      if (data) {
+        setProfiles(data)
+      }
     } catch (error) {
-      console.log("error:", error)
+      if (error instanceof Error) {
+        console.error(error.message)
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
-
   useEffect(() => {
     setLoading(true)
-    getData()
-  }, [])
+    getProfiles()
 
-
-  useEffect(() => {
-    if (!supabaseContext) return
-    const channel = supabaseContext
-      .channel('scoreboard changes')
+    const profileChannel = supabase
+      .channel('daily miles profile changes')
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
         table: 'profiles'
       }, () => {
-        getData()
+        getProfiles()
       }).subscribe()
 
     return () => {
-      supabaseContext.removeChannel(channel)
+      supabase.removeChannel(profileChannel)
     }
-  }, [supabaseContext])
+  }, [session])
+
+  const handleCollapse = () => {
+    setCollapse(!collapse)
+  }
 
   return (
     <motion.div

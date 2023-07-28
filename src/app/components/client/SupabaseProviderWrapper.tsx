@@ -14,26 +14,35 @@ export default function SupabaseProviderWrapper({ children }: { children: React.
   const updateLoadUser = () => {
     setLoadUser(!loadUser)
   }
+
   const [ authContext, setAuthContext ] = useState<AuthSessionContextInterface>({
     user: undefined,
     reload: loadUser,
     reloadFunc: updateLoadUser
   } as AuthSessionContextInterface)
 
+  const getUser = async () => {
+    console.log("getting user")
+
+    const newSupabase = createClientComponentClient<Database>()
+
+    const {
+      data: { session }
+    } = await newSupabase.auth.getSession()
+
+    setSupabase(newSupabase)
+
+    if (!session) return
+    setAuthContext({...authContext, user: session?.user})
+  }
+
   useEffect(() => {
-    const getUser = async () => {
-      const supabase = createClientComponentClient<Database>()
-      setSupabase(supabase)
-
-      const {
-        data: { session }
-      } = await supabase.auth.getSession()
-
-      if (!session) return
-      setAuthContext({...authContext, user: session?.user})
-    }
     getUser()
   }, [loadUser])
+
+  useEffect(() => {
+    getUser()
+  }, [])
 
   return (
     <SupabaseContextProvider supabase={supabase}>

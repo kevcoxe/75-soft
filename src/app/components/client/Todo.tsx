@@ -1,9 +1,9 @@
 "use client"
 
 import { POINT_PER_TASK } from "@/app/consts"
-import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
 import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
+import { supabase } from "@/utils/supabase"
 
 export default function Todo ({
   todo,
@@ -12,8 +12,6 @@ export default function Todo ({
   todo: Todo,
   disabled: boolean
 }) {
-  const supabaseContext = UseSupabaseContext()
-  const [ collapse, setCollapse ] = useState(false)
   const [ isLoading, setIsLoading ] = useState(false)
   const [ isDisabled, setIsDisabled ] = useState(disabled)
 
@@ -22,10 +20,9 @@ export default function Todo ({
   }, [disabled])
 
   const handleTodo = async () => {
-    if (!supabaseContext) return
     setIsLoading(true)
     const newCompleteState = !todo.is_complete
-    const { error: todoError } = await supabaseContext
+    const { error: todoError } = await supabase
       .from('todos')
       .update({ 
         is_complete: newCompleteState,
@@ -34,7 +31,7 @@ export default function Todo ({
       .eq('id', todo.id)
 
       const score_increment = newCompleteState ? POINT_PER_TASK : POINT_PER_TASK * -1
-      const { error: scoreError } = await supabaseContext
+      const { error: scoreError } = await supabase
         .rpc('incrementScore', {
           userid: todo.user_id,
           score_increment
@@ -60,7 +57,7 @@ export default function Todo ({
                 <span className="loading text-primary loading-ring loading-lg"></span>
               )}
               { !isLoading && (
-                <input type="checkbox" disabled={isDisabled} checked={todo.is_complete === true ? true : false} className="col-span-1 px-2 checkbox checkbox-info checkbox-lg" />
+                <input type="checkbox" disabled={isDisabled} readOnly checked={todo.is_complete === true ? true : false} className="col-span-1 px-2 checkbox checkbox-info checkbox-lg" />
               )}
 
               <div className="flex flex-col">

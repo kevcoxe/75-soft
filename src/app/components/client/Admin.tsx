@@ -1,55 +1,47 @@
 "use client"
 
-import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
 import { useEffect, useState } from "react"
-import { BiShow, BiHide } from "react-icons/bi"
 import { motion } from "framer-motion"
+import { supabase } from "@/utils/supabase"
+import { Session } from "@supabase/supabase-js"
 
-export default function Admin() {
-  const supabaseContext = UseSupabaseContext()
+export default function Admin({
+  session,
+} : {
+  session: Session
+}) {
 
   const [ todos, setTodos ] = useState<Todo[]>()
   const [ profiles, setProfiles ] = useState<Profile[]>()
 
   const [ isLoading, setLoading ] = useState(true)
-  const [ collapse, setCollapse ] = useState(false)
-
-  const handleCollapse = () => {
-    setCollapse(!collapse)
-  }
 
   const getProfiles = async () => {
-    if (!supabaseContext) {
-      setLoading(false)
-      return
-    }
-
     try {
-      const { data } = await supabaseContext
+      let { data, error, status } = await supabase
         .from('profiles')
         .select()
         .order('score', { ascending: false })
 
-      if (!data) {
-        setLoading(false)
-        return
+      if (error && status !== 406) {
+        throw error
       }
 
-      setProfiles(data)
-      setLoading(false)
+      if (data) {
+        setProfiles(data)
+      }
     } catch (error) {
-      console.log("error:", error)
+      if (error instanceof Error) {
+        console.error(error.message)
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
   const getTodos = async () => {
-    if (!supabaseContext) {
-      setLoading(false)
-      return
-    }
-
     try {
-      const { data } = await supabaseContext
+      const { data } = await supabase
         .from('todos')
         .select()
         .order('is_complete', { ascending: false })
@@ -74,8 +66,7 @@ export default function Admin() {
   }, [])
 
   useEffect(() => {
-    if (!supabaseContext) return
-    const channel = supabaseContext
+    const channel = supabase
       .channel('admin profile changes')
       .on('postgres_changes', {
         event: '*',
@@ -86,13 +77,12 @@ export default function Admin() {
       }).subscribe()
 
     return () => {
-      supabaseContext.removeChannel(channel)
+      supabase.removeChannel(channel)
     }
-  }, [supabaseContext])
+  }, [session])
 
   useEffect(() => {
-    if (!supabaseContext) return
-    const channel = supabaseContext
+    const channel = supabase
       .channel('admin todos changes')
       .on('postgres_changes', {
         event: '*',
@@ -103,9 +93,9 @@ export default function Admin() {
       }).subscribe()
 
     return () => {
-      supabaseContext.removeChannel(channel)
+      supabase.removeChannel(channel)
     }
-  }, [supabaseContext])
+  }, [session])
 
 
   return (

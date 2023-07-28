@@ -1,13 +1,16 @@
-import { UseAuthSessionContext } from "@/app/contexts/AuthSessionContext"
-import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
+"use client"
+
 import { useState } from "react"
 import { ImSpinner8 } from "react-icons/im"
 import { motion } from "framer-motion"
+import { supabase } from "@/utils/supabase"
+import { Session } from "@supabase/supabase-js"
 
-export default function PasswordReset () {
-  const supabaseContext = UseSupabaseContext()
-  const userSessionContext = UseAuthSessionContext()
-
+export default function PasswordReset ({
+  session,
+} : {
+  session: Session
+}) {
   const [ newPassword, setNewPassword ] = useState("")
   const [ passwordConfirm, setPasswordConfirm ] = useState("")
   const [ passwordError, setPasswordError ] = useState("")
@@ -31,7 +34,8 @@ export default function PasswordReset () {
   }
 
   const handleResetPassword = async () => {
-    if (!supabaseContext || !userSessionContext) return
+    if (!session) return
+
     if (!newPassword || !passwordConfirm) return
 
     if (newPassword !== passwordConfirm) {
@@ -40,7 +44,7 @@ export default function PasswordReset () {
     }
 
     setIsLoading(true)
-    const { error } = await supabaseContext.auth.updateUser({password: newPassword})
+    const { error } = await supabase.auth.updateUser({password: newPassword})
 
     if (error) {
       console.log(error)
@@ -62,13 +66,13 @@ export default function PasswordReset () {
         <span className="text-2xl text-center">Password Reset</span>
         <div className="flex flex-col gap-1">
           <label htmlFor="newPassword" >New Password</label>
-          <input className={`${passwordError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="newPassword" id="newPassword" autoComplete="New Password" disabled={isLoading} type="password" placeholder="newPassword" onChange={handlePasswordChange} value={newPassword}></input>
+          <input className={`${passwordError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="new-password" id="new-password" autoComplete="new-password" disabled={isLoading} type="password" placeholder="newPassword" onChange={handlePasswordChange} value={newPassword}></input>
           { passwordError && (
             <span className="text-red-900">{ passwordError }</span>
           )}
 
           <label htmlFor="passwordConfirm">New Password Confirmation</label>
-          <input className={`${passwordError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="newPasswordConfirm" id="newPasswordConfirm" autoComplete="New Password Confirmation" disabled={isLoading} placeholder="newPasswordConfirm" type="password" onChange={handlePasswordConfirmChange} value={passwordConfirm}></input>
+          <input className={`${passwordError ? "border-2 border-rose-500" : ""} text-black border border-black rounded-lg px-4 py-2`} name="confirm-password" id="confirm-password" autoComplete="new-password" disabled={isLoading} placeholder="newPasswordConfirm" type="password" onChange={handlePasswordConfirmChange} value={passwordConfirm}></input>
           { passwordError && (
             <span className="text-red-900">{ passwordError }</span>
           )}

@@ -1,25 +1,20 @@
 "use client"
 
-import { UseAuthSessionContext } from "@/app/contexts/AuthSessionContext"
-import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
+import { Session } from "@supabase/supabase-js"
+import { supabase } from "@/utils/supabase"
 
-export default function Welcome() {
-  const supabaseContext = UseSupabaseContext()
-  const userSessionContext = UseAuthSessionContext()
-
+export default function Welcome({
+  session,
+} : {
+  session: Session
+}) {
   const [ username, setUsername ] = useState<string>("")
   const [ usernameError, setUsernameError ] = useState<string>("")
   const [ isLoading, setIsLoading ] = useState(false)
 
   const router = useRouter()
-
-  useEffect(() => {
-    if (!supabaseContext) {
-      setIsLoading(true)
-    }
-  }, [supabaseContext])
 
   const clearForm = () => {
     setUsername("")
@@ -28,45 +23,42 @@ export default function Welcome() {
   }
 
   const start75Soft = async () => {
-    if (!supabaseContext) return
-    if (!userSessionContext.user) return
+    if (!session.user) return
     if (!username) {
       setUsernameError("Username cannot be empty")
       return
     }
 
+    setIsLoading(true)
     await Promise.all([
-      supabaseContext.from('profiles').insert({
+      supabase.from('profiles').insert({
         username,
-        user_id: userSessionContext.user.id
+        user_id: session.user.id
       }),
-      supabaseContext.from('todos').insert({
+      supabase.from('todos').insert({
         name: "Read a book",
         description: "Read at least 10 pages of a non fiction book.",
-        user_id: userSessionContext.user.id
+        user_id: session.user.id
       }),
-      supabaseContext.from('todos').insert({
+      supabase.from('todos').insert({
         name: "Workout",
         description: "Do a 45 minute workout, can be split up thought the day. Also try to walk 1 mile a day.",
-        user_id: userSessionContext.user.id
+        user_id: session.user.id
       }),
-      supabaseContext.from('todos').insert({
+      supabase.from('todos').insert({
         name: "Drink water",
         description: "Goal is to drink at least 96oz of water.",
-        user_id: userSessionContext.user.id
+        user_id: session.user.id
       }),
-      supabaseContext.from('todos').insert({
+      supabase.from('todos').insert({
         name: "Follow Diet",
         description: "Pick a diet plan and follow it.",
-        user_id: userSessionContext.user.id
+        user_id: session.user.id
       }),
     ])
 
-    setIsLoading(true)
-    userSessionContext.reloadFunc()
     clearForm()
     router.refresh()
-    setIsLoading(false)
   }
 
   return (

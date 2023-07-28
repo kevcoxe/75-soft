@@ -1,32 +1,75 @@
 "use client"
 
-import { ONE_DAY_IN_MILLISECONDS } from "@/app/consts"
+import { Session } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
+import { supabase } from "@/utils/supabase"
+import { getCurrentDateStr } from "@/utils/dateUtils"
 
 export default function ProgressTracker({
-  profile,
+  session,
 }: {
-  profile: Profile,
+  session: Session,
 }) {
 
   const [ startDate, setStartDate ] = useState<string>()
   const [ currentDate, setCurrentDate ] = useState<string>()
   const [ endDate, setEndDate ] = useState<string>()
+  const [ isLoading, setLoading ] = useState(true)
 
+  const getProfile = async () => {
+    try {
+      if (!session?.user) throw new Error("No user on the session!")
+
+      let { data, error, status } = await supabase
+        .from('profiles')
+        .select()
+        .match({
+          user_id: session.user.id
+        })
+        .single()
+
+      if (error && status !== 406) {
+        throw error
+      }
+
+      if (data) {
+        let {
+          startDate,
+          currentDate,
+          endDate,
+        } = getCurrentDateStr(data)
+    
+        setCurrentDate(currentDate)
+        setStartDate(startDate)
+        setEndDate(endDate)
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message)
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-    if (!profile.created_at) return
+    setLoading(true)
+    getProfile()
 
-    const current = new Date()
-    const start = new Date(profile.created_at)
-    const end = new Date(start.getTime() + (75 * ONE_DAY_IN_MILLISECONDS))
+    const profileChannel = supabase
+      .channel('daily miles profile changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'profiles'
+      }, () => {
+        getProfile()
+      }).subscribe()
 
-    setCurrentDate(current.toLocaleDateString('en-us', { year:"numeric", month:"numeric", day:"numeric"}))
-    setStartDate(start.toLocaleDateString('en-us', { year:"numeric", month:"numeric", day:"numeric"}))
-    setEndDate(end.toLocaleDateString('en-us', { year:"numeric", month:"numeric", day:"numeric"}))
-
-  }, [profile])
-
+    return () => {
+      supabase.removeChannel(profileChannel)
+    }
+  }, [session])
 
   return (
     <>

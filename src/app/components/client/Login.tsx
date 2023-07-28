@@ -1,16 +1,13 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
-import { UseAuthSessionContext } from "@/app/contexts/AuthSessionContext"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import getURL from "@/utils/getURL"
 import { ImSpinner8 } from "react-icons/im"
+import { supabase } from "@/utils/supabase"
 
 
 export default function Login () {
-  const supabaseContext = UseSupabaseContext()
-  const userSessionContext = UseAuthSessionContext()
 
   const router = useRouter()
   const [ isLoading, setIsLoading ] = useState(false)
@@ -22,12 +19,6 @@ export default function Login () {
   const [ emailError, setEmailError ] = useState<string>("")
   const [ passwordError, setPasswordError ] = useState<string>("")
   const [ message, setMessage ] = useState("")
-
-  useEffect(() => {
-    if (!supabaseContext) {
-      setIsLoading(true)
-    }
-  }, [supabaseContext])
 
   const clearForm = () => {
     setEmail("")
@@ -44,77 +35,66 @@ export default function Login () {
 
 
   const signUp = async () => {
-    if (supabaseContext) {
-      await supabaseContext.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: getURL('/auth/callback'),
-        },
-      })
+    await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: getURL('/auth/callback'),
+      },
+    })
 
-      setIsLoading(true)
-      userSessionContext.reloadFunc()
-      afterSignUp()
-    }
+    setIsLoading(true)
+    afterSignUp()
   }
 
   const login = async () => {
-    if (supabaseContext) {
-      if (email === "") {
-        setEmailError("email cannot be empty")
-      }
-      if (password === "") {
-        setPasswordError("password cannot be empty")
-      }
-
-      if (email === "" || password === "") return
-
-      setEmailError("")
-      setPasswordError("")
-
-      await supabaseContext.auth.signInWithPassword({
-        email,
-        password,
-      })
-
-      setIsLoading(true)
-      userSessionContext.reloadFunc()
-      clearForm()
-      router.refresh()
-      setIsLoading(false)
+    if (email === "") {
+      setEmailError("email cannot be empty")
     }
+    if (password === "") {
+      setPasswordError("password cannot be empty")
+    }
+
+    if (email === "" || password === "") return
+
+    setEmailError("")
+    setPasswordError("")
+
+    await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+
+    setIsLoading(true)
+    clearForm()
+    router.refresh()
+    setIsLoading(false)
   }
 
   const forgotPassword = async () => {
-    if (supabaseContext) {
-      if (email === "") {
-        setEmailError("email cannot be empty")
-        return
-      }
-
-      await supabaseContext.auth.resetPasswordForEmail(
-        email, {
-        redirectTo: getURL('/auth/callback'),
-      })
+    if (email === "") {
+      setEmailError("email cannot be empty")
+      return
     }
+
+    await supabase.auth.resetPasswordForEmail(
+      email, {
+      redirectTo: getURL('/auth/callback'),
+    })
   }
 
   const loginAction = async () => {
-    if (supabaseContext) {
-      if (showForgotPassword) {
-        await forgotPassword()
-        return
-      }
-
-      if (showSignUp) {
-        await signUp()
-        return
-      }
-
-      await login()
+    if (showForgotPassword) {
+      await forgotPassword()
       return
     }
+
+    if (showSignUp) {
+      await signUp()
+      return
+    }
+
+    await login()
   }
 
   const toggleSignup = () => {

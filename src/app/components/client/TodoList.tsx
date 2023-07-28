@@ -1,89 +1,112 @@
 "use client"
 
-import { UseSupabaseContext } from "@/app/contexts/SupabaseContext"
-import { User } from "@supabase/supabase-js"
+import { Session } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
+import { supabase } from "@/utils/supabase"
 import Todo from "@/app/components/client/Todo"
-import { BiShow, BiHide } from "react-icons/bi"
 import { POINT_PER_DAY } from "@/app/consts"
-import { onCurrentDay } from "@/utils/dateUtils"
-import WindowFocusHandler from "@/app/components/client/WindowFocusHandler"
+import { onCurrentDay, getCurrentDateStr } from "@/utils/dateUtils"
 import { motion } from "framer-motion"
 
 export default function TodoList({
-  user,
-  profile,
+  session,
 }: {
-  user: User,
-  profile: Profile
+  session: Session,
 }) {
-  const supabaseContext = UseSupabaseContext()
 
   const [ todos, setTodos ] = useState<Todo[]>()
   const [ todosComplete, setTodosComplete ] = useState(false)
   const [ isLoading, setLoading ] = useState(true)
-  const [ collapse, setCollapse ] = useState(false)
   const [ isOnCurrentDay, setIsOnCurrentDay ] = useState(false)
   const [ daysDiff, setDaysDiff ] = useState(0)
-
-  const handleCollapse = () => {
-    setCollapse(!collapse)
-  }
+  const [ profile, setProfile ] = useState<Profile>()
+  const [ tasksDate, setTasksDate ] = useState<string>()
   
   const handleCompleteDay = async () => {
-    if (!supabaseContext) return
+    if (!session) return
 
-    const { error } = await supabaseContext
+    const { error } = await supabase
       .rpc('incrementDay', {
-        userid: user.id,
+        userid: session.user.id,
         score_increment: POINT_PER_DAY
       })
 
     return { error }
   }
 
-  const getData = async () => {
-    if (!supabaseContext) {
-      setLoading(false)
-      return
-    }
-
+  const getProfile = async () => {
     try {
-      setLoading(true)
-      const { data } = await supabaseContext
+      if (!session?.user) throw new Error("No user on the session!")
+
+      let { data, error, status } = await supabase
+        .from('profiles')
+        .select()
+        .match({
+          user_id: session.user.id
+        })
+        .single()
+
+      if (error && status !== 406) {
+        throw error
+      }
+
+      if (data) {
+        setProfile(data)
+
+        const { compare, dayDiff } = onCurrentDay(data)
+        setIsOnCurrentDay(compare)
+        setDaysDiff(dayDiff)
+        let { workingDate } = getCurrentDateStr(data, {
+          workingDate: true
+        })
+        setTasksDate(workingDate)
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message)
+      }
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const getData = async () => {
+    try {
+      let { data, error, status } = await supabase
         .from('todos')
         .select()
         .match({
-          user_id: user.id
+          user_id: session.user.id
         })
         .order('is_complete', { ascending: true })
 
-      if (!data) {
-        setLoading(false)
-        return
+      if (error && status !== 406) {
+        throw error
       }
 
-      setTodos(data)
-
-      const todosDone = data.filter(({ is_complete }) => !is_complete).length === 0
-      setTodosComplete(todosDone)
-
-      setLoading(false)
+      if (data) {
+        const todosDone = data.filter(({ is_complete }) => !is_complete).length === 0
+        setTodos(data)
+        setTodosComplete(todosDone)
+      }
     } catch (error) {
-      console.log("error:", error)
+      if (error instanceof Error) {
+        console.error(error.message)
+      }
+    } finally {
+      setLoading(false)
     }
   }
 
 
   useEffect(() => {
+    setLoading(true)
+
+    getProfile()
     getData()
-  }, [user])
 
-
-  useEffect(() => {
-    if (!supabaseContext) return
-    const channel = supabaseContext
-      .channel('todos changes')
+    const todoChannel = supabase
+      .channel('todo list todos changes')
       .on('postgres_changes', {
         event: '*',
         schema: 'public',
@@ -92,21 +115,30 @@ export default function TodoList({
         getData()
       }).subscribe()
 
+    const profileChannel = supabase
+      .channel('todo list profile changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'profiles'
+      }, () => {
+        getProfile()
+      }).subscribe()
+
     return () => {
-      supabaseContext.removeChannel(channel)
+      supabase.removeChannel(todoChannel)
+      supabase.removeChannel(profileChannel)
     }
-  }, [supabaseContext])
+  }, [session])
 
-
-  useEffect(() => {
-    const { compare, dayDiff } = onCurrentDay(profile)
-    setIsOnCurrentDay(compare)
-    setDaysDiff(dayDiff)
-  }, [profile])
   return (
     <>
       {/* <WindowFocusHandler onFocus={getData} /> */}
       <div className="flex flex-col overflow-x-hidden">
+        { tasksDate && (
+          <h2 className="text-lg text-center">Tasks for { tasksDate }</h2>
+        )}
+
         { (todosComplete && isOnCurrentDay) && (
           <div className="flex flex-col col-span-6 px-2 mx-2 my-4 animate-pulse">
             <button className="col-span-6 py-4 text-3xl text-white bg-black rounded-lg" onClick={handleCompleteDay}>
@@ -115,7 +147,7 @@ export default function TodoList({
           </div>
         )}
 
-        { !isOnCurrentDay && (
+        { !isLoading && !isOnCurrentDay && (
           <div className="mx-2 my-2 card bg-base-100">
             <div className="card-body">
               <h2 className="card-title">🎉 Congrats on finishing the day 🎉</h2>
@@ -124,7 +156,7 @@ export default function TodoList({
           </div>
         )}
 
-        { (!todosComplete && daysDiff > 1) && (
+        { (profile && !todosComplete && daysDiff > 1) && (
           <div className="mx-2 my-2 card bg-warning text-warning-content">
             <div className="card-body">
               <h2 className="text-lg card-title">🤨 Are you behind in your tasks 🤨</h2>
