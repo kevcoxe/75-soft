@@ -41,7 +41,7 @@ export default function Page() {
             </h1>
 
             <p className="py-6 text-lg text-start">
-              The 75 Soft Challenge doesn't specify a strict diet, it simply needs to be healthy. The great thing about it is you can really set your own goals based on what 'eating well' means to you.
+              The 75 Soft Challenge doesn&apos;t specify a strict diet, it simply needs to be healthy. The great thing about it is you can really set your own goals based on what &apos;eating well&apos; means to you.
             </p>
 
             <p className="py-6 text-lg text-start">
@@ -49,7 +49,7 @@ export default function Page() {
             </p>
 
             <p className="py-6 text-lg text-start">
-              When it comes to booze, the 75 Soft Challenge limits drinking for social occasions only. Don't use that as a green light to drink as much as you want. Stay mindful of how alcohol plays into your challenge. If one more drink is going to derail you from hitting your goals tomorrow, it's probably a good time to put the bottle down, right?
+              When it comes to booze, the 75 Soft Challenge limits drinking for social occasions only. Don&apos;t use that as a green light to drink as much as you want. Stay mindful of how alcohol plays into your challenge. If one more drink is going to derail you from hitting your goals tomorrow, it&apos;s probably a good time to put the bottle down, right?
             </p>
           </div>
         </div>
