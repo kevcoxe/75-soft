@@ -19,7 +19,7 @@ export default function Page() {
             <h1 className="font-bold text-7xl">75 Soft</h1>
 
             <p className="py-6 text-lg text-center">
-              The more compassionate and approachable alternative to TikTok&apos;s 75 Hard Challenge.
+              The more approachable alternative to TikTok&apos;s 75 Hard Challenge.
             </p>
 
             <div className="flex flex-col mt-64 font-light">
@@ -41,11 +41,11 @@ export default function Page() {
             </h1>
 
             <p className="py-6 text-lg text-start">
-              The 75 Soft Challenge offers a more compassionate and approachable alternative to TikTok&apos;s 75 Hard Challenge, which is known for its rigorous 75-day routine created by Andy Frisella to &quot;build mental strength and discipline&quot;.
+              The 75 Soft Challenge offers a more approachable alternative to TikTok&apos;s 75 Hard Challenge, which is known for its rigorous 75-day routine created by Andy Frisella to &quot;build mental strength and discipline&quot;.
             </p>
 
             <p className="py-6 text-lg text-start">
-              Unlike the 75 Hard Challenge, which may lead individuals towards unhealthy restrictive habits, the 75 Soft Challenge caters to those seeking to adopt healthier practices. It presents a set of rules and guidelines to be adhered to for 75 days to successfully accomplish the challenge. These rules are thoughtfully crafted to encourage the development of positive habits without resorting to extreme measures or strict limitations.
+              The 75 Soft Challenge caters to those seeking to adopt healthier practices. It presents a set of rules and guidelines to be adhered to for 75 days to successfully accomplish the challenge. These rules are thoughtfully crafted to encourage the development of positive habits without resorting to extreme measures or strict limitations.
             </p>
 
             <Link className="btn btn-neutral" href={APP_PATH}>Get Started</Link>
