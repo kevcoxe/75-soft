@@ -1,6 +1,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { BsChevronDoubleDown } from "react-icons/bs"
 
 export default function Page() {
 
@@ -14,15 +15,33 @@ export default function Page() {
         <div className="text-center hero-content">
           <div className="max-w-md">
             <h1 className="font-bold text-7xl">75 Soft</h1>
-            <p className="py-6">
-              The 75 Soft Challenge is the kinder, gentler alternative to TikTok’s 75 Hard Challenge—a hardcore 75-day daily routine developed by Andy Frisella to “build mental strength and discipline”.
+            <div className="flex flex-col font-light mt-80">
+              <span>scroll to</span>
+              <span>learn more</span>
+              <span className="mt-2 animate-bounce">
+                <BsChevronDoubleDown className="mx-auto font-light"/>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="min-h-screen hero bg-base-100">
+        <div className="text-center hero-content">
+          <div className="max-w-3xl">
+            <h1 className="text-lg font-bold text-center md:text-4xl">
+              About 75 Soft
+            </h1>
+
+            <p className="py-6 text-lg text-start">
+              The 75 Soft Challenge is the kinder, gentler alternative to TikTok&apos;s 75 Hard Challenge hardcore 75-day daily routine developed by Andy Frisella to “build mental strength and discipline”.
             </p>
 
-            <p className="py-6">
+            <p className="py-6 text-lg text-start">
               The 75 Hard Challenge preys on those who want to establish healthy habits, handing them a list of extreme lifestyle changes that could be a slippery slope for unhealthy restrictive behavior.
             </p>
 
-            <p className="py-6">
+            <p className="py-6 text-lg text-start">
               Thus, the 75 Soft Challenge was born. Like the hard version, the 75 Soft Challenge has a series of rules and guidelines that must be followed for 75 days to complete the challenge. The rules are designed to help you build healthy habits without extremes or restrictions.
             </p>
             <Link className="btn btn-neutral" href="/">Get Started</Link>
@@ -65,11 +84,11 @@ export default function Page() {
             </h1>
 
             <p className="py-6 text-lg text-start">
-              Drinking water might sound like the simplest task on the 75 Soft Challenge checklist, but it’s probably the one you’ll slip up on the most if you aren’t intentional about it. 3 liters of water comes down to about 12 cups a day.
+              Drinking water might sound like the simplest task on the 75 Soft Challenge checklist, but it&apos;s probably the one you&apos;ll slip up on the most if you aren&apos;t intentional about it. 3 liters of water comes down to about 12 cups a day.
             </p>
 
             <p className="py-6 text-lg text-start">
-              The last thing you want is for the end of the day to roll around, realize you forgot to drink your water, and feel the need to down it all right before bed. Our recommendation? Invest in a marked water bottle so you know exactly how much you’re drinking throughout the day.
+              The last thing you want is for the end of the day to roll around, realize you forgot to drink your water, and feel the need to down it all right before bed. Our recommendation? Invest in a marked water bottle so you know exactly how much you&apos;re drinking throughout the day.
             </p>
 
             <p className="py-6 text-lg text-start">
@@ -77,7 +96,7 @@ export default function Page() {
             </p>
 
             <p className="py-6 text-lg text-start">
-              If you’re someone who easily gets tired of drinking water, try an electrolyte powder. Electrolytes help restore the minerals your cells need to thrive and function properly and can help you perform your best during a workout and recover better after a workout.
+              If you&apos;re someone who easily gets tired of drinking water, try an electrolyte powder. Electrolytes help restore the minerals your cells need to thrive and function properly and can help you perform your best during a workout and recover better after a workout.
             </p>
           </div>
         </div>
@@ -93,7 +112,7 @@ export default function Page() {
             </h1>
 
             <p className="py-6 text-lg text-start">
-              Odds are you’ve set a fitness or diet resolution before, but what about reading? Making time in your day to learn something new is excellent for the mind. Studies show reading can lower blood pressure, heart rate, and stress(1), and prevent cognitive decline as you age(2).
+              Odds are you&apos;ve set a fitness or diet resolution before, but what about reading? Making time in your day to learn something new is excellent for the mind. Studies show reading can lower blood pressure, heart rate, and stress, and prevent cognitive decline as you age.
             </p>
 
             <p className="py-6 text-lg text-start">
@@ -101,7 +120,7 @@ export default function Page() {
             </p>
 
             <p className="py-6 text-lg text-start">
-              Once you’ve chosen a book or two, you’re excited to read, decide when you’ll read. This is the easiest rule to fall off on if you’re not intentional about it. Reading in the morning can set the tone for your day, reading at lunch is a nice escape from a running mind, and reading at night is a great way to relax before you fall asleep. There’s no wrong time, just determine a time you like and stick to it.
+              Once you&apos;ve chosen a book or two, you&apos;re excited to read, decide when you&apos;ll read. This is the easiest rule to fall off on if you&apos;re not intentional about it. Reading in the morning can set the tone for your day, reading at lunch is a nice escape from a running mind, and reading at night is a great way to relax before you fall asleep. There&apos;s no wrong time, just determine a time you like and stick to it.
             </p>
           </div>
         </div>
@@ -117,11 +136,11 @@ export default function Page() {
             </h1>
 
             <p className="py-6 text-lg text-start">
-              When it comes to the 75 Series challenges, the workout portion of the programs tend to get the most attention, because it’s the one rule that yields results that are easy to see.
+              When it comes to the 75 Series challenges, the workout portion of the programs tend to get the most attention, because it&apos;s the one rule that yields results that are easy to see.
             </p>
 
             <p className="py-6 text-lg text-start">
-              For most of us, a daily 45-minute workout is more than we’re already doing. The great thing about the workouts in 75 Soft is there are no guidelines for how or where you work out—all the details are left up to you.
+              For most of us, a daily 45-minute workout is more than we&apos;re already doing. The great thing about the workouts in 75 Soft is there are no guidelines for how or where you work out all the details are left up to you.
             </p>
 
             <p className="py-6 text-lg text-start">
