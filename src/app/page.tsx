@@ -22,7 +22,7 @@ export default function Page() {
               The more compassionate and approachable alternative to TikTok&apos;s 75 Hard Challenge.
             </p>
 
-            <div className="flex flex-col font-light mt-80">
+            <div className="flex flex-col mt-64 font-light">
               <span>scroll to</span>
               <span>learn more</span>
               <span className="mt-2 animate-bounce">
