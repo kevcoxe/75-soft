@@ -163,7 +163,9 @@ export default function Page() {
         <div className="flex-col hero-content lg:flex-row">
           <Image alt="walk" width={image_w} height={image_h} src="/walk-on-beach.jpg" className="max-w-xs rounded-lg shadow-2xl" />
           <div>
-            <h1 className="text-lg font-bold text-center md:text-4xl">Walk</h1>
+            <h1 className="text-lg font-bold text-center md:text-4xl">
+              Walk 1 mile a day
+            </h1>
 
             <p className="py-6 text-lg text-start">
             In the 75 Soft Challenge, participants are encouraged to take on the feat of walking 75 miles within a span of 75 days. The challenge revolves around striving to complete a 1-mile walk each day, but it offers the flexibility to make up for missed days if necessary. This means that if unforeseen circumstances arise or life gets hectic, individuals have the opportunity to catch up on their progress and stay on track with their walking goal. Embracing this aspect of the challenge not only promotes physical activity but also emphasizes the importance of perseverance and adaptability in achieving one&apos;s fitness objectives.
