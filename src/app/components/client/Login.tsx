@@ -86,7 +86,9 @@ export default function Login () {
     })
 
     clearForm()
-    router.refresh()
+
+    setMessage("Check your email for a reset link")
+    // router.refresh()
     setIsLoading(false)
   }
 
