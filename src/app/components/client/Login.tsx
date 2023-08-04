@@ -88,7 +88,7 @@ export default function Login () {
     clearForm()
 
     if (error) {
-      setEmailError("Please wait before trying to reset password.")
+      setEmailError("Too many attempts, Please wait before trying to reset password.")
     } else {
       setMessage("Check your email for a reset link")
     }
@@ -112,10 +112,12 @@ export default function Login () {
   }
 
   const toggleSignup = () => {
+    clearForm()
     setShowSignUp(!showSignUp)
   }
 
   const toggleForgotPassword = () => {
+    clearForm()
     setShowForgotPassword(!showForgotPassword)
   }
 
