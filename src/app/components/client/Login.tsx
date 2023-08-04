@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import getURL from "@/utils/getURL"
-import { ImSpinner8 } from "react-icons/im"
 import { supabase } from "@/utils/supabase"
 
 
