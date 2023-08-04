@@ -78,10 +78,16 @@ export default function Login () {
       return
     }
 
+    setIsLoading(true)
+
     await supabase.auth.resetPasswordForEmail(
       email, {
       redirectTo: getURL('/auth/callback'),
     })
+
+    clearForm()
+    router.refresh()
+    setIsLoading(false)
   }
 
   const loginAction = async () => {
