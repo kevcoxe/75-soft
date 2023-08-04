@@ -80,15 +80,19 @@ export default function Login () {
 
     setIsLoading(true)
 
-    let { data, error } = await supabase.auth.resetPasswordForEmail(
+    let { error } = await supabase.auth.resetPasswordForEmail(
       email, {
       redirectTo: getURL('/auth/callback'),
     })
 
     clearForm()
 
-    console.log(data, error)
-    setMessage("Check your email for a reset link")
+    if (error) {
+      setEmailError("Please wait before trying to reset password.")
+    } else {
+      setMessage("Check your email for a reset link")
+    }
+    
     // router.refresh()
     setIsLoading(false)
   }
