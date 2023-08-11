@@ -20,7 +20,7 @@ export interface Database {
           miles_walked: number
           profile_pic: string | null
           score: number
-          start_date: string | null
+          start_date: string
           user_id: string
           username: string
         }
@@ -34,7 +34,7 @@ export interface Database {
           miles_walked?: number
           profile_pic?: string | null
           score?: number
-          start_date?: string | null
+          start_date?: string
           user_id: string
           username: string
         }
@@ -48,7 +48,7 @@ export interface Database {
           miles_walked?: number
           profile_pic?: string | null
           score?: number
-          start_date?: string | null
+          start_date?: string
           user_id?: string
           username?: string
         }
