@@ -4,7 +4,7 @@ import { Session } from "@supabase/supabase-js"
 import { useEffect, useState } from "react"
 import { supabase } from "@/utils/supabase"
 import Todo from "@/app/components/client/Todo"
-import { POINT_PER_DAY } from "@/app/consts"
+import { POINT_PER_DAY, POINT_PER_TASK } from "@/app/consts"
 import { onCurrentDay, getCurrentDateStr } from "@/utils/dateUtils"
 import { motion } from "framer-motion"
 
@@ -25,12 +25,32 @@ export default function TodoList({
   const handleCompleteDay = async () => {
     if (!session) return
 
+    setLoading(true)
+
     const { error } = await supabase
       .rpc('incrementDay', {
         userid: session.user.id,
         score_increment: POINT_PER_DAY
       })
 
+    setLoading(false)
+    return { error }
+  }
+
+  const handleFailDay = async () => {
+    if (!session || !todos) return
+
+    setLoading(true)
+    const unfinishedTodos = todos.filter(({ is_complete }) => !is_complete).length
+    const score_increment = (POINT_PER_DAY + (unfinishedTodos * POINT_PER_TASK)) * -1
+
+    const { error } = await supabase
+      .rpc('failDay', {
+        userid: session.user.id,
+        score_increment
+      })
+
+    setLoading(false)
     return { error }
   }
 
@@ -160,8 +180,16 @@ export default function TodoList({
           <div className="mx-2 my-2 card bg-warning text-warning-content">
             <div className="text-center card-body">
               <h2 className="mx-auto text-lg card-title">🤨 Behind on tasks? 🤨</h2>
-              <p>You have completed { profile.days_sucessful } days and are { daysDiff } days behind schedule.
-              If you have just not checked off your tasks, go ahead and catch up you are doing great!</p>
+              <p>You have completed { profile.days_sucessful } days and are { daysDiff } days behind schedule.</p>
+              <p>If you have just not checked off your tasks, go ahead and catch up you are doing great!</p>
+              <p>If you need to mark the day as incomplete you can do that and move on to the next day, you will loose points for not completing all of your tasks for a day.</p>
+
+              <button className="col-span-6 py-4 text-3xl rounded-lg btn btn-error btn-lg" disabled={isLoading} onClick={handleFailDay}>
+                { isLoading && (
+                  <span className="loading loading-spinner"></span>
+                )}
+                I did not complete day
+              </button>
             </div>
           </div>
         )}

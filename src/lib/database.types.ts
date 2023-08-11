@@ -14,11 +14,13 @@ export interface Database {
           created_at: string | null
           daily_miles: number
           days_sucessful: number
+          failed_count: number
           id: number
           is_admin: boolean
           miles_walked: number
           profile_pic: string | null
           score: number
+          start_date: string | null
           user_id: string
           username: string
         }
@@ -26,11 +28,13 @@ export interface Database {
           created_at?: string | null
           daily_miles?: number
           days_sucessful?: number
+          failed_count?: number
           id?: number
           is_admin?: boolean
           miles_walked?: number
           profile_pic?: string | null
           score?: number
+          start_date?: string | null
           user_id: string
           username: string
         }
@@ -38,11 +42,13 @@ export interface Database {
           created_at?: string | null
           daily_miles?: number
           days_sucessful?: number
+          failed_count?: number
           id?: number
           is_admin?: boolean
           miles_walked?: number
           profile_pic?: string | null
           score?: number
+          start_date?: string | null
           user_id?: string
           username?: string
         }
@@ -94,6 +100,13 @@ export interface Database {
       [_ in never]: never
     }
     Functions: {
+      failDay: {
+        Args: {
+          userid: string
+          score_increment: number
+        }
+        Returns: undefined
+      }
       incrementDailyMiles: {
         Args: {
           userid: string

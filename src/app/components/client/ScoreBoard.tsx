@@ -14,6 +14,7 @@ const ScoreTitle = () => {
       <span className="col-span-2">Score</span>
       <span className="col-span-2">Days</span>
       <span className="col-span-2">Miles</span>
+      <span className="col-span-2">Failed</span>
     </div>
   )
 }
@@ -32,6 +33,7 @@ const ScoreRow = ({
       <span className="col-span-2">{ profile.score }</span>
       <span className="col-span-2">{ profile.days_sucessful }</span>
       <span className="col-span-2">{ profile.miles_walked }</span>
+      <span className="col-span-2">{ profile.failed_count }</span>
     </div>
   )
 }
@@ -108,6 +110,7 @@ export default function ScoreBoard({
               <th>Score</th>
               <th>Days</th>
               <th>Miles Walked</th>
+              <th>Failed</th>
             </tr>
           </thead>
           <tbody>
@@ -121,6 +124,7 @@ export default function ScoreBoard({
                       <td>{ profile.score }</td>
                       <td>{ profile.days_sucessful }</td>
                       <td>{ profile.miles_walked }</td>
+                      <td>{ profile.failed_count }</td>
                     </tr>
                   )
                 })}
