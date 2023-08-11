@@ -17,6 +17,7 @@ import { BsTrophy, BsGear } from "react-icons/bs"
 import { AnimatePresence } from 'framer-motion'
 import { BiWalk } from "react-icons/bi"
 import { supabase } from "@/utils/supabase"
+import ResetUser from "@/app/components/client/ResetUser"
 
 
 export default function TabApp({
@@ -185,6 +186,8 @@ export default function TabApp({
                   <button onClick={()=>setSettingModalOpen(false)} className="absolute btn btn-sm btn-circle btn-ghost right-2 top-2">✕</button>
                   <div className="px-1 pt-4">
                     <PasswordReset session={session}/>
+                    <div className="divider"></div>
+                    <ResetUser session={session} callback={()=>setSettingModalOpen(false)} />
                     <div className="divider"></div>
                     <Logout redirectPath="/" logoutFunc={logoutFunc} />
                   </div>

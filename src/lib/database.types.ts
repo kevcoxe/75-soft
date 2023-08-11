@@ -137,6 +137,13 @@ export interface Database {
         }
         Returns: undefined
       }
+      resetPlan: {
+        Args: {
+          userid: string
+          newstart: string
+        }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
