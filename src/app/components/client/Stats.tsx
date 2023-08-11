@@ -87,6 +87,11 @@ export default function Stats({
           </div>
 
           <div className="stat place-items-center">
+            <div className="stat-title">Days Failed</div>
+            <div className="stat-value">{ profile.failed_count }</div>
+          </div>
+
+          <div className="stat place-items-center">
             <div className="stat-title">Total Miles Walked</div>
             <div className="stat-value">{ profile.miles_walked }</div>
           </div>
