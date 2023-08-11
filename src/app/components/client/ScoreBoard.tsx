@@ -110,7 +110,7 @@ export default function ScoreBoard({
               <th>Score</th>
               <th>Days</th>
               <th>Miles Walked</th>
-              <th>Failed</th>
+              <th>Failed Days</th>
             </tr>
           </thead>
           <tbody>
