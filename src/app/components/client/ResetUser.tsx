@@ -11,55 +11,8 @@ export default function ResetUser ({
   callback: ()=>void
 }) {
 
-  const [ isLoading, setLoading ] = useState(true)
-  const [ profile, setProfile ] = useState<Profile>()
-
-  const getProfile = async () => {
-    try {
-      if (!session?.user) throw new Error("No user on the session!")
-
-      let { data, error, status } = await supabase
-        .from('profiles')
-        .select()
-        .match({
-          user_id: session.user.id
-        })
-        .single()
-
-      if (error && status !== 406) {
-        throw error
-      }
-
-      if (data) {
-        setProfile(data)
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message)
-      }
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    setLoading(true)
-    getProfile()
-
-    const profileChannel = supabase
-      .channel('profile rest profile changes')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'profiles'
-      }, () => {
-        getProfile()
-      }).subscribe()
-
-    return () => {
-      supabase.removeChannel(profileChannel)
-    }
-  }, [session])
+  const [ isLoading, setLoading ] = useState(false)
+  const [ confirmed, setConfirmed ] = useState(false)
 
   const handleReset = async () => {
     if (!session) return
@@ -74,15 +27,33 @@ export default function ResetUser ({
       })
 
     setLoading(false)
+    setConfirmed(false)
     callback()
   }
 
   return (
-    <button className="py-4 text-3xl rounded-lg btn-block btn btn-error btn-lg" disabled={isLoading} onClick={handleReset}>
-      { isLoading && (
-        <span className="loading loading-spinner"></span>
+    <>
+      { confirmed && (
+        
+        <div className="flex join-vertical join">
+          <button className="py-4 text-xl rounded-lg join-item btn btn-error btn-lg" disabled={isLoading} onClick={handleReset}>
+            { isLoading && (
+              <span className="loading loading-spinner"></span>
+            )}
+            Confirm Reset Plan
+          </button>
+
+          <button className="py-4 text-xl rounded-lg btn-outline btn-lg join-item" disabled={isLoading} onClick={()=>setConfirmed(false)}>
+            Cancel
+          </button>
+        </div>
       )}
-      Reset Plan
-    </button>
+
+      { !confirmed && (
+        <button className="py-4 text-2xl rounded-lg btn-block btn btn-error btn-lg" disabled={isLoading} onClick={()=>setConfirmed(true)}>
+          Reset Plan
+        </button>
+      )}
+    </>
   )
 }
